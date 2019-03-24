@@ -84,7 +84,6 @@ start_process (void *f_name)
    child of the calling process, or if process_wait() has already
    been successfully called for the given TID, returns -1
    immediately, without waiting.
-
    This function will be implemented in problem 2-2.  For now, it
    does nothing. */
 int
@@ -102,6 +101,7 @@ process_exit (void)
 
   /* Destroy the current process's page directory and switch back
      to the kernel-only page directory. */
+  printf ("%s: exit(%d)\n", curr->name, 0);
   pd = curr->pagedir;
   if (pd != NULL) 
     {
@@ -223,11 +223,17 @@ load (const char *file_name, void (**eip) (void), void **esp)
     goto done;
   process_activate ();
 
+
+  char *ret_ptr;
+  char *next_ptr;
+  ret_ptr = strtok_r(file_name, " ", &next_ptr);
+
+
   /* Open executable file. */
-  file = filesys_open (file_name);
+  file = filesys_open (ret_ptr);
   if (file == NULL) 
     {
-      printf ("load: %s: open failed\n", file_name);
+      printf ("load: %s: open failed\n", ret_ptr);
       goto done; 
     }
 
@@ -240,7 +246,7 @@ load (const char *file_name, void (**eip) (void), void **esp)
       || ehdr.e_phentsize != sizeof (struct Elf32_Phdr)
       || ehdr.e_phnum > 1024) 
     {
-      printf ("load: %s: error loading executable\n", file_name);
+      printf ("load: %s: error loading executable\n", ret_ptr);
       goto done; 
     }
 
@@ -307,6 +313,61 @@ load (const char *file_name, void (**eip) (void), void **esp)
   if (!setup_stack (esp))
     goto done;
 
+  int length = strlen(ret_ptr)+1;
+  int arg_num = 1;
+  ret_ptr = strtok_r(NULL, " ", &next_ptr);
+  while(ret_ptr) {
+    //length update
+    length+=strlen(ret_ptr)+1;
+    //arg_num update
+    arg_num+=1;
+    ret_ptr = strtok_r(NULL, " ", &next_ptr);
+  }
+
+  int word_align = (4-length%4)%4;
+
+  //ret_ptr = strtok_r(file_name, " ", &next_ptr);
+
+  char* ptr = *esp;
+  ptr -= length+word_align+4;
+  char* ptr2 = ptr-4*arg_num;
+
+  //argv[-1]
+  *(int *)ptr = 0;
+  ptr +=4;
+
+  //word_align
+  int cnt;
+  for(cnt=0;cnt<word_align;cnt++)
+  {
+    *ptr = (uint8_t) 0;
+    ptr+=1;
+  }
+
+  //argc, argc
+  *(int *)(ptr2-4) = ptr2;
+  *(int *)(ptr2-8) = arg_num;
+
+    //update esp
+  *esp = ptr2-12;
+
+  //argv[i][..] & argv[i]
+
+  ret_ptr = strtok_r(file_name, " ", &next_ptr);
+
+  int count;
+  for(count=0;count<arg_num;count++)
+  {
+    //*ptr = *ret_ptr;
+	strlcpy(ptr, ret_ptr);
+    *(int *)ptr2 = ptr;
+    ptr+=strlen(ret_ptr)+1;
+    ptr2+=4;
+    ret_ptr = strtok_r(NULL, " ", &next_ptr);
+  }
+
+
+
   /* Start address. */
   *eip = (void (*) (void)) ehdr.e_entry;
 
@@ -370,15 +431,11 @@ validate_segment (const struct Elf32_Phdr *phdr, struct file *file)
 /* Loads a segment starting at offset OFS in FILE at address
    UPAGE.  In total, READ_BYTES + ZERO_BYTES bytes of virtual
    memory are initialized, as follows:
-
         - READ_BYTES bytes at UPAGE must be read from FILE
           starting at offset OFS.
-
         - ZERO_BYTES bytes at UPAGE + READ_BYTES must be zeroed.
-
    The pages initialized by this function must be writable by the
    user process if WRITABLE is true, read-only otherwise.
-
    Return true if successful, false if a memory allocation error
    or disk read error occurs. */
 static bool
