@@ -358,8 +358,8 @@ load (const char *file_name, void (**eip) (void), void **esp)
   int count;
   for(count=0;count<arg_num;count++)
   {
-    //*ptr = *ret_ptr;
-	strlcpy(ptr, ret_ptr);
+    *ptr = *ret_ptr;
+	//strlcpy(ptr, ret_ptr);
     *(int *)ptr2 = ptr;
     ptr+=strlen(ret_ptr)+1;
     ptr2+=4;
