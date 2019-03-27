@@ -9,16 +9,18 @@
 
 static void syscall_handler (struct intr_frame *);
 
-void* valid_pointer(void* ptr)
+void* is_valid_ptr(void* ptr)
 {
 	if(!is_user_vaddr(ptr))
 	{
-		//exit with status -1
+			//exit with status -1
+		exit_with_status(-1);
 		return 0;
 	} 
 	if(!pagedir_get_page(thread_current()->pagedir, ptr))
 	{
 		//exit with status -1
+		exit_with_status(-1);
 		return 0;
 	}
 	return ptr;
@@ -44,13 +46,17 @@ syscall_handler (struct intr_frame *f UNUSED)
   thread_exit ();
   */
   int *syscall_ptr = f->esp;
+  is_valid_ptr(syscall_ptr);
   int syscall_number = *syscall_ptr;
+
   switch(syscall_number) 
   {
   	case SYS_HALT:
   		power_off();
   		break;
   	case SYS_EXIT:
+  		//find status
+  		exit_with_status(status);
   		break;                   /* Terminate this process. */
     case SYS_EXEC:
     	break;                   /* Start another process. */
