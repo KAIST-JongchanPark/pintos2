@@ -5,6 +5,7 @@
 #include "threads/thread.h"
 #include "threads/vaddr.h"
 #include "userprog/pagedir.c"
+#include "threads/init.h"
 
 static void syscall_handler (struct intr_frame *);
 
@@ -24,7 +25,10 @@ void* valid_pointer(void* ptr)
 }
 
 void
-exit_with_status(void)
+exit_with_status(int status)
+{
+	//exit with given status => further used in process.c(when printing results)
+}
 
 void
 syscall_init (void) 
@@ -35,6 +39,40 @@ syscall_init (void)
 static void
 syscall_handler (struct intr_frame *f UNUSED) 
 {
+  /*
   printf ("system call!\n");
   thread_exit ();
-}
+  */
+  int *syscall_ptr = f->esp;
+  int syscall_number = *syscall_ptr;
+  switch(syscall_number) 
+  {
+  	case SYS_HALT:
+  		power_off();
+  		break;
+  	case SYS_EXIT:
+  		break;                   /* Terminate this process. */
+    case SYS_EXEC:
+    	break;                   /* Start another process. */
+    case SYS_WAIT:
+    	break;                   /* Wait for a child process to die. */
+    case SYS_CREATE:
+    	break;                 /* Create a file. */
+    case SYS_REMOVE:
+    	break;                 /* Delete a file. */
+    case SYS_OPEN:
+    	break;                   /* Open a file. */
+    case SYS_FILESIZE:
+    	break;               /* Obtain a file's size. */
+    case SYS_READ:
+    	break;                   /* Read from a file. */
+    case SYS_WRITE:
+    	break;                  /* Write to a file. */
+    case SYS_SEEK:
+    	break;                   /* Change position in a file. */
+    case SYS_TELL:
+    	break;                   /* Report current position in a file. */
+    case SYS_CLOSE:
+    	break;     
+  }
+ }
