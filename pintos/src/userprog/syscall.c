@@ -41,12 +41,10 @@ syscall_init (void)
 static void
 syscall_handler (struct intr_frame *f UNUSED) 
 {
-  int *syscall_ptr = f->esp;
-  hex_dump(*syscall_ptr, *syscall_ptr, 100, 1);
   printf ("system call!\n");
   thread_exit ();
   
-  //int *syscall_ptr = f->esp;
+  int *syscall_ptr = f->esp;
   is_valid_ptr(syscall_ptr);
   int syscall_number = *syscall_ptr;
   printf("syscall executed");
