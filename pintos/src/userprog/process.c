@@ -95,7 +95,7 @@ process_wait (tid_t child_tid UNUSED)
   int i;
   int sum = 0;
 
-  for (i = 0; i < 2000000000; i++) 
+  for (i = 0; i < 100000000; i++) 
   sum += i;
   return sum;
 }
