@@ -56,7 +56,7 @@ syscall_handler (struct intr_frame *f UNUSED)
   		break;
   	case SYS_EXIT:
   		//find status
-  		exit_with_status(status);
+  		exit_with_status((int*)is_valid_ptr((void*)*(syscall_ptr+1)));
   		break;                   /* Terminate this process. */
     case SYS_EXEC:
     	break;                   /* Start another process. */
