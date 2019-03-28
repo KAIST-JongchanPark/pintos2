@@ -29,6 +29,7 @@ void* is_valid_ptr(void* ptr)
 void
 exit_with_status(int status)
 {
+	thread_exit ();
 	//exit with given status => further used in process.c(when printing results)
 }
 
@@ -73,6 +74,7 @@ syscall_handler (struct intr_frame *f)
     case SYS_READ:
     	break;                   /* Read from a file. */
     case SYS_WRITE:
+		f->eax = write((int)*(uint32_t *)(f->esp+20), (void *)*(uint32_t *)(f->esp + 24), (unsigned)*((uint32_t *)(f->esp + 28)));
     	break;                  /* Write to a file. */
     case SYS_SEEK:
     	break;                   /* Change position in a file. */
