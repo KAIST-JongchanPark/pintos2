@@ -390,7 +390,7 @@ load (const char *file_name, void (**eip) (void), void **esp)
     ret_ptr = strtok_r(NULL, " ", &new_ptr);
   }
 
-  hex_dump(*esp, *esp, 100, 1);
+  //hex_dump(*esp, *esp, 100, 1);
 
   /* Start address. */
   *eip = (void (*) (void)) ehdr.e_entry;

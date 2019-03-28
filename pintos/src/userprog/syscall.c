@@ -39,7 +39,7 @@ syscall_init (void)
 }
 
 static void
-syscall_handler (struct intr_frame *f UNUSED) 
+syscall_handler (struct intr_frame *f) 
 {
   printf ("system call!\n");
   thread_exit ();
@@ -48,6 +48,7 @@ syscall_handler (struct intr_frame *f UNUSED)
   is_valid_ptr(syscall_ptr);
   int syscall_number = *syscall_ptr;
   printf("syscall executed");
+  hex_dump(syscall_ptr, syscall_ptr, 100, 1);
   switch(syscall_number) 
   {
   	case SYS_HALT:
