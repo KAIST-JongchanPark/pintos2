@@ -9,7 +9,7 @@
 
 static void syscall_handler (struct intr_frame *);
 
-static void* is_valid_ptr(void* ptr)
+void* is_valid_ptr(void* ptr)
 {
 	if(!is_user_vaddr(ptr))
 	{
@@ -26,7 +26,7 @@ static void* is_valid_ptr(void* ptr)
 	return ptr;
 }
 
-static void
+void
 exit_with_status(int status)
 {
 	//exit with given status => further used in process.c(when printing results)
