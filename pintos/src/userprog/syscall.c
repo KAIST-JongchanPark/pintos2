@@ -48,7 +48,7 @@ syscall_handler (struct intr_frame *f UNUSED)
   int *syscall_ptr = f->esp;
   is_valid_ptr(syscall_ptr);
   int syscall_number = *syscall_ptr;
-
+  printf("syscall executed");
   switch(syscall_number) 
   {
   	case SYS_HALT:
