@@ -323,7 +323,8 @@ load (const char *file_name, void (**eip) (void), void **esp)
   int length = strlen(ret_ptr)+1;
   int arg_num = 1;
   ret_ptr = strtok_r(NULL, " ", &next_ptr);
-  while(ret_ptr) {
+  while(ret_ptr!=NULL) 
+  {
     //length update
     length+=strlen(ret_ptr)+1;
     //arg_num update
