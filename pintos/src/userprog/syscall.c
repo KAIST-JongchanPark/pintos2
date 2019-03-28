@@ -39,6 +39,15 @@ syscall_init (void)
   intr_register_int (0x30, 3, INTR_ON, syscall_handler, "syscall");
 }
 
+int write (int fd, const void *buffer, unsigned size) 
+{
+  if (fd == 1) {
+    putbuf(buffer, size);
+    return size;
+  }
+  return -1;
+}
+
 static void
 syscall_handler (struct intr_frame *f) 
 {
