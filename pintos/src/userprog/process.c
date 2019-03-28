@@ -93,8 +93,11 @@ int
 process_wait (tid_t child_tid UNUSED) 
 {
   int i;
-  for (i = 0; i < 1000000000; i++);
-  return -1;
+  int sum = 0;
+
+  for (i = 0; i < 2000000000; i++) 
+  sum += i;
+  return sum;
 }
 
 /* Free the current process's resources. */
