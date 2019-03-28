@@ -233,8 +233,14 @@ load (const char *file_name, void (**eip) (void), void **esp)
 
   char *ret_ptr;
   char *next_ptr;
+  char *fn_copy;
   
-  ret_ptr = strtok_r(file_name, " ", &next_ptr);
+  fn_copy = palloc_get_page (0);
+  if (fn_copy == NULL)
+    return TID_ERROR;
+  strlcpy (fn_copy, file_name, PGSIZE);
+  
+  ret_ptr = strtok_r(fn_copy, " ", &next_ptr);
 
 
   /* Open executable file. */
@@ -363,7 +369,13 @@ load (const char *file_name, void (**eip) (void), void **esp)
 
   //argv[i][..] & argv[i]
   char *new_ptr;
-  ret_ptr = strtok_r(file_name, " ", &new_ptr);
+  
+  fn_copy = palloc_get_page (0);
+  if (fn_copy == NULL)
+    return TID_ERROR;
+  strlcpy (fn_copy, file_name, PGSIZE);
+  
+  ret_ptr = strtok_r(fn_copy, " ", &new_ptr);
   printf("arg_num: %d\n", arg_num);
   printf("file_name: %s\n", file_name);
   int count;
