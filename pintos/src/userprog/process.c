@@ -362,7 +362,7 @@ load (const char *file_name, void (**eip) (void), void **esp)
   //argv[i][..] & argv[i]
 
   ret_ptr = strtok_r(file_name, " ", &next_ptr);
-
+  printf("arg_num: %d\n", arg_num);
   int count;
   for(count=0;count<arg_num;count++)
   {
