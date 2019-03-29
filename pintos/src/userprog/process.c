@@ -55,7 +55,7 @@ start_process (void *f_name)
   struct intr_frame if_;
   bool success;
 
-  printf("\n%s\n", f_name);
+  //printf("\n%s\n", f_name);
   /* Initialize interrupt frame and load executable. */
   memset (&if_, 0, sizeof if_);
   if_.gs = if_.fs = if_.es = if_.ds = if_.ss = SEL_UDSEG;

@@ -51,7 +51,7 @@ int write (int fd, const void *buffer, unsigned size)
 static void
 syscall_handler (struct intr_frame *f) 
 {
-  printf ("system call!\n");
+  //printf ("system call!\n");
   
   int *syscall_ptr = f->esp;
   is_valid_ptr(syscall_ptr);
@@ -65,7 +65,7 @@ syscall_handler (struct intr_frame *f)
   		power_off();
   		break;
   	case SYS_EXIT:
-  		//find status
+  		//find status//
   		exit_with_status(*(int*)is_valid_ptr((void*)(syscall_ptr+1)));
   		break;                   /* Terminate this process. */
     case SYS_EXEC:
