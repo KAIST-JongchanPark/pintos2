@@ -57,7 +57,7 @@ syscall_handler (struct intr_frame *f)
   is_valid_ptr(syscall_ptr);
   int syscall_number = *syscall_ptr;
   //printf("syscall executed");
-  hex_dump(syscall_ptr, syscall_ptr, 100, 1);
+  //hex_dump(syscall_ptr, syscall_ptr, 100, 1);
   //thread_exit ();
   switch(syscall_number) 
   {

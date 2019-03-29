@@ -331,7 +331,7 @@ load (const char *file_name, void (**eip) (void), void **esp)
   int length = strlen(ret_ptr)+1;
   int arg_num = 1;
   ret_ptr = strtok_r(NULL, " ", &next_ptr);
-  printf("ret_ptr: %s\n", ret_ptr);
+  //printf("ret_ptr: %s\n", ret_ptr);
   while(ret_ptr!=NULL) 
   {
     //length update
@@ -377,13 +377,13 @@ load (const char *file_name, void (**eip) (void), void **esp)
   strlcpy (fn_copy, file_name, PGSIZE);
   
   ret_ptr = strtok_r(fn_copy, " ", &new_ptr);
-  printf("arg_num: %d\n", arg_num);
-  printf("file_name: %s\n", file_name);
+  //printf("arg_num: %d\n", arg_num);
+  //printf("file_name: %s\n", file_name);
   int count;
   for(count=0;count<arg_num;count++)
   {
     //*ptr = *ret_ptr;
-	printf("ret_ptr: %s\n", ret_ptr);
+	//printf("ret_ptr: %s\n", ret_ptr);
 	strlcpy(ptr, ret_ptr, strlen(ret_ptr)+1);
     *(int *)ptr2 = ptr;
     ptr+=strlen(ret_ptr)+1;
