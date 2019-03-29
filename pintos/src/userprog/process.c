@@ -109,6 +109,21 @@ process_exit (void)
 
   /* Destroy the current process's page directory and switch back
      to the kernel-only page directory. */
+
+  char *ret_ptr;
+  char *next_ptr;
+  char *fn_copy;
+
+  fn_copy = palloc_get_page (0);
+  if (fn_copy == NULL)
+    return TID_ERROR;
+  strlcpy (fn_copy, curr->name, PGSIZE);
+  
+  ret_ptr = strtok_r(fn_copy, " ", &next_ptr);
+  
+  
+  printf ("%s: exit(%d)\n", fn_copy, 0);
+
   printf ("%s: exit(%d)\n", curr->name, 0);
   pd = curr->pagedir;
   if (pd != NULL) 
