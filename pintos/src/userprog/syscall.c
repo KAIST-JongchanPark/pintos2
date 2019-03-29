@@ -70,8 +70,12 @@ syscall_handler (struct intr_frame *f)
   		exit_with_status(*(int*)is_valid_ptr((void*)(syscall_ptr+1)));
   		break;                   /* Terminate this process. */
     case SYS_EXEC:
+      is_valid_ptr((void *)(f->esp+4));
+      f->eax = process_execute((const char *)*(uint32_t *)(f->esp+4));
     	break;                   /* Start another process. */
     case SYS_WAIT:
+      is_valid_ptr((void *)(f->esp+4));
+      f->eax = process_wait((tid_t)*(uint32_t *)(f->esp+4));
     	break;                   /* Wait for a child process to die. */
     case SYS_CREATE:
     	break;                 /* Create a file. */
