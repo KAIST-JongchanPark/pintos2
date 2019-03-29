@@ -122,9 +122,7 @@ process_exit (void)
   ret_ptr = strtok_r(fn_copy, " ", &next_ptr);
   
   
-  printf ("%s: exit(%d)\n", fn_copy, 0);
-
-  printf ("%s: exit(%d)\n", curr->name, 0);
+  printf ("%s: exit(%d)\n", ret_ptr, 0);
   pd = curr->pagedir;
   if (pd != NULL) 
     {
