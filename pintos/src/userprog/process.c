@@ -105,7 +105,7 @@ process_wait (tid_t child_tid)
   struct thread *curr = thread_current();
   for (e = list_begin (&curr->child_list); e != list_end (&curr->child_list); e = list_next (e))
   {
-	struct thread *t = list_entry (e, struct thread, elem2);
+	struct thread *t = list_entry (e, struct thread, child_elem);
 	if(t->tid == child_tid)
 	{
 	  sema_down(&t->waiting);
