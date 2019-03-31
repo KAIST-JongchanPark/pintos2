@@ -5,6 +5,12 @@
 #include <list.h>
 #include <stdint.h>
 
+struct semaphore 
+  {
+    unsigned value;             /* Current value. */
+    struct list waiters;        /* List of waiting threads. */
+  };
+
 /* States in a thread's life cycle. */
 enum thread_status
   {
