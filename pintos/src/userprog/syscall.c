@@ -82,6 +82,9 @@ int open (const char *ptr)
     return -1;
 
   struct file* file = filesys_open(ptr);
+  if(file==NULL)
+    return -1;
+  
   int i;
   for(i=3;i<128;i++)
   {
