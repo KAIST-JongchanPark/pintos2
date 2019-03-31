@@ -95,11 +95,17 @@ struct thread
 #ifdef USERPROG
     /* Owned by userprog/process.c. */
     uint32_t *pagedir;                  /* Page directory. */
-#endif
+	
+	struct semaphore waiting;
+	struct semaphore keep_alive;
+	struct list child_list;
+	struct list_elem child_elem;
+	int exit_status;
 
     /* Structures for userprog. */
     int exit_status;
     struct file* fd[128];
+#endif
 
     /* Owned by thread.c. */
     unsigned magic;                     /* Detects stack overflow. */
