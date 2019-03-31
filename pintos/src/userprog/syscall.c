@@ -140,7 +140,10 @@ int write (int fd, const void *buffer, unsigned size)
   }
   else if (fd>2)
   {
-    return file_write(fd, buffer,(off_t)size);
+    struct file* file = thread_current()->fd[fd];
+    if (file==NULL)
+      return -1;
+    return file_write(file, buffer,(off_t)size);
   }
   return -1;
 }
