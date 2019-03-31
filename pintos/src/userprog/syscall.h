@@ -7,8 +7,8 @@ void syscall_init (void);
 
 
 int write (int, const void *, unsigned);
-void halt (void) NO_RETURN;
-void exit (int) NO_RETURN;
+void halt (void) ;
+void exit (int) ;
 pid_t exec (const char *);
 int wait (tid_t);
 bool create (const char *, unsigned);
