@@ -84,7 +84,7 @@ int open (const char *ptr)
   struct file* file = filesys_open(ptr);
   if(file==NULL)
     return -1;
-  
+
   int i;
   for(i=3;i<128;i++)
   {
@@ -133,9 +133,14 @@ int read (int fd, void *buffer, unsigned size)
 
 int write (int fd, const void *buffer, unsigned size) 
 {
-  if (fd == 1) {
+  if (fd == 1) 
+  {
     putbuf(buffer, size);
     return size;
+  }
+  else if (fd>2)
+  {
+    return file_write(fd, buffer,(off_t)size);
   }
   return -1;
 }
