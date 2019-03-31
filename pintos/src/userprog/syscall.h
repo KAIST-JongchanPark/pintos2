@@ -1,7 +1,7 @@
 #ifndef USERPROG_SYSCALL_H
 #define USERPROG_SYSCALL_H
 
-typedef uint32_t bool;
+#include <stdbool.h>
 
 void* is_valid_ptr(void*);
 void exit_with_status (int);
