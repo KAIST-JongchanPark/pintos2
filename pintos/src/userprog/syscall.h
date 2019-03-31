@@ -10,7 +10,7 @@ int write (int, const void *, unsigned);
 void halt (void) NO_RETURN;
 void exit (int) NO_RETURN;
 pid_t exec (const char *);
-int wait (pid_t);
+int wait (tid_t);
 bool create (const char *, unsigned);
 bool remove (const char *);
 int open (const char *);

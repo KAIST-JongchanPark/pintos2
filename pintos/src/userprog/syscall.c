@@ -6,6 +6,9 @@
 #include "threads/vaddr.h"
 #include "userprog/pagedir.h"
 #include "threads/init.h"
+#include "devices/input.h"
+#include "filesys/filesys.h"
+#include "filests/file.h"
 
 static void syscall_handler (struct intr_frame *);
 
@@ -55,6 +58,42 @@ pid_t exec (const char *file)
   return process_execute(file);
 }
 
+int wait(tid_t tid)
+{
+  return process_wait(tid);
+}
+
+bool create (const char *ptr, unsigned size)
+{
+  return filesys_create(ptr, size);
+}
+
+bool remove (const char *ptr)
+{
+  return filesys_remove(ptr)
+}
+
+int filesize(int)
+{
+  return file_length
+}
+
+int read (int fd, void *buffer, unsigned size)
+{
+  if(fd==0)
+  {
+    int i;
+    for(i=0;i<size;i++)
+    {
+      (uint8_t *)buffer[i] = input_getc();
+    }
+    return size;
+  } 
+  else 
+  {
+    return 0;
+  }
+}
 
 int write (int fd, const void *buffer, unsigned size) 
 {
@@ -96,15 +135,22 @@ syscall_handler (struct intr_frame *f)
     	break;                   /* Wait for a child process to die. */
     case SYS_CREATE:
       is_valid_ptr((void *)(f->esp+4));
-      f->eax = filesys_create((const char *)*(uint32_t)(f->esp+4), (off_t)*(unsigned *)(f->esp+8));
+      f->eax = create((const char *)*(uint32_t)(f->esp+4), (off_t)*(unsigned *)(f->esp+8));
     	break;                 /* Create a file. */
     case SYS_REMOVE:
+      is_valid_ptr((void *)(f->esp+4));
+      f->eax = remove((const char *)*(uint32_t)(f->esp+4));
     	break;                 /* Delete a file. */
     case SYS_OPEN:
     	break;                   /* Open a file. */
     case SYS_FILESIZE:
+      is_valid_ptr((void *)(f->esp+4));
     	break;               /* Obtain a file's size. */
     case SYS_READ:
+      is_valid_ptr((void *)(f->esp+4));
+      is_valid_ptr((void *)(f->esp+8));
+      is_valid_ptr((void *)(f->esp+12));
+      f->eax = read((int)*(uint32_t *)(f->esp+4), (void *)*(uint32_t *)(f->esp + 8), (unsigned)*((uint32_t *)(f->esp + 12)));
     	break;                   /* Read from a file. */
     case SYS_WRITE:
       is_valid_ptr((void *)(f->esp+4));
