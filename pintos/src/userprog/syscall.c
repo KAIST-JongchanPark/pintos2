@@ -10,6 +10,8 @@
 #include "filesys/filesys.h"
 #include "filesys/file.h"
 
+typedef int pit_t;
+
 static void syscall_handler (struct intr_frame *);
 pid_t exec (const char *);
 
