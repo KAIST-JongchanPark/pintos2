@@ -134,11 +134,11 @@ syscall_handler (struct intr_frame *f)
     	break;                   /* Wait for a child process to die. */
     case SYS_CREATE:
       is_valid_ptr((void *)(f->esp+4));
-      f->eax = create((const char *)*(uint32_t)(f->esp+4), (off_t)*(unsigned *)(f->esp+8));
+      f->eax = create((const char *)*(uint32_t *)(f->esp+4), (off_t)*(unsigned *)(f->esp+8));
     	break;                 /* Create a file. */
     case SYS_REMOVE:
       is_valid_ptr((void *)(f->esp+4));
-      f->eax = remove((const char *)*(uint32_t)(f->esp+4));
+      f->eax = remove((const char *)*(uint32_t *)(f->esp+4));
     	break;                 /* Delete a file. */
     case SYS_OPEN:
     	break;                   /* Open a file. */
