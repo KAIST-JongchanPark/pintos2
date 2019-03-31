@@ -164,7 +164,11 @@ void close(int fd)
 {
   if (fd<0||fd>=128)
     return;
+  struct file* file = thread_current()->fd[fd];
+  if (file==NULL)
+    return;
   file_close(thread_current()->fd[fd]);
+  thread_current()->fd[fd] = NULL;
 }
 
 static void
