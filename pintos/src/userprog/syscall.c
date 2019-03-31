@@ -74,10 +74,6 @@ bool remove (const char *ptr)
   return filesys_remove(ptr)
 }
 
-int filesize(int)
-{
-  return file_length
-}
 
 int read (int fd, void *buffer, unsigned size)
 {
