@@ -43,7 +43,7 @@ process_execute (const char *file_name)
   tid = thread_create (file_name, PRI_DEFAULT, start_process, fn_copy);
   if (tid == TID_ERROR)
     palloc_free_page (fn_copy); 
-  return tid;
+  return process_wait(tid);
 }
 
 /* A thread function that loads a user process and makes it start
@@ -90,14 +90,32 @@ start_process (void *f_name)
    This function will be implemented in problem 2-2.  For now, it
    does nothing. */
 int
-process_wait (tid_t child_tid UNUSED) 
+process_wait (tid_t child_tid) 
 {
+  /*
   int i;
   int sum = 0;
 
   for (i = 0; i < 20000000; i++) 
   sum += i;
   return sum;
+  */
+  
+  struct list_elem *e;
+  struct thread *curr = thread_current()
+  for (e = list_begin (&curr->child_list); e != list_end (&curr->child_list); e = list_next (e))
+  {
+	struct thread *t = list_entry (e, struct thread, elem2);
+	if(t->tid == child_tid)
+	{
+	  sema_down(&t->waiting);
+	  int exit_status = t->exit_status;
+	  list_remove(&t->child_elem);
+	  sema_up(&t->keep_alive);
+	  return exit_status;
+	}
+  }
+  return -1;
 }
 
 /* Free the current process's resources. */
@@ -137,6 +155,8 @@ process_exit (void)
       pagedir_activate (NULL);
       pagedir_destroy (pd);
     }
+	sema_up(&curr->waiting);
+	sema_down(&curr->keep_alive);
 }
 
 /* Sets up the CPU for running user code in the current
