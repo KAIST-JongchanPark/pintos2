@@ -8,7 +8,7 @@
 #include "threads/init.h"
 #include "devices/input.h"
 #include "filesys/filesys.h"
-#include "filests/file.h"
+#include "filesys/file.h"
 
 static void syscall_handler (struct intr_frame *);
 pid_t exec (const char *);
