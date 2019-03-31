@@ -100,7 +100,6 @@ struct thread
 	struct semaphore keep_alive;
 	struct list child_list;
 	struct list_elem child_elem;
-	int exit_status;
 
     /* Structures for userprog. */
     int exit_status;
