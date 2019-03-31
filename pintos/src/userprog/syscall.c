@@ -109,6 +109,8 @@ int filesize (int fd)
 
 int read (int fd, void *buffer, unsigned size)
 {
+  if(fd<0||fd>=128)
+    return -1;
   if(fd==0)
   {
     int i;
@@ -133,6 +135,8 @@ int read (int fd, void *buffer, unsigned size)
 
 int write (int fd, const void *buffer, unsigned size) 
 {
+  if(fd<0||fd>=128)
+    return -1;
   if (fd == 1) 
   {
     putbuf(buffer, size);
