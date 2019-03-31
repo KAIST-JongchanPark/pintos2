@@ -99,7 +99,7 @@ struct thread
 
     /* Structures for userprog. */
     int exit_status;
-    
+    struct file* fd[128];
 
     /* Owned by thread.c. */
     unsigned magic;                     /* Detects stack overflow. */

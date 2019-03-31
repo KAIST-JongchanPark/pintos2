@@ -76,6 +76,33 @@ bool remove (const char *ptr)
   return filesys_remove(ptr);
 }
 
+int open (const char *ptr)
+{
+  if(ptr==NULL)
+    return -1;
+
+  struct file* file = filesys_open(ptr);
+  int i;
+  for(i=3;i<128;i++)
+  {
+    if(thread_current()->fd[i]==NULL)
+    {
+      thread_current()->fd[i] = file;
+      return i;
+    }
+  }
+  return -1;
+}
+
+int filesize (int fd)
+{
+  if(int<0||int>=128)
+    return -1;
+  struct file* file = thread_current ()->fd[fd];
+  if(file==NULL)
+    return -1;
+  return file_length(file);
+}
 
 int read (int fd, void *buffer, unsigned size)
 {
@@ -88,9 +115,16 @@ int read (int fd, void *buffer, unsigned size)
     }
     return size;
   } 
-  else 
+  else if(fd>2)
   {
-    return 0;
+    struct file* file = thread_current ()->fd[fd];
+    if(file==NULL)
+      return -1;
+    return file_read(file, buffer, (off_t)size);
+  }
+  else
+  {
+    return -1;
   }
 }
 
@@ -103,6 +137,24 @@ int write (int fd, const void *buffer, unsigned size)
   return -1;
 }
 
+void seek (int fd, unsigned position)
+{
+  struct file* file = thread_current()->fd[fd];
+  file_seek(file, (off_t)position);
+}
+
+unsigned tell (int fd)
+{
+  struct file* file = thread_current()->fd[fd];
+  return file_tell(file);
+}
+
+void close(int fd)
+{
+  if (fd<0||fd>=128)
+    return;
+  file_close(thread_current()->fd[fd]);
+}
 
 static void
 syscall_handler (struct intr_frame *f) 
@@ -141,9 +193,12 @@ syscall_handler (struct intr_frame *f)
       f->eax = remove((const char *)*(uint32_t *)(f->esp+4));
     	break;                 /* Delete a file. */
     case SYS_OPEN:
+      is_valid_ptr((void *)(f->esp+4));
+      f->eax = open((const char *)*(uint32_t *)(f->esp+4));
     	break;                   /* Open a file. */
     case SYS_FILESIZE:
       is_valid_ptr((void *)(f->esp+4));
+      f->eax = filesize((int)*(uint32_t *)(f->esp+4));
     	break;               /* Obtain a file's size. */
     case SYS_READ:
       is_valid_ptr((void *)(f->esp+4));
@@ -158,10 +213,17 @@ syscall_handler (struct intr_frame *f)
 		  f->eax = write((int)*(uint32_t *)(f->esp+4), (void *)*(uint32_t *)(f->esp + 8), (unsigned)*((uint32_t *)(f->esp + 12)));
     	break;                  /* Write to a file. */
     case SYS_SEEK:
+      is_valid_ptr((void *)(f->esp+4));
+      is_valid_ptr((void *)(f->esp+8));
+      seek((int)*(uint32_t *)(f->esp+4), (unsigned)*(uint32_t *)(f->esp+8));
     	break;                   /* Change position in a file. */
     case SYS_TELL:
+      is_valid_ptr((void *)(f->esp+4));
+      f->eax = tell((int)*(uint32_t *)(f->esp+4));
     	break;                   /* Report current position in a file. */
     case SYS_CLOSE:
+      is_valid_ptr((void *)(f->esp+4));
+      close((int)*(uint32_t *)(f->esp+4));
     	break;     
   }
  }
