@@ -40,6 +40,22 @@ syscall_init (void)
   intr_register_int (0x30, 3, INTR_ON, syscall_handler, "syscall");
 }
 
+void halt (void) 
+{
+  power_off();
+}
+
+void exit (int status) 
+{
+  exit_with_status(status);
+}
+
+pid_t exec (const char *file)
+{
+  return process_execute(file);
+}
+
+
 int write (int fd, const void *buffer, unsigned size) 
 {
   if (fd == 1) {
@@ -48,6 +64,7 @@ int write (int fd, const void *buffer, unsigned size)
   }
   return -1;
 }
+
 
 static void
 syscall_handler (struct intr_frame *f) 
@@ -63,21 +80,23 @@ syscall_handler (struct intr_frame *f)
   switch(syscall_number) 
   {
   	case SYS_HALT:
-  		power_off();
+  		halt();
   		break;
   	case SYS_EXIT:
   		//find status//
-  		exit_with_status(*(int*)is_valid_ptr((void*)(syscall_ptr+1)));
+  		exit(*(int*)is_valid_ptr((void*)(syscall_ptr+1)));
   		break;                   /* Terminate this process. */
     case SYS_EXEC:
       is_valid_ptr((void *)(f->esp+4));
-      f->eax = process_execute((const char *)*(uint32_t *)(f->esp+4));
+      f->eax = exec((const char *)*(uint32_t *)(f->esp+4));
     	break;                   /* Start another process. */
     case SYS_WAIT:
       is_valid_ptr((void *)(f->esp+4));
-      f->eax = process_wait((tid_t)*(uint32_t *)(f->esp+4));
+      f->eax = wait((tid_t)*(uint32_t *)(f->esp+4));
     	break;                   /* Wait for a child process to die. */
     case SYS_CREATE:
+      is_valid_ptr((void *)(f->esp+4));
+      f->eax = filesys_create((const char *)*(uint32_t)(f->esp+4), (off_t)*(unsigned *)(f->esp+8));
     	break;                 /* Create a file. */
     case SYS_REMOVE:
     	break;                 /* Delete a file. */
