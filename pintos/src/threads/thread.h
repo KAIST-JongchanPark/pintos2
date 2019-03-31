@@ -4,12 +4,7 @@
 #include <debug.h>
 #include <list.h>
 #include <stdint.h>
-
-struct semaphore 
-  {
-    unsigned value;             /* Current value. */
-    struct list waiters;        /* List of waiting threads. */
-  };
+#include "synch.h"
 
 /* States in a thread's life cycle. */
 enum thread_status
