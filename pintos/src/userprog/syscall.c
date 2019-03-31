@@ -96,7 +96,7 @@ int open (const char *ptr)
 
 int filesize (int fd)
 {
-  if(int<0||int>=128)
+  if(fd<0||fd>=128)
     return -1;
   struct file* file = thread_current ()->fd[fd];
   if(file==NULL)
