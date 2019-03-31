@@ -197,6 +197,7 @@ syscall_handler (struct intr_frame *f)
   		break;                   /* Terminate this process. */
     case SYS_EXEC:
       is_valid_ptr((void *)(f->esp+4));
+      is_valid_ptr((void *)*(uint32_t *)(f->esp+4));
       f->eax = exec((const char *)*(uint32_t *)(f->esp+4));
     	break;                   /* Start another process. */
     case SYS_WAIT:
@@ -205,6 +206,7 @@ syscall_handler (struct intr_frame *f)
     	break;                   /* Wait for a child process to die. */
     case SYS_CREATE:
       is_valid_ptr((void *)(f->esp+4));
+      is_valid_ptr((void *)*(uint32_t *)(f->esp+4));
       f->eax = create((const char *)*(uint32_t *)(f->esp+4), (off_t)*(unsigned *)(f->esp+8));
     	break;                 /* Create a file. */
     case SYS_REMOVE:
@@ -213,6 +215,7 @@ syscall_handler (struct intr_frame *f)
     	break;                 /* Delete a file. */
     case SYS_OPEN:
       is_valid_ptr((void *)(f->esp+4));
+      is_valid_ptr((void *)*(uint32_t *)(f->esp+4));
       f->eax = open((const char *)*(uint32_t *)(f->esp+4));
     	break;                   /* Open a file. */
     case SYS_FILESIZE:
@@ -223,12 +226,14 @@ syscall_handler (struct intr_frame *f)
       is_valid_ptr((void *)(f->esp+4));
       is_valid_ptr((void *)(f->esp+8));
       is_valid_ptr((void *)(f->esp+12));
+      is_valid_ptr((void *)*(uint32_t *)(f->esp+8));
       f->eax = read((int)*(uint32_t *)(f->esp+4), (void *)*(uint32_t *)(f->esp + 8), (unsigned)*((uint32_t *)(f->esp + 12)));
     	break;                   /* Read from a file. */
     case SYS_WRITE:
       is_valid_ptr((void *)(f->esp+4));
       is_valid_ptr((void *)(f->esp+8));
       is_valid_ptr((void *)(f->esp+12));
+      is_valid_ptr((void *)*(uint32_t *)(f->esp+8));
 		  f->eax = write((int)*(uint32_t *)(f->esp+4), (void *)*(uint32_t *)(f->esp + 8), (unsigned)*((uint32_t *)(f->esp + 12)));
     	break;                  /* Write to a file. */
     case SYS_SEEK:
