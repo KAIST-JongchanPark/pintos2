@@ -11,6 +11,7 @@
 #include "filests/file.h"
 
 static void syscall_handler (struct intr_frame *);
+pid_t exec (const char *);
 
 void* is_valid_ptr(void* ptr)
 {

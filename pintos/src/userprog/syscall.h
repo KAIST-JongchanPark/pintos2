@@ -9,7 +9,7 @@ void syscall_init (void);
 int write (int, const void *, unsigned);
 void halt (void) ;
 void exit (int) ;
-pid_t exec (const char *);
+//pid_t exec (const char *);
 int wait (tid_t);
 bool create (const char *, unsigned);
 bool remove (const char *);
