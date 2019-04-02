@@ -42,7 +42,10 @@ process_execute (const char *file_name)
   /* Create a new thread to execute FILE_NAME. */
   
   if(filesys_open(file_name) == NULL) {
-	  return -1;
+	return -1;
+  }
+  else{
+	file_close(file_name);
   }
   
   tid = thread_create (file_name, PRI_DEFAULT, start_process, fn_copy);
