@@ -206,7 +206,7 @@ syscall_handler (struct intr_frame *f)
     	break;                   /* Start another process. */
     case SYS_WAIT:
       is_valid_ptr((void *)(f->esp+4));
-      f->eax = wait((tid_t)*(uint32_t *)(f->esp+4));
+      f->eax = wait((pid_t)*(uint32_t *)(f->esp+4));
     	break;                   /* Wait for a child process to die. */
     case SYS_CREATE:
       is_valid_ptr((void *)(f->esp+4));
