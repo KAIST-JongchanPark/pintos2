@@ -115,7 +115,7 @@ process_wait (tid_t child_tid)
 	  return exit_status;
 	}
   }
-  printf("test\n");
+  //printf("test\n");
   return -1;
 }
 
