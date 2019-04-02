@@ -115,6 +115,7 @@ process_wait (tid_t child_tid)
 	  return exit_status;
 	}
   }
+  msg("test\n");
   return -1;
 }
 
