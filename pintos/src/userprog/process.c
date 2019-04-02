@@ -43,12 +43,9 @@ process_execute (const char *file_name)
   
   char *ret_ptr;
   char *next_ptr;
-  char *fn_copy;
   
-  fn_copy = palloc_get_page (0);
   if (fn_copy == NULL)
     return TID_ERROR;
-  strlcpy (fn_copy, file_name, PGSIZE);
   
   ret_ptr = strtok_r(fn_copy, " ", &next_ptr);
   
