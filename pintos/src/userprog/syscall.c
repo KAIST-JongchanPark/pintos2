@@ -11,6 +11,7 @@
 #include "filesys/file.h"
 
 typedef int pid_t;
+struct lock syscall_lock;
 
 static void syscall_handler (struct intr_frame *);
 pid_t exec (const char *);
@@ -44,6 +45,7 @@ void
 syscall_init (void) 
 {
   intr_register_int (0x30, 3, INTR_ON, syscall_handler, "syscall");
+  lock_init(&syscall_lock);
 }
 
 void halt (void) 
@@ -231,8 +233,10 @@ syscall_handler (struct intr_frame *f)
       is_valid_ptr((void *)(f->esp+8));
       is_valid_ptr((void *)(f->esp+12));
       is_valid_ptr((void *)*(uint32_t *)(f->esp+8));
+      lock_acquire(&syscall_lock);
       f->eax = read((int)*(uint32_t *)(f->esp+4), (void *)*(uint32_t *)(f->esp + 8), (unsigned)*((uint32_t *)(f->esp + 12)));
-    	break;                   /* Read from a file. */
+    	lock_release(&syscall_lock);
+      break;                   /* Read from a file. */
     case SYS_WRITE:
       is_valid_ptr((void *)(f->esp+4));
       is_valid_ptr((void *)(f->esp+8));
