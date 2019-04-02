@@ -149,7 +149,7 @@ page_fault (struct intr_frame *f)
   write = (f->error_code & PF_W) != 0;
   user = (f->error_code & PF_U) != 0;
 
-  if (!user || is_kernel_vaddr(fault_addr)) {
+  if (!user || fault_addr == NULL || is_kernel_vaddr(fault_addr)) {
     exit(-1);
   }
 
