@@ -44,6 +44,7 @@ process_execute (const char *file_name)
   char *ret_ptr;
   char *next_ptr;
   char *fn_copy2;
+  fn_copy2 = palloc_get_page (0);
   strlcpy (fn_copy2, file_name, PGSIZE);
   
   if (fn_copy == NULL)
