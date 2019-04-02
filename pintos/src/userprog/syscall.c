@@ -87,10 +87,13 @@ int open (const char *ptr)
 {
   if(ptr==NULL)
     return -1;
-
+  lock_acquire(&syscall_lock);
   struct file* file = filesys_open(ptr);
   if(file==NULL)
+  {
+    lock_release(&syscall_lock);
     return -1;
+  }
 
   int i;
   for(i=3;i<128;i++)
@@ -98,9 +101,11 @@ int open (const char *ptr)
     if(thread_current()->fd[i]==NULL)
     {
       thread_current()->fd[i] = file;
+      lock_release(&syscall_lock);
       return i;
     }
   }
+  lock_release(&syscall_lock);
   return -1;
 }
 
@@ -151,18 +156,25 @@ int write (int fd, const void *buffer, unsigned size)
 {
   if(fd<0||fd>=128)
     return -1;
+  lock_acquire(&syscall_lock);
   if (fd == 1) 
   {
     putbuf(buffer, size);
+    lock_release(&syscall_lock);
     return size;
   }
   else if (fd>2)
   {
     struct file* file = thread_current()->fd[fd];
     if (file==NULL)
+    {
+      lock_release(&syscall_lock);
       return -1;
+    }
+    lock_release(&syscall_lock);
     return file_write(file, buffer,(off_t)size);
   }
+  lock_release(&syscall_lock);
   return -1;
 }
 
