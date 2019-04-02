@@ -52,9 +52,9 @@ process_execute (const char *file_name)
   if(filesys_open(ret_ptr) == NULL) {
 	return -1;
   }
-  else{
-	file_close(ret_ptr);
-  }
+  //else{
+	//file_close(ret_ptr);
+  //}
   
   tid = thread_create (file_name, PRI_DEFAULT, start_process, fn_copy);
   if (tid == TID_ERROR)
