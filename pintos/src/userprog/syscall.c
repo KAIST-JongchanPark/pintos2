@@ -117,6 +117,7 @@ int read (int fd, void *buffer, unsigned size)
 {
   if(fd<0||fd>=128)
     return -1;
+  lock_acquire(&syscall_lock);
   if(fd==0)
   {
     int i;
@@ -124,17 +125,23 @@ int read (int fd, void *buffer, unsigned size)
     {
       ((uint8_t *)buffer)[i] = input_getc();
     }
+    lock_release(&syscall_lock);
     return size;
   } 
   else if(fd>2)
   {
     struct file* file = thread_current ()->fd[fd];
     if(file==NULL)
+    {
+      lock_release(&syscall_lock);
       return -1;
+    }
+    lock_release(&syscall_lock);
     return file_read(file, buffer, (off_t)size);
   }
   else
   {
+    lock_release(&syscall_lock);
     return -1;
   }
 }
@@ -233,9 +240,9 @@ syscall_handler (struct intr_frame *f)
       is_valid_ptr((void *)(f->esp+8));
       is_valid_ptr((void *)(f->esp+12));
       is_valid_ptr((void *)*(uint32_t *)(f->esp+8));
-      lock_acquire(&syscall_lock);
+      //lock_acquire(&syscall_lock);
       f->eax = read((int)*(uint32_t *)(f->esp+4), (void *)*(uint32_t *)(f->esp + 8), (unsigned)*((uint32_t *)(f->esp + 12)));
-    	lock_release(&syscall_lock);
+    	//lock_release(&syscall_lock);
       break;                   /* Read from a file. */
     case SYS_WRITE:
       is_valid_ptr((void *)(f->esp+4));
