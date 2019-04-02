@@ -9,6 +9,7 @@
 #include "devices/input.h"
 #include "filesys/filesys.h"
 #include "filesys/file.h"
+#include "threads/synch.h"
 
 typedef int pid_t;
 struct lock syscall_lock;
