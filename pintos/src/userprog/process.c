@@ -41,11 +41,22 @@ process_execute (const char *file_name)
 
   /* Create a new thread to execute FILE_NAME. */
   
-  if(filesys_open(file_name) == NULL) {
+  char *ret_ptr;
+  char *next_ptr;
+  char *fn_copy;
+  
+  fn_copy = palloc_get_page (0);
+  if (fn_copy == NULL)
+    return TID_ERROR;
+  strlcpy (fn_copy, file_name, PGSIZE);
+  
+  ret_ptr = strtok_r(fn_copy, " ", &next_ptr);
+  
+  if(filesys_open(ret_ptr) == NULL) {
 	return -1;
   }
   else{
-	file_close(file_name);
+	file_close(ret_ptr);
   }
   
   tid = thread_create (file_name, PRI_DEFAULT, start_process, fn_copy);
