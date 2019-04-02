@@ -43,11 +43,13 @@ process_execute (const char *file_name)
   
   char *ret_ptr;
   char *next_ptr;
+  char *fn_copy2;
+  strlcpy (fn_copy2, file_name, PGSIZE);
   
   if (fn_copy == NULL)
     return TID_ERROR;
   
-  ret_ptr = strtok_r(fn_copy, " ", &next_ptr);
+  ret_ptr = strtok_r(fn_copy2, " ", &next_ptr);
   
   if(filesys_open(ret_ptr) == NULL) {
 	return -1;
