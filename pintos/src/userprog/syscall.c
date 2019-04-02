@@ -68,6 +68,10 @@ int wait(tid_t tid)
 
 bool create (const char *ptr, unsigned size)
 {
+  if(ptr==NULL)
+  {
+    exit_with_status(-1);
+  }
   return filesys_create(ptr, size);
 }
 
