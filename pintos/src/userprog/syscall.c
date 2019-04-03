@@ -87,11 +87,11 @@ int open (const char *ptr)
 {
   if(ptr==NULL)
     return -1;
-  lock_acquire(&syscall_lock);
+  //lock_acquire(&syscall_lock);
   struct file* file = filesys_open(ptr);
   if(file==NULL)
   {
-    lock_release(&syscall_lock);
+    //lock_release(&syscall_lock);
     return -1;
   }
   
@@ -105,11 +105,11 @@ int open (const char *ptr)
 		file_deny_write(file);  
 	  }
       thread_current()->fd[i] = file;
-      lock_release(&syscall_lock);
+      //lock_release(&syscall_lock);
       return i;
     }
   }
-  lock_release(&syscall_lock);
+  //lock_release(&syscall_lock);
   return -1;
 }
 
@@ -127,7 +127,7 @@ int read (int fd, void *buffer, unsigned size)
 {
   if(fd<0||fd>=128)
     return -1;
-  lock_acquire(&syscall_lock);
+  //lock_acquire(&syscall_lock);
   if(fd==0)
   {
     int i;
@@ -135,7 +135,7 @@ int read (int fd, void *buffer, unsigned size)
     {
       ((uint8_t *)buffer)[i] = input_getc();
     }
-    lock_release(&syscall_lock);
+    //lock_release(&syscall_lock);
     return size;
   } 
   else if(fd>2)
@@ -143,15 +143,15 @@ int read (int fd, void *buffer, unsigned size)
     struct file* file = thread_current ()->fd[fd];
     if(file==NULL)
     {
-      lock_release(&syscall_lock);
+      //lock_release(&syscall_lock);
       return -1;
     }
-    lock_release(&syscall_lock);
+    //lock_release(&syscall_lock);
     return file_read(file, buffer, (off_t)size);
   }
   else
   {
-    lock_release(&syscall_lock);
+    //lock_release(&syscall_lock);
     return -1;
   }
 }
@@ -160,11 +160,11 @@ int write (int fd, const void *buffer, unsigned size)
 {
   if(fd<0||fd>=128)
     return -1;
-  lock_acquire(&syscall_lock);
+  //lock_acquire(&syscall_lock);
   if (fd == 1) 
   {
     putbuf(buffer, size);
-    lock_release(&syscall_lock);
+    //lock_release(&syscall_lock);
     return size;
   }
   else if (fd>2)
@@ -172,17 +172,17 @@ int write (int fd, const void *buffer, unsigned size)
     struct file* file = thread_current()->fd[fd];
     if (file==NULL)
     {
-      lock_release(&syscall_lock);
+      //lock_release(&syscall_lock);
       return -1;
     }
 	if(file->deny_write)
 	{
 	  file_deny_write(file);
 	}
-    lock_release(&syscall_lock);
+    //lock_release(&syscall_lock);
     return file_write(file, buffer,(off_t)size);
   }
-  lock_release(&syscall_lock);
+  //lock_release(&syscall_lock);
   return -1;
 }
 
