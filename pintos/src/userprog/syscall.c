@@ -108,7 +108,7 @@ int open (const char *ptr)
   {
     if(thread_current()->fd[i]==NULL)
     {
-	  if (strcmp(thread_current()->name, file) == 0)
+	  if (strcmp(thread_current()->name, ptr) == 0)
 	  {
 		file_deny_write(file);  
 	  }
