@@ -12,7 +12,7 @@
 #include "threads/synch.h"
 
 typedef int pid_t;
-//struct lock syscall_lock;
+struct lock syscall_lock;
 
 struct file 
   {
