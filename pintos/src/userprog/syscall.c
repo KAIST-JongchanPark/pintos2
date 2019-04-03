@@ -14,6 +14,14 @@
 typedef int pid_t;
 struct lock syscall_lock;
 
+struct file 
+  {
+    struct inode *inode;        /* File's inode. */
+    off_t pos;                  /* Current position. */
+    bool deny_write;            /* Has file_deny_write() been called? */
+  };
+
+
 static void syscall_handler (struct intr_frame *);
 pid_t exec (const char *);
 
@@ -177,7 +185,7 @@ int write (int fd, const void *buffer, unsigned size)
     }
 	if(file->deny_write)
 	{
-	  file_deny_write(file);
+	  //file_deny_write(file);
 	  return 0;
 	}
     //lock_release(&syscall_lock);
