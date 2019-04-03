@@ -54,7 +54,7 @@ void
 syscall_init (void) 
 {
   intr_register_int (0x30, 3, INTR_ON, syscall_handler, "syscall");
-  lock_init(&syscall_lock);
+  //lock_init(&syscall_lock);
 }
 
 void halt (void) 
@@ -95,11 +95,11 @@ int open (const char *ptr)
 {
   if(ptr==NULL)
     return -1;
-  lock_acquire(&syscall_lock);
+  //lock_acquire(&syscall_lock);
   struct file* file = filesys_open(ptr);
   if(file==NULL)
   {
-    lock_release(&syscall_lock);
+    //lock_release(&syscall_lock);
     return -1;
   }
   
@@ -113,11 +113,11 @@ int open (const char *ptr)
 		file_deny_write(file);  
 	  }
       thread_current()->fd[i] = file;
-      lock_release(&syscall_lock);
+      //lock_release(&syscall_lock);
       return i;
     }
   }
-  lock_release(&syscall_lock);
+  //lock_release(&syscall_lock);
   return -1;
 }
 
@@ -136,7 +136,7 @@ int read (int fd, void *buffer, unsigned size)
   int return_value;
   if(fd<0||fd>=128)
     return -1;
-  lock_acquire(&syscall_lock);
+  //lock_acquire(&syscall_lock);
   if(fd==0)
   {
     int i;
@@ -144,7 +144,7 @@ int read (int fd, void *buffer, unsigned size)
     {
       ((uint8_t *)buffer)[i] = input_getc();
     }
-    lock_release(&syscall_lock);
+    //lock_release(&syscall_lock);
     return size;
   } 
   else if(fd>2)
@@ -152,16 +152,16 @@ int read (int fd, void *buffer, unsigned size)
     struct file* file = thread_current ()->fd[fd];
     if(file==NULL)
     {
-      lock_release(&syscall_lock);
+      //lock_release(&syscall_lock);
       return -1;
     }
     return_value = file_read(file, buffer, (off_t)size);
-    lock_release(&syscall_lock);
+    //lock_release(&syscall_lock);
     return return_value;
   }
   else
   {
-    lock_release(&syscall_lock);
+    //lock_release(&syscall_lock);
     return -1;
   }
 }
@@ -171,11 +171,11 @@ int write (int fd, const void *buffer, unsigned size)
   int return_value;
   if(fd<0||fd>=128)
     return -1;
-  lock_acquire(&syscall_lock);
+  //lock_acquire(&syscall_lock);
   if (fd == 1) 
   {
     putbuf(buffer, size);
-    lock_release(&syscall_lock);
+    //lock_release(&syscall_lock);
     return size;
   }
   else if (fd>2)
@@ -183,20 +183,20 @@ int write (int fd, const void *buffer, unsigned size)
     struct file* file = thread_current()->fd[fd];
     if (file==NULL)
     {
-      lock_release(&syscall_lock);
+      //lock_release(&syscall_lock);
       return -1;
     }
 	if(file->deny_write)
 	{
 	  //file_deny_write(file);
-	  lock_release(&syscall_lock);
+	  //lock_release(&syscall_lock);
 	  return 0;
 	}
     return_value = file_write(file, buffer,(off_t)size);
-    lock_release(&syscall_lock);
+    //lock_release(&syscall_lock);
     return return_value;
   }
-  lock_release(&syscall_lock);
+  //lock_release(&syscall_lock);
   return -1;
 }
 
@@ -275,9 +275,9 @@ syscall_handler (struct intr_frame *f)
       is_valid_ptr((void *)(f->esp+8));
       is_valid_ptr((void *)(f->esp+12));
       is_valid_ptr((void *)*(uint32_t *)(f->esp+8));
-      //lock_acquire(&syscall_lock);
+      ////lock_acquire(&syscall_lock);
       f->eax = read((int)*(uint32_t *)(f->esp+4), (void *)*(uint32_t *)(f->esp + 8), (unsigned)*((uint32_t *)(f->esp + 12)));
-    	//lock_release(&syscall_lock);
+    	////lock_release(&syscall_lock);
       break;                   /* Read from a file. */
     case SYS_WRITE:
       is_valid_ptr((void *)(f->esp+4));
