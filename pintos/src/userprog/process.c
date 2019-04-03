@@ -59,7 +59,7 @@ process_execute (const char *file_name)
 	//file_close(ret_ptr);
   //}
   
-  tid = thread_create (file_name, PRI_DEFAULT, start_process, fn_copy);
+  tid = thread_create (ret_ptr, PRI_DEFAULT, start_process, fn_copy);
   if (tid == TID_ERROR)
     palloc_free_page (fn_copy); 
   return tid;
