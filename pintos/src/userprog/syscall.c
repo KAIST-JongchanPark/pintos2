@@ -186,6 +186,7 @@ int write (int fd, const void *buffer, unsigned size)
 	if(file->deny_write)
 	{
 	  //file_deny_write(file);
+	  lock_release(&syscall_lock);
 	  return 0;
 	}
     lock_release(&syscall_lock);
