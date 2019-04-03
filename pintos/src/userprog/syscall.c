@@ -12,7 +12,7 @@
 #include "threads/synch.h"
 
 typedef int pid_t;
-struct lock syscall_lock;
+//struct lock syscall_lock;
 
 struct file 
   {
@@ -133,6 +133,7 @@ int filesize (int fd)
 
 int read (int fd, void *buffer, unsigned size)
 {
+  int return_value;
   if(fd<0||fd>=128)
     return -1;
   lock_acquire(&syscall_lock);
@@ -154,8 +155,9 @@ int read (int fd, void *buffer, unsigned size)
       lock_release(&syscall_lock);
       return -1;
     }
+    return_value = file_read(file, buffer, (off_t)size);
     lock_release(&syscall_lock);
-    return file_read(file, buffer, (off_t)size);
+    return return_value;
   }
   else
   {
@@ -166,6 +168,7 @@ int read (int fd, void *buffer, unsigned size)
 
 int write (int fd, const void *buffer, unsigned size) 
 {
+  int return_value;
   if(fd<0||fd>=128)
     return -1;
   lock_acquire(&syscall_lock);
@@ -189,8 +192,9 @@ int write (int fd, const void *buffer, unsigned size)
 	  lock_release(&syscall_lock);
 	  return 0;
 	}
+    return_value = file_write(file, buffer,(off_t)size);
     lock_release(&syscall_lock);
-    return file_write(file, buffer,(off_t)size);
+    return return_value;
   }
   lock_release(&syscall_lock);
   return -1;
