@@ -94,12 +94,16 @@ int open (const char *ptr)
     lock_release(&syscall_lock);
     return -1;
   }
-
+  
   int i;
   for(i=3;i<128;i++)
   {
     if(thread_current()->fd[i]==NULL)
     {
+	  if (strcmp(thread_current()->fd[i], file) == 0)
+	  {
+		file_deny_write(file);  
+	  }
       thread_current()->fd[i] = file;
       lock_release(&syscall_lock);
       return i;
@@ -171,6 +175,10 @@ int write (int fd, const void *buffer, unsigned size)
       lock_release(&syscall_lock);
       return -1;
     }
+	if(file->deny_write)
+	{
+	  file_deny_write(file);
+	}
     lock_release(&syscall_lock);
     return file_write(file, buffer,(off_t)size);
   }
