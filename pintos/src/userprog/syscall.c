@@ -45,7 +45,17 @@ void* is_valid_ptr(void* ptr)
 void
 exit_with_status(int status)
 {
+  int i;
   thread_current()->exit_status = status;
+  for(i=3;i<128;i++)
+  {
+    if(thread_current->fd[i]!=NULL)
+    {
+      file_close(thread_current->fd[i]);
+      thread_current->fd[i] = NULL;
+    }
+      
+  }
 	thread_exit ();
 	//exit with given status => further used in process.c(when printing results)
 }
