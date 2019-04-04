@@ -49,10 +49,10 @@ exit_with_status(int status)
   thread_current()->exit_status = status;
   for(i=3;i<128;i++)
   {
-    if(thread_current->fd[i]!=NULL)
+    if(thread_current()->fd[i]!=NULL)
     {
-      file_close(thread_current->fd[i]);
-      thread_current->fd[i] = NULL;
+      file_close(thread_current()->fd[i]);
+      thread_current()->fd[i] = NULL;
     }
       
   }
