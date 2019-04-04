@@ -62,6 +62,7 @@ process_execute (const char *file_name)
   tid = thread_create (ret_ptr, PRI_DEFAULT, start_process, fn_copy);
   if (tid == TID_ERROR)
     palloc_free_page (fn_copy); 
+    palloc_free_page (fn_copy2);
   return tid;
 }
 
@@ -161,6 +162,7 @@ process_exit (void)
   
   
   printf ("%s: exit(%d)\n", ret_ptr, curr->exit_status);
+  palloc_free_page(fn_copy);
   pd = curr->pagedir;
   if (pd != NULL) 
     {
@@ -453,6 +455,7 @@ load (const char *file_name, void (**eip) (void), void **esp)
 
  done:
   /* We arrive here whether the load is successful or not. */
+  palloc_free_page(fn_copy);
   file_close (file);
   return success;
 }
