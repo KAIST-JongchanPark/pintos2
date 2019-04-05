@@ -72,6 +72,17 @@ process_execute (const char *file_name)
   if (tid == TID_ERROR)
     palloc_free_page (fn_copy); 
     palloc_free_page (fn_copy2);
+	
+  struct list_elem *e;
+  struct thread *curr = thread_current();
+  for (e = list_begin (&curr->child_list); e != list_end (&curr->child_list); e = list_next (e))
+  {
+	struct thread *t = list_entry (e, struct thread, child_elem);
+	if(t->exit_status == -1)
+	{
+	  return process_wait(tid);
+	}
+  }
   return tid;
 }
 
