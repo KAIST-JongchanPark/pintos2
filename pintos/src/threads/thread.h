@@ -100,6 +100,7 @@ struct thread
 	struct semaphore waiting;
 	struct semaphore keep_alive;
 	struct semaphore load_wait;
+	struct thread* parent;
 	struct list child_list;
 	struct list_elem child_elem;
 
