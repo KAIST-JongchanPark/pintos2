@@ -46,15 +46,23 @@ process_execute (const char *file_name)
   char *next_ptr;
   char *fn_copy2;
   fn_copy2 = palloc_get_page (0);
+  if (fn_copy2 == NULL)
+  {
+    palloc_free_page(fn_copy);
+    return TID_ERROR;
+  }
+    
+
   strlcpy (fn_copy2, file_name, PGSIZE);
   
-  if (fn_copy == NULL)
-    return TID_ERROR;
+  
   
   ret_ptr = strtok_r(fn_copy2, " ", &next_ptr);
   
   if(filesys_open(ret_ptr) == NULL) {
-	return -1;
+    palloc_free_page (fn_copy); 
+    palloc_free_page (fn_copy2);
+	   return -1;
   }
   //else{
 	//file_close(ret_ptr);
@@ -427,10 +435,11 @@ load (const char *file_name, void (**eip) (void), void **esp)
 
   //argv[i][..] & argv[i]
   char *new_ptr;
-  
+  /*
   fn_copy = palloc_get_page (0);
   if (fn_copy == NULL)
     return TID_ERROR;
+  */  
   strlcpy (fn_copy, file_name, PGSIZE);
   
   ret_ptr = strtok_r(fn_copy, " ", &new_ptr);
