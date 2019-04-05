@@ -255,59 +255,59 @@ syscall_handler (struct intr_frame *f)
   		break;                   /* Terminate this process. */
     case SYS_EXEC:
       is_valid_ptr((void *)(f->esp+4));
-      is_valid_ptr((void *)*(uint32_t *)(f->esp+4));
-      f->eax = exec((const char *)*(uint32_t *)(f->esp+4));
+      is_valid_ptr((void *)*(int *)(f->esp+4));
+      f->eax = exec((const char *)*(int *)(f->esp+4));
     	break;                   /* Start another process. */
     case SYS_WAIT:
       is_valid_ptr((void *)(f->esp+4));
-      f->eax = wait((pid_t)*(uint32_t *)(f->esp+4));
+      f->eax = wait((pid_t)*(int *)(f->esp+4));
     	break;                   /* Wait for a child process to die. */
     case SYS_CREATE:
       is_valid_ptr((void *)(f->esp+4));
-      is_valid_ptr((void *)*(uint32_t *)(f->esp+4));
-      f->eax = create((const char *)*(uint32_t *)(f->esp+4), (off_t)*(unsigned *)(f->esp+8));
+      is_valid_ptr((void *)*(int *)(f->esp+4));
+      f->eax = create((const char *)*(int *)(f->esp+4), (off_t)*(unsigned *)(f->esp+8));
     	break;                 /* Create a file. */
     case SYS_REMOVE:
       is_valid_ptr((void *)(f->esp+4));
-      f->eax = remove((const char *)*(uint32_t *)(f->esp+4));
+      f->eax = remove((const char *)*(int *)(f->esp+4));
     	break;                 /* Delete a file. */
     case SYS_OPEN:
       is_valid_ptr((void *)(f->esp+4));
-      is_valid_ptr((void *)*(uint32_t *)(f->esp+4));
-      f->eax = open((const char *)*(uint32_t *)(f->esp+4));
+      is_valid_ptr((void *)*(int *)(f->esp+4));
+      f->eax = open((const char *)*(int *)(f->esp+4));
     	break;                   /* Open a file. */
     case SYS_FILESIZE:
       is_valid_ptr((void *)(f->esp+4));
-      f->eax = filesize((int)*(uint32_t *)(f->esp+4));
+      f->eax = filesize(*(int *)(f->esp+4));
     	break;               /* Obtain a file's size. */
     case SYS_READ:
       is_valid_ptr((void *)(f->esp+4));
       is_valid_ptr((void *)(f->esp+8));
       is_valid_ptr((void *)(f->esp+12));
-      is_valid_ptr((void *)*(uint32_t *)(f->esp+8));
+      is_valid_ptr((void *)*(int *)(f->esp+8));
       ////lock_acquire(&syscall_lock);
-      f->eax = read((int)*(uint32_t *)(f->esp+4), (void *)*(uint32_t *)(f->esp + 8), (unsigned)*((uint32_t *)(f->esp + 12)));
+      f->eax = read(*(int *)(f->esp+4), (void *)*(int *)(f->esp + 8), (unsigned)*((int *)(f->esp + 12)));
     	////lock_release(&syscall_lock);
       break;                   /* Read from a file. */
     case SYS_WRITE:
       is_valid_ptr((void *)(f->esp+4));
       is_valid_ptr((void *)(f->esp+8));
       is_valid_ptr((void *)(f->esp+12));
-      is_valid_ptr((void *)*(uint32_t *)(f->esp+8));
-		  f->eax = write((int)*(uint32_t *)(f->esp+4), (void *)*(uint32_t *)(f->esp + 8), (unsigned)*((uint32_t *)(f->esp + 12)));
+      is_valid_ptr((void *)*(int *)(f->esp+8));
+		  f->eax = write(*(int *)(f->esp+4), (void *)*(int *)(f->esp + 8), (unsigned)*((int *)(f->esp + 12)));
     	break;                  /* Write to a file. */
     case SYS_SEEK:
       is_valid_ptr((void *)(f->esp+4));
       is_valid_ptr((void *)(f->esp+8));
-      seek((int)*(uint32_t *)(f->esp+4), (unsigned)*(uint32_t *)(f->esp+8));
+      seek(*(int *)(f->esp+4), (unsigned)*(int *)(f->esp+8));
     	break;                   /* Change position in a file. */
     case SYS_TELL:
       is_valid_ptr((void *)(f->esp+4));
-      f->eax = tell((int)*(uint32_t *)(f->esp+4));
+      f->eax = tell(*(int *)(f->esp+4));
     	break;                   /* Report current position in a file. */
     case SYS_CLOSE:
       is_valid_ptr((void *)(f->esp+4));
-      close((int)*(uint32_t *)(f->esp+4));
+      close(*(int *)(f->esp+4));
     	break;     
   }
  }
