@@ -69,6 +69,7 @@ process_execute (const char *file_name)
   //}
   
   tid = thread_create (ret_ptr, PRI_DEFAULT, start_process, fn_copy);
+  sema_down(&thread_current()->load_wait);
   if (tid == TID_ERROR)
     palloc_free_page (fn_copy); 
     palloc_free_page (fn_copy2);
@@ -105,6 +106,7 @@ start_process (void *f_name)
 
   /* If load failed, quit. */
   palloc_free_page (file_name);
+  sema_up(&thread_current()->parent->load_wait);
   if (!success) 
     exit_with_status(-1);
     //thread_exit ();
