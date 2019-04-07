@@ -2,7 +2,7 @@
 PintOS projects for "CS330:Operating Systems and Lab" by Donghyun Kim&Jongchan Park. <br>
 
 Project 1: Threads <br>
-Project 1 is implemented in <a href="https://github.com/chocolatefudge/pintos">pintos repository</a>. <br>
+Project 1 is implemented in <a href="https://github.com/chocolatefudge/pintos">this repository</a>. <br>
 This is a repository starting from project 2. <br>
 <br>
 Project 2: User Programs<br>
