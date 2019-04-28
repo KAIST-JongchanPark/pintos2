@@ -37,6 +37,7 @@ allocate_page (void *addr)
 	if(!thread_current()->hash_init)
 	{
 		page_init(thread_current());
+		msg("1/n");
 		thread_current()->hash_init = 1;
 	}
 	struct sup_page_table_entry* spt_entry;
