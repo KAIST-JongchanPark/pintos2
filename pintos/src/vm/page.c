@@ -15,7 +15,7 @@ void
 page_init (struct thread* t)
 {
 	hash_init(t->spt, hash_spt, hash_spt_less, NULL);
-	printf("page_init\n")
+	printf("page_init\n");
 }
 
 unsigned hash_spt (const struct hash_elem* elem, void* aux)
