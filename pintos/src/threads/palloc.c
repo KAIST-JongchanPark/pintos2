@@ -120,15 +120,14 @@ void *
 palloc_get_page (enum palloc_flags flags) 
 {
   void* page = palloc_get_multiple (flags, 1);
-  if(flags==PAL_USER)
+  if(flags&PAL_USER)
   {
     struct sup_page_table_entry *spte = allocate_page (page);
-	//PANIC ("ssibal2");
-    //if(allocate_frame(vtop(page), spte))
-    //{
+    if(allocate_frame(vtop(page), spte))
+    {
       return page;
-    //}
-    //PANIC ("In case running out of frame, not implemented yet.");
+    }
+    PANIC ("In case running out of frame, not implemented yet.");
   }
   else
   {

@@ -38,7 +38,7 @@ allocate_page (void *addr)
 	if(!(thread_current()->hash_init))
 	{
 		thread_current()->hash_init = 1;
-		//page_init(thread_current());
+		page_init(thread_current());
 	}
 	struct sup_page_table_entry* spt_entry;
 	
@@ -50,7 +50,7 @@ allocate_page (void *addr)
 	spt_entry->accessed = 0;
 	spt_entry->dirty = 0;
 	
-	//hash_insert(thread_current()->spt, &(spt_entry->elem));
+	hash_insert(thread_current()->spt, &(spt_entry->elem));
 	return spt_entry;
 }
 
