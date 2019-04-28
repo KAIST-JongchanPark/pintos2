@@ -23,7 +23,7 @@ unsigned hash_spt (const struct hash_elem* elem, void* aux)
 	return hash_bytes(buf_, size);
 }
 
-unsigned hash_spt_less (const struct hash_elem *a, const struct hash_elem *b, void *aux)
+bool hash_spt_less (const struct hash_elem *a, const struct hash_elem *b, void *aux)
 {
 	return hash_entry(a, struct sup_page_table_entry, elem)->user_vaddr<hash_entry(b, struct sup_page_table_entry, elem)->user_vaddr;
 }
