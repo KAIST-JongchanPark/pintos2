@@ -150,7 +150,7 @@ malloc (size_t size)
   a = block_to_arena (b);
   a->free_cnt--;
   lock_release (&d->lock);
-  PANIC ("ssibal");
+  printf("ssibal\n");
   return b;
 }
 
