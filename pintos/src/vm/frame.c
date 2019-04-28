@@ -2,7 +2,7 @@
 #include "threads/init.h"
 #include "threads/thread.h"
 #include "lib/kernel/list.h"
-
+#include "vm/page.h"
 #include <stdbool.h>
 
 /*
