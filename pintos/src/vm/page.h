@@ -2,6 +2,7 @@
 #define VM_PAGE_H
 
 #include "lib/kernel/hash.h"
+#include "threads/thread.h"
 
 struct sup_page_table_entry 
 {
