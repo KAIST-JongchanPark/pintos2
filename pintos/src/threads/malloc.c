@@ -128,7 +128,6 @@ malloc (size_t size)
 
       /* Allocate a page. */
       a = palloc_get_page (0);
-	  PANIC ("ssibal");
       if (a == NULL) 
         {
           lock_release (&d->lock);
@@ -149,6 +148,7 @@ malloc (size_t size)
   /* Get a block from free list and return it. */
   b = list_entry (list_pop_front (&d->free_list), struct block, free_elem);
   a = block_to_arena (b);
+  PANIC ("ssibal");
   a->free_cnt--;
   lock_release (&d->lock);
   return b;
