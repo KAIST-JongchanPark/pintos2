@@ -3,6 +3,9 @@
 #include "threads/thread.h"
 #include <stdbool.h>
 
+unsigned hash_spt (const struct hash_elem* elem, void* aux);
+unsigned hash_spt_less (const struct hash_elem *a, const struct hash_elem *b, void *aux);
+
 
 /*
  * Initialize supplementary page table
@@ -10,19 +13,19 @@
 void 
 page_init (void)
 {
-	hash_init(thread_current()->spt, hash_bytes, hash_spt, hash_spt_less, NULL);
+	hash_init(thread_current()->spt, hash_spt, hash_spt_less, NULL);
 }
 
 unsigned hash_spt (const struct hash_elem* elem, void* aux)
 {
-	const void* buf_ = hash_entry(elem, sup_page_table_entry, user_vaddr);
+	const void* buf_ = hash_entry(elem, struct sup_page_table_entry, user_vaddr);
 	size_t size = 4;
 	return hash_bytes(buf_, size);
 }
 
 unsigned hash_spt_less (const struct hash_elem *a, const struct hash_elem *b, void *aux)
 {
-	return hash_entry(a, sup_page_table_entry, user_vaddr)<hash_entry(b, sup_page_table_entry, user_vaddr)
+	return hash_entry(a, struct sup_page_table_entry, user_vaddr)<hash_entry(b, struct sup_page_table_entry, user_vaddr);
 }
 
 /*
