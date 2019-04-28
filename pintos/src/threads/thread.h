@@ -93,6 +93,7 @@ struct thread
     /* Shared between thread.c and synch.c. */
     struct list_elem elem;              /* List element. */
     struct hash* spt;
+    int hash_init;
 
 #ifdef USERPROG
     /* Owned by userprog/process.c. */
