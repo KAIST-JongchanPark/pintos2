@@ -35,10 +35,11 @@ bool hash_spt_less (const struct hash_elem *a, const struct hash_elem *b, void *
 struct sup_page_table_entry *
 allocate_page (void *addr)
 {
-	if(!thread_current()->hash_init)
+	if(!(thread_current()->hash_init))
 	{
-		page_init(thread_current());
 		thread_current()->hash_init = 1;
+		page_init(thread_current());
+		
 	}
 	struct sup_page_table_entry* spt_entry;
 	spt_entry -> user_vaddr = addr;
