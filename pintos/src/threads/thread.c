@@ -446,7 +446,7 @@ init_thread (struct thread *t, const char *name, int priority)
   t->priority = priority;
   t->magic = THREAD_MAGIC;
 
-  page_init();
+  page_init(t);
 
 #ifdef USERPROG
   int i;

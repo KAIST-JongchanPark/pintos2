@@ -14,7 +14,7 @@ struct sup_page_table_entry
 	struct hash_elem elem;
 };
 
-void page_init (void);
+void page_init (struct thread *);
 struct sup_page_table_entry *allocate_page (void *addr);
 
 #endif /* vm/page.h */

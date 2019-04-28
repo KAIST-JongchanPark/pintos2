@@ -11,9 +11,9 @@ bool hash_spt_less (const struct hash_elem *a, const struct hash_elem *b, void *
  * Initialize supplementary page table
  */
 void 
-page_init (void)
+page_init (struct thread* t)
 {
-	hash_init(thread_current()->spt, hash_spt, hash_spt_less, NULL);
+	hash_init(t->spt, hash_spt, hash_spt_less, NULL);
 }
 
 unsigned hash_spt (const struct hash_elem* elem, void* aux)
