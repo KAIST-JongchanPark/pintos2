@@ -42,7 +42,7 @@ allocate_page (void *addr)
 	}
 	struct sup_page_table_entry* spt_entry;
 	
-	spt_entry -> user_vaddr = addr;
+	spt_entry -> user_vaddr = (uint32_t*) addr;
 
 	PANIC ("ssibal2");
 	//spt_entry -> access_time = 
