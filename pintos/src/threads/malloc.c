@@ -127,8 +127,8 @@ malloc (size_t size)
       size_t i;
 
       /* Allocate a page. */
-	  PANIC ("ssibal");
       a = palloc_get_page (0);
+	  PANIC ("ssibal");
       if (a == NULL) 
         {
           lock_release (&d->lock);
