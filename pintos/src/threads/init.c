@@ -45,7 +45,7 @@ size_t ram_pages;
 
 /* Page directory with kernel mappings only. */
 uint32_t *base_page_dir;
-struct list* frame_table;
+struct list frame_table;
 
 #ifdef FILESYS
 /* -f: Format the file system? */

@@ -11,7 +11,7 @@
 void 
 frame_init (void)
 {
-	list_init(frame_table);
+	list_init(&frame_table);
 }
 
 
@@ -27,7 +27,7 @@ allocate_frame (void *addr, struct sup_page_table_entry* spte)
 	fte -> frame = addr;
 	fte -> owner = thread_current();
 	fte -> spte = spte;
-	list_push_front(frame_table, &(fte->elem));
+	list_push_front(&frame_table, &(fte->elem));
 	return 1;
 
 }
