@@ -5,7 +5,6 @@
 #include "vm/page.h"
 #include <stdbool.h>
 #include <stdio.h>
-#include "tests/lib.h"
 
 /*
  * Initialize frame table
@@ -14,7 +13,6 @@ void
 frame_init (void)
 {
 	list_init(&frame_table);
-	msg("frame_init\n");
 }
 
 
@@ -31,7 +29,6 @@ allocate_frame (void *addr, struct sup_page_table_entry* spte)
 	fte -> owner = thread_current();
 	fte -> spte = spte;
 	list_push_front(&frame_table, &(fte->elem));
-	msg("alloc_frame\n");
 	return 1;
 
 }

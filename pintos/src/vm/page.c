@@ -3,7 +3,6 @@
 #include "threads/thread.h"
 #include <stdbool.h>
 #include <stdio.h>
-#include "tests/lib.h"
 
 unsigned hash_spt (const struct hash_elem* elem, void* aux);
 bool hash_spt_less (const struct hash_elem *a, const struct hash_elem *b, void *aux);
@@ -16,7 +15,6 @@ void
 page_init (struct thread* t)
 {
 	hash_init(t->spt, hash_spt, hash_spt_less, NULL);
-	msg("page_init\n");
 }
 
 unsigned hash_spt (const struct hash_elem* elem, void* aux)
@@ -52,7 +50,6 @@ allocate_page (void *addr)
 	spt_entry->dirty = 0;
 
 	hash_insert(thread_current()->spt, &(spt_entry->elem));
-	msg("alloc_page\n");
 	return spt_entry;
 }
 
