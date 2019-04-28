@@ -38,11 +38,12 @@ allocate_page (void *addr)
 	if(!thread_current()->hash_init)
 	{
 		page_init(thread_current());
-		printf("1/n");
 		thread_current()->hash_init = 1;
 	}
 	struct sup_page_table_entry* spt_entry;
 	spt_entry -> user_vaddr = addr;
+			printf("1/n");
+
 	//spt_entry -> access_time = 
 
 	spt_entry->accessed = 0;
