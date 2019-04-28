@@ -39,9 +39,9 @@ allocate_page (void *addr)
 	{
 		thread_current()->hash_init = 1;
 		//page_init(thread_current());
-		PANIC ("ssibal2");
 	}
 	struct sup_page_table_entry* spt_entry;
+	PANIC ("ssibal2");
 	spt_entry -> user_vaddr = addr;
 
 
