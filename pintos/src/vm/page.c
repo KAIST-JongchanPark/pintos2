@@ -37,8 +37,8 @@ allocate_page (void *addr)
 {
 	if(!(thread_current()->hash_init))
 	{
-		PANIC ("ssibal");
 		thread_current()->hash_init = 1;
+		PANIC ("ssibal");
 		page_init(thread_current());
 		
 	}
