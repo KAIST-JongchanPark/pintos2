@@ -2,6 +2,7 @@
 #include "lib/kernel/hash.h"
 #include "threads/thread.h"
 #include <stdbool.h>
+#include <stdio.h>
 
 unsigned hash_spt (const struct hash_elem* elem, void* aux);
 bool hash_spt_less (const struct hash_elem *a, const struct hash_elem *b, void *aux);
@@ -37,7 +38,7 @@ allocate_page (void *addr)
 	if(!thread_current()->hash_init)
 	{
 		page_init(thread_current());
-		msg("1/n");
+		printf("1/n");
 		thread_current()->hash_init = 1;
 	}
 	struct sup_page_table_entry* spt_entry;
