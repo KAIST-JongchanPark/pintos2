@@ -21,7 +21,7 @@ frame_init (void)
 bool
 allocate_frame (void *addr, struct sup_page_table_entry* spte)
 {
-	if(list_size(frame_table)>=1<<20)
+	if(list_size(&frame_table)>=1<<20)
 		return 0;
 	struct frame_table_entry* fte;
 	fte -> frame = addr;
