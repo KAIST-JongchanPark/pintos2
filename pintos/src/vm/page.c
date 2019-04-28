@@ -18,14 +18,14 @@ page_init (void)
 
 unsigned hash_spt (const struct hash_elem* elem, void* aux)
 {
-	const void* buf_ = hash_entry(elem, struct sup_page_table_entry, user_vaddr);
+	const void* buf_ = hash_entry(elem, struct sup_page_table_entry, elem)->user_vaddr;
 	size_t size = 4;
 	return hash_bytes(buf_, size);
 }
 
 unsigned hash_spt_less (const struct hash_elem *a, const struct hash_elem *b, void *aux)
 {
-	return hash_entry(a, struct sup_page_table_entry, user_vaddr)<hash_entry(b, struct sup_page_table_entry, user_vaddr);
+	return hash_entry(a, struct sup_page_table_entry, elem)->user_vaddr<hash_entry(b, struct sup_page_table_entry, elem)->user_vaddr;
 }
 
 /*
