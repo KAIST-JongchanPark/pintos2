@@ -14,6 +14,7 @@ bool hash_spt_less (const struct hash_elem *a, const struct hash_elem *b, void *
 void 
 page_init (struct thread* t)
 {
+	
 	hash_init(t->spt, hash_spt, hash_spt_less, NULL);
 }
 
@@ -38,7 +39,6 @@ allocate_page (void *addr)
 	if(!(thread_current()->hash_init))
 	{
 		thread_current()->hash_init = 1;
-		PANIC ("ssibal");
 		page_init(thread_current());
 		
 	}
