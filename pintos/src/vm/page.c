@@ -44,12 +44,12 @@ allocate_page (void *addr)
 	
 	spt_entry -> user_vaddr = addr;
 
-
+	PANIC ("ssibal2");
 	//spt_entry -> access_time = 
 
 	spt_entry->accessed = 0;
 	spt_entry->dirty = 0;
-	PANIC ("ssibal2");
+	
 	//hash_insert(thread_current()->spt, &(spt_entry->elem));
 	return spt_entry;
 }
