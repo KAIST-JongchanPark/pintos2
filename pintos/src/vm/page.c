@@ -4,7 +4,7 @@
 #include <stdbool.h>
 
 unsigned hash_spt (const struct hash_elem* elem, void* aux);
-unsigned hash_spt_less (const struct hash_elem *a, const struct hash_elem *b, void *aux);
+bool hash_spt_less (const struct hash_elem *a, const struct hash_elem *b, void *aux);
 
 
 /*
