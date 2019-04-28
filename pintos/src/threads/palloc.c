@@ -122,8 +122,8 @@ palloc_get_page (enum palloc_flags flags)
   void* page = palloc_get_multiple (flags, 1);
   if(flags==PAL_USER)
   {
-	PANIC ("ssibal");
     struct sup_page_table_entry *spte = allocate_page (page);
+	PANIC ("ssibal2");
     if(allocate_frame(vtop(page), spte))
     {
       return page;
