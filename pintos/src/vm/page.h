@@ -8,6 +8,8 @@ struct sup_page_table_entry
 
 	bool dirty;
 	bool accessed;
+
+	struct hash_elem elem;
 };
 
 void page_init (void);

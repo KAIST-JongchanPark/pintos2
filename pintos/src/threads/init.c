@@ -35,11 +35,16 @@
 #include "filesys/fsutil.h"
 #endif
 
+#include "vm/frame.h"
+
+
+
 /* Amount of physical memory, in 4 kB pages. */
 size_t ram_pages;
 
 /* Page directory with kernel mappings only. */
 uint32_t *base_page_dir;
+struct list* frame_table;
 
 #ifdef FILESYS
 /* -f: Format the file system? */
@@ -87,6 +92,7 @@ main (void)
   palloc_init ();
   malloc_init ();
   paging_init ();
+  frame_init();
 
   /* Segmentation. */
 #ifdef USERPROG

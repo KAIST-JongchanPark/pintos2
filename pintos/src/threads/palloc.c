@@ -117,7 +117,20 @@ palloc_get_multiple (enum palloc_flags flags, size_t page_cnt)
 void *
 palloc_get_page (enum palloc_flags flags) 
 {
-  return palloc_get_multiple (flags, 1);
+  void* page = palloc_get_multiple (flags, 1);
+  if(flags==PAL_USER)
+  {
+    struct sup_page_table_entry *spte = allocate_page (page);
+    if(allocate_frame(vtop(page), spte))
+    {
+      return page;
+    }
+    PANIC ("In case running out of frame, not implemented yet.");
+  }
+  else
+  {
+    return page;
+  }
 }
 
 /* Frees the PAGE_CNT pages starting at PAGES. */
