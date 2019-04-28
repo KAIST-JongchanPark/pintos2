@@ -1,6 +1,8 @@
 #ifndef VM_FRAME_H
 #define VM_FRAME_H
 
+#include "lib/kernel/list.h"
+#include "vm/page.h"
 
 struct frame_table_entry
 {
