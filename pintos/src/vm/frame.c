@@ -14,7 +14,7 @@ struct list_elem * frame_find_addr (struct list *list, void *addr);
 void 
 frame_init (void)
 {
-	list_init(frame_table);
+	list_init(&frame_table);
 }
 
 
@@ -29,13 +29,13 @@ allocate_frame (void *addr)
 	fte -> frame = (void *)vtop(addr);
 	fte -> owner = thread_current();
 	
-	list_push_front(frame_table, &(fte->elem));
+	list_push_front(&frame_table, &(fte->elem));
 }
 
 void
 free_frame (void *addr)
 {
-	struct list_elem *target_elem = frame_find_addr(frame_table, (void *)vtop(addr));
+	struct list_elem *target_elem = frame_find_addr(&frame_table, (void *)vtop(addr));
 	struct frame_table_entry *target_entry = list_entry (target_elem, struct frame_table_entry, elem);
 	list_remove(target_elem);
 	free(target_entry);
