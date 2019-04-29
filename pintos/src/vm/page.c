@@ -24,7 +24,7 @@ allocate_spt (struct hash spt, void *addr)
 {
 	struct sup_page_table_entry* spte = malloc(sizeof(struct sup_page_table_entry));
 	spte -> user_vaddr = (uint32_t *) addr;
-	hash_insert(&spt, spte->elem);
+	hash_insert(&spt, &(spte->elem));
 }
 
 void destroy_spt (struct hash spt)
