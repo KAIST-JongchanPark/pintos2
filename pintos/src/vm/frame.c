@@ -41,6 +41,12 @@ free_frame (void *addr)
 	free(target_entry);
 }
 
+static inline bool
+is_tail (struct list_elem *elem)
+{
+  return elem != NULL && elem->prev != NULL && elem->next == NULL;
+}
+
 struct list_elem *
 frame_find_addr (struct list *list, void *addr)
 {
