@@ -5,7 +5,7 @@
 
 struct sup_page_table_entry 
 {
-	uint32_t* user_vaddr;
+	void* user_vaddr;
 	/*
 	uint64_t access_time;
 
@@ -16,7 +16,7 @@ struct sup_page_table_entry
 
 };
 
-void spt_init (struct hash *spt);
+struct hash *spt_init (void);
 void allocate_spt (struct hash *spt, void *addr);
 void destroy_spt (struct hash *spt);
 

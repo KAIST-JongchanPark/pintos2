@@ -309,7 +309,7 @@ load (const char *file_name, void (**eip) (void), void **esp)
   t->pagedir = pagedir_create ();
   if (t->pagedir == NULL) 
     goto done;
-  spt_init(t->spt);
+  t->spt = spt_init();
   process_activate ();
 
 

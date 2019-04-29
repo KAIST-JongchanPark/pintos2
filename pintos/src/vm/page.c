@@ -10,11 +10,12 @@ bool hash_spt_less (const struct hash_elem *a, const struct hash_elem *b, void *
 /*
  * Initialize supplementary page table
  */
-void 
-spt_init (struct hash *spt)
+struct hash *
+spt_init (void)
 {
-	spt = (struct hash *)malloc(sizeof(struct hash));
+	struct hash *spt = (struct hash *)malloc(sizeof(struct hash));
 	hash_init(spt, hash_spt, hash_spt_less, NULL);
+	return spt;
 }
 
 /*
@@ -24,7 +25,7 @@ void
 allocate_spt (struct hash *spt, void *addr)
 {
 	struct sup_page_table_entry* spte = malloc(sizeof(struct sup_page_table_entry));
-	spte -> user_vaddr = (uint32_t *) addr;
+	spte -> user_vaddr = addr;
 	hash_insert(spt, &(spte->elem));
 }
 
