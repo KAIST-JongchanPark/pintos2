@@ -35,7 +35,7 @@ void
 free_frame (void *addr)
 {
 	struct list_elem *target_elem = frame_find_addr(frame_table, (void *)vtop(addr));
-	struct frame_table_entry *target_entry = list_entry (curr_elem, struct frame_table_entry, elem);
+	struct frame_table_entry *target_entry = list_entry (target_elem, struct frame_table_entry, elem);
 	list_remove(target_elem);
 	free(target_entry);
 }
@@ -48,7 +48,7 @@ frame_find_addr (struct list *list, void *addr)
   {
       if(list_entry (curr_elem, struct frame_table_entry, elem)->frame == addr)
 	  {
-        return target_elem;
+        return curr_elem;
 	  }
 	  curr_elem = list_next(curr_elem);
   }
