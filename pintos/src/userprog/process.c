@@ -648,6 +648,6 @@ install_page (void *upage, void *kpage, bool writable)
      address, then map our page there. */
   bool result = pagedir_get_page (t->pagedir, upage) == NULL
           && pagedir_set_page (t->pagedir, upage, kpage, writable);
-  spt_allocate(t->spt, upage);
+  allocate_spt(t->spt, upage);
   return (result);
 }
