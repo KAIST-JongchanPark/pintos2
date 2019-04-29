@@ -4,9 +4,9 @@
  * Initialize supplementary page table
  */
 void 
-page_init (void)
+page_init (struct hash spt)
 {
-
+	hash_init(&spt);
 }
 
 /*
