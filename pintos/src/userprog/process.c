@@ -18,6 +18,7 @@
 #include "threads/thread.h"
 #include "threads/vaddr.h"
 #include "userprog/syscall.h"
+#include "vm/frame.h"
 
 static thread_func start_process NO_RETURN;
 static bool load (const char *cmdline, void (**eip) (void), void **esp);
@@ -566,6 +567,9 @@ load_segment (struct file *file, off_t ofs, uint8_t *upage,
 
       /* Get a page of memory. */
       uint8_t *kpage = palloc_get_page (PAL_USER);
+	  //here
+	  allocate_frame((void *)kpage);
+	  //
       if (kpage == NULL)
         return false;
 
@@ -573,6 +577,9 @@ load_segment (struct file *file, off_t ofs, uint8_t *upage,
       if (file_read (file, kpage, page_read_bytes) != (int) page_read_bytes)
         {
           palloc_free_page (kpage);
+		  //here
+		  free_frame((void *)kpage);
+		  //
           return false; 
         }
       memset (kpage + page_read_bytes, 0, page_zero_bytes);
@@ -581,6 +588,9 @@ load_segment (struct file *file, off_t ofs, uint8_t *upage,
       if (!install_page (upage, kpage, writable)) 
         {
           palloc_free_page (kpage);
+		  //here
+		  free_frame((void *)kpage);
+		  //
           return false; 
         }
 
@@ -601,6 +611,9 @@ setup_stack (void **esp)
   bool success = false;
 
   kpage = palloc_get_page (PAL_USER | PAL_ZERO);
+  //here
+  allocate_frame((void *)kpage);
+  //
   if (kpage != NULL) 
     {
       success = install_page (((uint8_t *) PHYS_BASE) - PGSIZE, kpage, true);
@@ -608,6 +621,9 @@ setup_stack (void **esp)
         *esp = PHYS_BASE;
       else
         palloc_free_page (kpage);
+		//here
+		free_frame((void *)kpage);
+		//
     }
   return success;
 }

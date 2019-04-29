@@ -20,6 +20,7 @@
 #include "threads/palloc.h"
 #include "threads/pte.h"
 #include "threads/thread.h"
+#include "lib/kernel/list.h"
 #ifdef USERPROG
 #include "userprog/process.h"
 #include "userprog/exception.h"
@@ -28,6 +29,9 @@
 #include "userprog/tss.h"
 #else
 #include "tests/threads/tests.h"
+#endif
+#ifdef VM
+#include "vm/frame.h"
 #endif
 #ifdef FILESYS
 #include "devices/disk.h"
@@ -40,6 +44,7 @@ size_t ram_pages;
 
 /* Page directory with kernel mappings only. */
 uint32_t *base_page_dir;
+struct list *frame_table;
 
 #ifdef FILESYS
 /* -f: Format the file system? */
@@ -102,6 +107,9 @@ main (void)
 #ifdef USERPROG
   exception_init ();
   syscall_init ();
+#endif
+#ifdef VM
+  frame_init();
 #endif
 
   /* Start thread scheduler and enable interrupts. */
