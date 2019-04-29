@@ -4,6 +4,7 @@
 #include "threads/vaddr.h"
 #include "threads/thread.h"
 #include "threads/malloc.h"
+#include <stdbool.h>
 
 struct list_elem * frame_find_addr (struct list *list, void *addr);
 
