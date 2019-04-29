@@ -16,8 +16,8 @@ struct sup_page_table_entry
 
 };
 
-void spt_init (struct hash spt);
-void allocate_spt (struct hash spt, void *addr);
-void destroy_spt (struct hash spt);
+void spt_init (struct hash *spt);
+void allocate_spt (struct hash *spt, void *addr);
+void destroy_spt (struct hash *spt);
 
 #endif /* vm/page.h */
