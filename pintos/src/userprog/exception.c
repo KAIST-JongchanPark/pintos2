@@ -149,18 +149,89 @@ page_fault (struct intr_frame *f)
   write = (f->error_code & PF_W) != 0;
   user = (f->error_code & PF_U) != 0;
 
+  void* heuristic;
+  //check validity
+  void* stack_pointer = f->esp;
+  
+  //If given address is invalid and in stack range, terminate
+  
   if (!user || fault_addr == NULL || is_kernel_vaddr(fault_addr)) {
     exit(-1);
   }
+  
+  if(fault_addr>heuristic)
+  {
+	  if(pagedir_get_page(thread_current() -> pagedir, fault_addr) == pagedir_get_page(thread_current() -> pagedir,stack_pointer))
+	  {
+		  return;
+	  }
+	  else if(pagedir_get_page(thread_current() -> pagedir,fault_addr)!=NULL)
+	  {
+		  return;
+	  }
+	  else if( (pagedir_no(fault_addr)==pagedir_no(stack_pointer)) && (pt_no(fault_addr) = pt_no(stack_pointer)-1) )
+	  {
+		  allocate_and_init_to_zero(fault_addr);
+		  return;
+	  }
+	  else
+	  {
+		  exit(-1);
+	  }
+  }
+  //invalid and not in stack, alloc and init to zero
+  else if(fault_addr>=0x80480000)
+  {
+	  if(pagedir_get_page(thread_current() -> pagedir, fault_addr)!=NULL)
+	  {
+		return;
+	  }
+	  else
+	  {
+		allocate_and_init_to_zero(fault_addr);
+	  }
+  }
+  
+  else
+  {
+	  //valid but not present in spt?? heap data, init to zero
+	  if(!lookup_spt(fault_addr))
+	  {
+		  allocate_and_init_to_zero(fault_addr);
+	  }
+	  else if(lookup_spt(fault_addr))
+	  {
+		  allocate_using_spt(fault_addr);
+	  }
+	  else
+	  {
+		  PANIC("page fault algorithm didn't worked properly.\n");
+	  }
+  }
 
+  
+	  
+	  
+	   //valid and in spt -> init frame data with using spt
+	  
+	  
+  
+ 
+  PANIC("page fault algorithm arrived at wrong end.\n");
+  
+
+
+
+/*
   /* To implement virtual memory, delete the rest of the function
      body, and replace it with code that brings in the page to
-     which fault_addr refers. */
+     which fault_addr refers. 
   printf ("Page fault at %p: %s error %s page in %s context.\n",
           fault_addr,
           not_present ? "not present" : "rights violation",
           write ? "writing" : "reading",
           user ? "user" : "kernel");
   kill (f);
+*/
 }
 

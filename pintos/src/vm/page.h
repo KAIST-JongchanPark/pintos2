@@ -3,6 +3,13 @@
 
 #include "lib/kernel/hash.h"
 
+/*
+enum page_type{
+	disk
+};
+*/
+
+
 struct sup_page_table_entry 
 {
 	void* user_vaddr;
@@ -13,6 +20,9 @@ struct sup_page_table_entry
 	bool accessed;
 	*/
 	struct hash_elem elem;
+	struct file* file;
+	off_t ofs;
+    uint32_t read_bytes;
 
 };
 
