@@ -11,8 +11,7 @@ struct list_elem * frame_find_addr (struct list *list, void *addr);
 /*
  * Initialize frame table
  */
-void 
-frame_init (void)
+void frame_init (void)
 {
 	list_init(&frame_table);
 }
@@ -21,8 +20,7 @@ frame_init (void)
 /* 
  * Make a new frame table entry for addr.
  */
-void
-allocate_frame (void *addr)
+voidallocate_frame (void *addr)
 {
 	struct frame_table_entry *fte = malloc(sizeof(struct frame_table_entry));
 	
@@ -32,8 +30,7 @@ allocate_frame (void *addr)
 	list_push_front(&frame_table, &(fte->elem));
 }
 
-void
-free_frame (void *addr)
+voidfree_frame (void *addr)
 {
 	struct list_elem *target_elem = frame_find_addr(&frame_table, (void *)vtop(addr));
 	struct frame_table_entry *target_entry = list_entry (target_elem, struct frame_table_entry, elem);
@@ -47,8 +44,7 @@ is_tail (struct list_elem *elem)
   return elem != NULL && elem->prev != NULL && elem->next == NULL;
 }
 
-struct list_elem *
-frame_find_addr (struct list *list, void *addr)
+struct list_elem *frame_find_addr (struct list *list, void *addr)
 {
   struct list_elem *curr_elem = list_front (list);
   while(!is_tail(curr_elem)) 

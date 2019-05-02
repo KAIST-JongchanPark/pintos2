@@ -2,11 +2,13 @@
 #define VM_PAGE_H
 
 #include "lib/kernel/hash.h"
+#include "filesys/file.h"
+#include "filesys/off_t.h"
 
 
-enum page_type{
+enum page_type
+{
 	DISK
-	STACK
 	HEAP
 };
 
@@ -14,7 +16,7 @@ enum page_type{
 
 struct sup_page_table_entry 
 {
-	void* user_vaddr;
+	uint32_t *page_vaddr;
 	/*
 	uint64_t access_time;
 
@@ -31,6 +33,12 @@ struct sup_page_table_entry
 
 struct hash *spt_init (void);
 void allocate_spt (struct hash *spt, void *addr);
+void free_spt (struct sup_page_table_entry* spte);
 void destroy_spt (struct hash *spt);
+bool allocate_and_init_to_zero(void* addr);
+bool allocate_using_spt(void* addr);
+bool lookup_spt(void* addr);
+struct sup_page_table_entry *spt_get_page(void *addr);
+
 
 #endif /* vm/page.h */

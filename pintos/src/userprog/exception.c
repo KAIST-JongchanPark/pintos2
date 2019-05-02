@@ -5,6 +5,8 @@
 #include "threads/interrupt.h"
 #include "threads/thread.h"
 #include "threads/vaddr.h"
+#include "vm/page.h"
+#include "vm/frame.h"
 
 /* Number of page faults processed. */
 static long long page_fault_cnt;
@@ -149,7 +151,7 @@ page_fault (struct intr_frame *f)
   write = (f->error_code & PF_W) != 0;
   user = (f->error_code & PF_U) != 0;
 
-  void* heuristic;
+  //void* heuristic;
   //check validity
   void* stack_pointer = f->esp;
   
@@ -159,7 +161,7 @@ page_fault (struct intr_frame *f)
     exit(-1);
   }
   
-  if(fault_addr>heuristic)
+  /*if(fault_addr>heuristic)
   {
 	  if( (pagedir_no(fault_addr)==pagedir_no(stack_pointer)) && (pt_no(fault_addr) = pt_no(stack_pointer)-1) )
 	  {
@@ -170,9 +172,9 @@ page_fault (struct intr_frame *f)
 	  {
 		  exit(-1);
 	  }
-  }
+  }*/
   //invalid and not in stack, alloc and init to zero
-  else if(fault_addr>=0x80480000)
+  if(fault_addr>=0x80480000)
   {
 		allocate_and_init_to_zero(fault_addr);
   }

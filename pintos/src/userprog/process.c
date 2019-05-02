@@ -20,6 +20,7 @@
 #include "userprog/syscall.h"
 #include "vm/frame.h"
 #include "vm/page.h"
+#include "threads/pte.h"
 
 static thread_func start_process NO_RETURN;
 static bool load (const char *cmdline, void (**eip) (void), void **esp);
@@ -566,8 +567,24 @@ load_segment (struct file *file, off_t ofs, uint8_t *upage,
          and zero the final PAGE_ZERO_BYTES bytes. */
       size_t page_read_bytes = read_bytes < PGSIZE ? read_bytes : PGSIZE;
       size_t page_zero_bytes = PGSIZE - page_read_bytes;
-
-      /* Get a page of memory. */
+	  
+	  struct sup_page_table_entry *spte = malloc(sizeof(sup_page_table_entry));
+	  //spte -> page = lookup_page(t->pagedir, upage, false);
+	  spte -> page_vaddr = upage & PTE_ADDR;
+	  spte -> file = file;
+	  spte -> ofs = ofs;
+      spte -> read_bytes = page_read_bytes;
+	  spte -> type = DISK;
+	  
+	  //here
+	  
+	  //add spte to spt.
+	  allocate_spt(thread_current()->spt, spte); // passing entry
+	  
+	  //
+	  
+	  /*
+      /* Get a page of memory. 
       uint8_t *kpage = palloc_get_page (PAL_USER);
 	  //here
 	  allocate_frame((void *)kpage);
@@ -575,7 +592,7 @@ load_segment (struct file *file, off_t ofs, uint8_t *upage,
       if (kpage == NULL)
         return false;
 
-      /* Load this page. */
+      /* Load this page. 
       if (file_read (file, kpage, page_read_bytes) != (int) page_read_bytes)
         {
           palloc_free_page (kpage);
@@ -586,7 +603,7 @@ load_segment (struct file *file, off_t ofs, uint8_t *upage,
         }
       memset (kpage + page_read_bytes, 0, page_zero_bytes);
 
-      /* Add the page to the process's address space. */
+      /* Add the page to the process's address space. 
       if (!install_page (upage, kpage, writable)) 
         {
           palloc_free_page (kpage);
@@ -594,7 +611,7 @@ load_segment (struct file *file, off_t ofs, uint8_t *upage,
 		  free_frame((void *)kpage);
 		  //
           return false; 
-        }
+        }*/
 
       /* Advance. */
       read_bytes -= page_read_bytes;
@@ -611,9 +628,13 @@ setup_stack (void **esp)
 {
   uint8_t *kpage;
   bool success = false;
-
+  
   kpage = palloc_get_page (PAL_USER | PAL_ZERO);
   //here
+  if (kpage == NULL)
+  {
+    return false;
+  }
   allocate_frame((void *)kpage);
   //
   if (kpage != NULL) 
@@ -622,10 +643,13 @@ setup_stack (void **esp)
       if (success)
         *esp = PHYS_BASE;
       else
+	  {
         palloc_free_page (kpage);
 		//here
 		free_frame((void *)kpage);
+		free_spt(spt_get_page((void *)(((uint8_t *) PHYS_BASE) - PGSIZE)));
 		//
+	  }
     }
   return success;
 }
@@ -648,6 +672,10 @@ install_page (void *upage, void *kpage, bool writable)
      address, then map our page there. */
   bool result = pagedir_get_page (t->pagedir, upage) == NULL
           && pagedir_set_page (t->pagedir, upage, kpage, writable);
-  allocate_spt(t->spt, upage);
+  struct sup_page_table_entry *spte = malloc(sizeof(sup_page_table_entry));
+	//spte -> page = lookup_page(t->pagedir, upage, false);
+  spte -> page_vaddr = upage & PTE_ADDR;
+  spte -> type = HEAP;
+  allocate_spt(t->spt, spte);
   return (result);
 }
