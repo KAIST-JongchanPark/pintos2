@@ -26,14 +26,12 @@ struct hash *spt_init (void)
 /*
  * Make new supplementary page table entry for addr 
  */
-void allocate_spt (struct hash *spt, void *addr)
+void allocate_spt (struct hash *spt, struct sup_page_table_entry *spte)
 {
-	struct sup_page_table_entry* spte = malloc(sizeof(struct sup_page_table_entry));
-	spte -> page = addr;
 	hash_insert(spt, &(spte->elem));
 }
 
-void free_spt (struct sup_page_table_entry* spte)
+void free_spt (struct sup_page_table_entry *spte)
 {
 	struct hash *spt = thread_currnet()->spt;
 	struct hash_elem elem = spte->elem;
