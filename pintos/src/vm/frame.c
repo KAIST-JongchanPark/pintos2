@@ -32,7 +32,8 @@ void allocate_frame (void *addr)
 
 void free_frame (void *addr)
 {
-	struct list_elem *target_elem = frame_find_addr(&frame_table, (void *)vtop(addr));
+	struct list_elem *target_elem = malloc(sizeof(target_elem));
+	target_elem = frame_find_addr(&frame_table, (void *)vtop(addr));
 	struct frame_table_entry *target_entry = malloc(sizeof(struct frame_table_entry));
 	target_entry = list_entry (target_elem, struct frame_table_entry, elem);
 	list_remove(target_elem);
@@ -47,7 +48,8 @@ is_tail (struct list_elem *elem)
 
 struct list_elem *frame_find_addr (struct list *list, void *addr)
 {
-  struct list_elem *curr_elem = list_front (list);
+  struct list_elem *curr_elem = malloc(sizeof(curr_elem));
+  curr_elem = list_front (list);
   while(!is_tail(curr_elem)) 
   {
       if(list_entry (curr_elem, struct frame_table_entry, elem)->frame == addr)

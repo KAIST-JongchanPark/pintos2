@@ -147,7 +147,7 @@ struct sup_page_table_entry *spt_get_page(void *addr)
 {
 	struct sup_page_table_entry* spt = malloc(sizeof(struct sup_page_table_entry));
 	spt->page_vaddr = (void *)(((uintptr_t)addr >> 12) << 12);
-	struct hash_elem *e;
+	struct hash_elem *e = malloc(sizeof(struct hash_elem));
 	e = hash_find(thread_current()->spt, &(spt->elem));
 	return e != NULL ? hash_entry (e, struct sup_page_table_entry, elem) : NULL;
 }
