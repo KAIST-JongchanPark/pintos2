@@ -4,6 +4,7 @@
 #include "lib/kernel/hash.h"
 #include "filesys/file.h"
 #include "filesys/off_t.h"
+#include <stdbool.h>
 
 
 enum page_type
@@ -26,6 +27,7 @@ struct sup_page_table_entry
 	struct hash_elem elem;
 	struct file* file;
 	off_t ofs;
+	bool writable;
     uint32_t read_bytes;
 	enum page_type type;
 

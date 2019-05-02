@@ -7,6 +7,8 @@
 #include "filesys/file.h"
 #include "filesys/off_t.h"
 #include "vm/frame.h"
+#include "threads/malloc.h"
+#include "userprog/pagedir.h"
 #include <stdbool.h>
 
 void spt_destroy_func (struct hash_elem *e, void *aux);
@@ -35,7 +37,7 @@ void free_spt (struct sup_page_table_entry *spte)
 {
 	struct hash *spt = thread_current()->spt;
 	struct hash_elem elem = spte->elem;
-	remove(spt, &elem);
+	hash_delete(spt, &elem);
 }
 
 
@@ -116,8 +118,8 @@ bool allocate_using_spt(void* addr)
 	  memset (kpage + page_read_bytes, 0, page_zero_bytes);
 
 	  /* Add the page to the process's address space. */
-	  bool result = pagedir_get_page (thread_current()->pagedir, upage) == NULL
-          && pagedir_set_page (thread_current()->pagedir, upage, kpage, writable);
+	  bool result = pagedir_get_page (thread_current()->pagedir, addr) == NULL
+          && pagedir_set_page (thread_current()->pagedir, addr, kpage, spte->writable);
 		  
 	  if (!result) 
 		{
