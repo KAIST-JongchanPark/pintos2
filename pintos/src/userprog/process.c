@@ -107,11 +107,12 @@ start_process (void *f_name)
   if_.cs = SEL_UCSEG;
   if_.eflags = FLAG_IF | FLAG_MBS;
   success = load (file_name, &if_.eip, &if_.esp);
-  PANIC("test");
+  
   /* If load failed, quit. */
   palloc_free_page (file_name);
   sema_up(&thread_current()->parent->load_wait);
-  if (!success) 
+  if (!success)
+	PANIC("test");
     exit_with_status(-1);
     //thread_exit ();
   PANIC("ssibal");
