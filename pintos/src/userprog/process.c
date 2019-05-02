@@ -73,6 +73,7 @@ process_execute (const char *file_name)
   //}
   
   tid = thread_create (ret_ptr, PRI_DEFAULT, start_process, fn_copy);
+  PANIC("test");
   sema_down(&thread_current()->load_wait);
   if (tid == TID_ERROR)
     palloc_free_page (fn_copy); 
