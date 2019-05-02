@@ -55,10 +55,20 @@ bool hash_spt_less (const struct hash_elem *a, const struct hash_elem *b, void *
 bool allocate_and_init_to_zero(void* addr)
 {
   uint8_t *kpage = palloc_get_page (PAL_USER | PAL_ZERO);
-  if
-  allocate_frame((void *)kpage);
   
+  allocate_frame((void *)kpage);
+  if (kpage == NULL)
+		return false;
   install_page (addr, kpage, TRUE);
+  if (!install_page (addr, kpage, TRUE)) 
+		{
+		  palloc_free_page (kpage);
+		  //here
+		  free_frame((void *)kpage);
+		  //
+		  return false; 
+		}
+  return true;
 }
 
 bool allocate_using_spt(void* addr)
@@ -88,7 +98,7 @@ bool allocate_using_spt(void* addr)
 	  memset (kpage + page_read_bytes, 0, page_zero_bytes);
 
 	  /* Add the page to the process's address space. */
-	  if (!install_page (upage, kpage, writable)) 
+	  if (!install_page (addr, kpage, TRUE)) 
 		{
 		  palloc_free_page (kpage);
 		  //here
@@ -99,4 +109,9 @@ bool allocate_using_spt(void* addr)
 
 	return true;
 
+}
+
+bool lookup_spt(void* addr)
+{
+	
 }

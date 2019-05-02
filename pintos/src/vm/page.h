@@ -3,11 +3,13 @@
 
 #include "lib/kernel/hash.h"
 
-/*
+
 enum page_type{
-	disk
+	DISK
+	STACK
+	HEAP
 };
-*/
+
 
 
 struct sup_page_table_entry 
@@ -23,6 +25,7 @@ struct sup_page_table_entry
 	struct file* file;
 	off_t ofs;
     uint32_t read_bytes;
+	enum page_type type;
 
 };
 

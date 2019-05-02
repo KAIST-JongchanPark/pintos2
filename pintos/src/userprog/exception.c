@@ -161,15 +161,7 @@ page_fault (struct intr_frame *f)
   
   if(fault_addr>heuristic)
   {
-	  if(pagedir_get_page(thread_current() -> pagedir, fault_addr) == pagedir_get_page(thread_current() -> pagedir,stack_pointer))
-	  {
-		  return;
-	  }
-	  else if(pagedir_get_page(thread_current() -> pagedir,fault_addr)!=NULL)
-	  {
-		  return;
-	  }
-	  else if( (pagedir_no(fault_addr)==pagedir_no(stack_pointer)) && (pt_no(fault_addr) = pt_no(stack_pointer)-1) )
+	  if( (pagedir_no(fault_addr)==pagedir_no(stack_pointer)) && (pt_no(fault_addr) = pt_no(stack_pointer)-1) )
 	  {
 		  allocate_and_init_to_zero(fault_addr);
 		  return;
@@ -182,14 +174,7 @@ page_fault (struct intr_frame *f)
   //invalid and not in stack, alloc and init to zero
   else if(fault_addr>=0x80480000)
   {
-	  if(pagedir_get_page(thread_current() -> pagedir, fault_addr)!=NULL)
-	  {
-		return;
-	  }
-	  else
-	  {
 		allocate_and_init_to_zero(fault_addr);
-	  }
   }
   
   else
@@ -197,7 +182,8 @@ page_fault (struct intr_frame *f)
 	  //valid but not present in spt?? heap data, init to zero
 	  if(!lookup_spt(fault_addr))
 	  {
-		  allocate_and_init_to_zero(fault_addr);
+		  //allocate_and_init_to_zero(fault_addr);
+		  exit(-1);
 	  }
 	  else if(lookup_spt(fault_addr))
 	  {
