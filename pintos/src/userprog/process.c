@@ -570,7 +570,6 @@ load_segment (struct file *file, off_t ofs, uint8_t *upage,
       size_t page_zero_bytes = PGSIZE - page_read_bytes;
 	  
 	  struct sup_page_table_entry *spte = malloc(sizeof(struct sup_page_table_entry));
-	  PANIC("test");
 	  //spte -> page = lookup_page(t->pagedir, upage, false);
 	  spte -> page_vaddr = (void *)(((uintptr_t)upage >> 12) << 12);
 	  spte -> file = file;
@@ -583,7 +582,7 @@ load_segment (struct file *file, off_t ofs, uint8_t *upage,
 	  
 	  //add spte to spt.
 	  allocate_spt(thread_current()->spt, spte); // passing entry
-	  
+	  PANIC("test");
 	  //
 	  
 	  /*
