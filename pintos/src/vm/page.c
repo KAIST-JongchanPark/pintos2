@@ -33,7 +33,7 @@ void allocate_spt (struct hash *spt, struct sup_page_table_entry *spte)
 
 void free_spt (struct sup_page_table_entry *spte)
 {
-	struct hash *spt = thread_currnet()->spt;
+	struct hash *spt = thread_current()->spt;
 	struct hash_elem elem = spte->elem;
 	remove(spt, &elem);
 }
@@ -54,14 +54,14 @@ void spt_destroy_func (struct hash_elem *e, void *aux)
 
 unsigned hash_spt (const struct hash_elem* elem, void* aux)
 {
-	const void* buf_ = hash_entry(elem, struct sup_page_table_entry, elem)->user_vaddr;
+	const void* buf_ = hash_entry(elem, struct sup_page_table_entry, elem)->page_vaddr;
 	size_t size = 4;
 	return hash_bytes(buf_, size);
 }
 
 bool hash_spt_less (const struct hash_elem *a, const struct hash_elem *b, void *aux)
 {
-	return hash_entry(a, struct sup_page_table_entry, elem)->user_vaddr<hash_entry(b, struct sup_page_table_entry, elem)->user_vaddr;
+	return hash_entry(a, struct sup_page_table_entry, elem)->page_vaddr<hash_entry(b, struct sup_page_table_entry, elem)->page_vaddr;
 }
 
 bool allocate_and_init_to_zero(void* addr)
@@ -74,7 +74,7 @@ bool allocate_and_init_to_zero(void* addr)
   }
   allocate_frame((void *)kpage);
   
-  if (!install_page (addr, kpage, TRUE)) 
+  if (!install_page (addr, kpage, true)) 
   {
 	  palloc_free_page (kpage);
 	  //here
@@ -116,8 +116,8 @@ bool allocate_using_spt(void* addr)
 	  memset (kpage + page_read_bytes, 0, page_zero_bytes);
 
 	  /* Add the page to the process's address space. */
-	  bool result = pagedir_get_page (t->pagedir, upage) == NULL
-          && pagedir_set_page (t->pagedir, upage, kpage, writable);
+	  bool result = pagedir_get_page (thread_current()->pagedir, upage) == NULL
+          && pagedir_set_page (thread_current()->pagedir, upage, kpage, writable);
 		  
 	  if (!result) 
 		{
@@ -137,14 +137,14 @@ bool lookup_spt(void* addr)
 	struct sup_page_table_entry* spt = malloc(sizeof(struct sup_page_table_entry));
 	//spt->page = lookup_page(addr);
 	spt -> page_vaddr = (void *)(((uintptr_t)addr >> 12) << 12);
-	return hash_find(thread_currnet()->spt, &(spt->elem))!=NULL;
+	return hash_find(thread_current()->spt, &(spt->elem))!=NULL;
 }
 
 struct sup_page_table_entry *spt_get_page(void *addr)
 {
 	struct sup_page_table_entry* spt = malloc(sizeof(struct sup_page_table_entry));
-	spt->page = lookup_page(addr);
+	spt->page_vaddr = (void *)(((uintptr_t)addr >> 12) << 12);
 	struct hash_elem *e;
-	e = hash_find(thread_currnet()->spt, &(spt->elem));
+	e = hash_find(thread_current()->spt, &(spt->elem));
 	return e != NULL ? hash_entry (e, struct sup_page_table_entry, elem) : NULL;
 }

@@ -32,7 +32,7 @@ struct sup_page_table_entry
 };
 
 struct hash *spt_init (void);
-void allocate_spt (struct hash *spt, void *addr);
+void allocate_spt (struct hash *spt, struct sup_page_table_entry *spte);
 void free_spt (struct sup_page_table_entry* spte);
 void destroy_spt (struct hash *spt);
 bool allocate_and_init_to_zero(void* addr);
