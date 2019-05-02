@@ -73,7 +73,6 @@ process_execute (const char *file_name)
   //}
   
   tid = thread_create (ret_ptr, PRI_DEFAULT, start_process, fn_copy);
-  PANIC("test");
   sema_down(&thread_current()->load_wait);
   if (tid == TID_ERROR)
     palloc_free_page (fn_copy); 
@@ -487,6 +486,7 @@ load (const char *file_name, void (**eip) (void), void **esp)
   /* We arrive here whether the load is successful or not. */
   palloc_free_page(fn_copy);
   file_close (file);
+  PANIC("test");
   return success;
 }
 
