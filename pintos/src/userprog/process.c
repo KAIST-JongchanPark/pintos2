@@ -486,6 +486,7 @@ load (const char *file_name, void (**eip) (void), void **esp)
   /* We arrive here whether the load is successful or not. */
   palloc_free_page(fn_copy);
   file_close (file);
+  PANIC("test");
   return success;
 }
 
@@ -582,7 +583,6 @@ load_segment (struct file *file, off_t ofs, uint8_t *upage,
 	  
 	  //add spte to spt.
 	  allocate_spt(thread_current()->spt, spte); // passing entry
-	  PANIC("test");
 	  //
 	  
 	  /*
