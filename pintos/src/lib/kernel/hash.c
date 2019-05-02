@@ -99,8 +99,8 @@ struct hash_elem *
 hash_insert (struct hash *h, struct hash_elem *new)
 {
   struct list *bucket = find_bucket (h, new);
-  struct hash_elem *old = find_elem (h, bucket, new);
   PANIC("test");
+  struct hash_elem *old = find_elem (h, bucket, new);
 
   if (old == NULL) 
     insert_elem (h, bucket, new);
