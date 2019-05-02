@@ -397,7 +397,6 @@ load (const char *file_name, void (**eip) (void), void **esp)
                   read_bytes = 0;
                   zero_bytes = ROUND_UP (page_offset + phdr.p_memsz, PGSIZE);
                 }
-			  PANIC("test");
               if (!load_segment (file, file_page, (void *) mem_page,
                                  read_bytes, zero_bytes, writable))
                 goto done;
@@ -571,6 +570,7 @@ load_segment (struct file *file, off_t ofs, uint8_t *upage,
       size_t page_zero_bytes = PGSIZE - page_read_bytes;
 	  
 	  struct sup_page_table_entry *spte = malloc(sizeof(struct sup_page_table_entry));
+	  PANIC("test");
 	  //spte -> page = lookup_page(t->pagedir, upage, false);
 	  spte -> page_vaddr = (void *)(((uintptr_t)upage >> 12) << 12);
 	  spte -> file = file;
