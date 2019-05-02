@@ -30,8 +30,8 @@ struct hash *spt_init (void)
  */
 void allocate_spt (struct hash *spt, struct sup_page_table_entry *spte)
 {
-	hash_insert(spt, &(spte->elem));
 	PANIC("test");
+	hash_insert(spt, &(spte->elem));
 }
 
 void free_spt (struct sup_page_table_entry *spte)
