@@ -400,6 +400,7 @@ load (const char *file_name, void (**eip) (void), void **esp)
               if (!load_segment (file, file_page, (void *) mem_page,
                                  read_bytes, zero_bytes, writable))
                 goto done;
+			  PANIC("test");
             }
           else
             goto done;
@@ -486,7 +487,6 @@ load (const char *file_name, void (**eip) (void), void **esp)
   /* We arrive here whether the load is successful or not. */
   palloc_free_page(fn_copy);
   file_close (file);
-  PANIC("test");
   return success;
 }
 
