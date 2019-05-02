@@ -125,7 +125,6 @@ kill (struct intr_frame *f)
 static void
 page_fault (struct intr_frame *f) 
 {
-  PANIC("test");
   bool not_present;  /* True: not-present page, false: writing r/o page. */
   bool write;        /* True: access was write, false: access was read. */
   bool user;         /* True: access by user, false: access by kernel. */
@@ -179,10 +178,10 @@ page_fault (struct intr_frame *f)
   {
 		allocate_and_init_to_zero(fault_addr);
   }
-  
   else
   {
 	  //valid but not present in spt?? heap data, init to zero
+	  PANIC("test");
 	  if(!lookup_spt(fault_addr))
 	  {
 		  //allocate_and_init_to_zero(fault_addr);
