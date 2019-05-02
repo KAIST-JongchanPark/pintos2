@@ -35,9 +35,8 @@ void allocate_spt (struct hash *spt, struct sup_page_table_entry *spte)
 
 void free_spt (struct sup_page_table_entry *spte)
 {
-	struct hash *spt = thread_current()->spt;
 	struct hash_elem elem = spte->elem;
-	hash_delete(spt, &elem);
+	hash_delete(thread_current()->spt, &elem);
 }
 
 
@@ -90,8 +89,10 @@ bool allocate_and_init_to_zero(void* addr)
 
 bool allocate_using_spt(void* addr)
 {
-	struct sup_page_table_entry *spte = spt_get_page(addr);
-	struct file* file = spte->file;
+	struct sup_page_table_entry *spte = malloc(sizeof(struct sup_page_table_entry));
+	spte = spt_get_page(addr);
+	struct file* file = malloc(sizeof(struct file));
+	file = spte->file;
 	off_t ofs = spte->ofs;
 	uint32_t page_read_bytes = spte->read_bytes;
 	uint32_t page_zero_bytes = PGSIZE-spte->read_bytes;
