@@ -138,7 +138,7 @@ bool lookup_spt(void* addr)
 {
 	struct sup_page_table_entry* spt = malloc(sizeof(struct sup_page_table_entry));
 	//spt->page = lookup_page(addr);
-	spt -> page_vaddr = (addr >> 12) << 12;
+	spt -> page_vaddr = (void *)(((uintptr_t)addr >> 12) << 12);
 	return hash_find(thread_currnet()->spt, &(spt->elem))!=NULL;
 }
 

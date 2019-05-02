@@ -571,7 +571,7 @@ load_segment (struct file *file, off_t ofs, uint8_t *upage,
 	  
 	  struct sup_page_table_entry *spte = malloc(sizeof(struct sup_page_table_entry));
 	  //spte -> page = lookup_page(t->pagedir, upage, false);
-	  spte -> page_vaddr = (upage >> 12) << 12;
+	  spte -> page_vaddr = (void *)(((uintptr_t)upage >> 12) << 12);
 	  spte -> file = file;
 	  spte -> ofs = ofs;
       spte -> read_bytes = page_read_bytes;
@@ -675,7 +675,7 @@ install_page (void *upage, void *kpage, bool writable)
           && pagedir_set_page (t->pagedir, upage, kpage, writable);
   struct sup_page_table_entry *spte = malloc(sizeof(struct sup_page_table_entry));
 	//spte -> page = lookup_page(t->pagedir, upage, false);
-  spte -> page_vaddr = (upage >> 12) << 12;
+  spte -> page_vaddr = (void *)(((uintptr_t)upage >> 12) << 12);
   spte -> type = HEAP;
   allocate_spt(t->spt, spte);
   return (result);
