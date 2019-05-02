@@ -176,12 +176,12 @@ page_fault (struct intr_frame *f)
   //invalid and not in stack, alloc and init to zero
   if(fault_addr>=0x80480000)
   {
-		allocate_and_init_to_zero(fault_addr);
+	  PANIC("test");
+	  allocate_and_init_to_zero(fault_addr);
   }
   else
   {
 	  //valid but not present in spt?? heap data, init to zero
-	  PANIC("test");
 	  if(!lookup_spt(fault_addr))
 	  {
 		  //allocate_and_init_to_zero(fault_addr);
