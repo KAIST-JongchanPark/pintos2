@@ -20,7 +20,7 @@ void frame_init (void)
 /* 
  * Make a new frame table entry for addr.
  */
-voidallocate_frame (void *addr)
+void allocate_frame (void *addr)
 {
 	struct frame_table_entry *fte = malloc(sizeof(struct frame_table_entry));
 	
@@ -30,7 +30,7 @@ voidallocate_frame (void *addr)
 	list_push_front(&frame_table, &(fte->elem));
 }
 
-voidfree_frame (void *addr)
+void free_frame (void *addr)
 {
 	struct list_elem *target_elem = frame_find_addr(&frame_table, (void *)vtop(addr));
 	struct frame_table_entry *target_entry = list_entry (target_elem, struct frame_table_entry, elem);
