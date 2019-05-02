@@ -21,6 +21,7 @@
 #include "vm/frame.h"
 #include "vm/page.h"
 #include "threads/pte.h"
+#include "threads/malloc.h"
 
 static thread_func start_process NO_RETURN;
 static bool load (const char *cmdline, void (**eip) (void), void **esp);
@@ -490,7 +491,7 @@ load (const char *file_name, void (**eip) (void), void **esp)
 
 /* load() helpers. */
 
-static bool install_page (void *upage, void *kpage, bool writable);
+bool install_page (void *upage, void *kpage, bool writable);
 
 /* Checks whether PHDR describes a valid, loadable segment in
    FILE and returns true if so, false otherwise. */
@@ -568,9 +569,9 @@ load_segment (struct file *file, off_t ofs, uint8_t *upage,
       size_t page_read_bytes = read_bytes < PGSIZE ? read_bytes : PGSIZE;
       size_t page_zero_bytes = PGSIZE - page_read_bytes;
 	  
-	  struct sup_page_table_entry *spte = malloc(sizeof(sup_page_table_entry));
+	  struct sup_page_table_entry *spte = malloc(sizeof(struct sup_page_table_entry));
 	  //spte -> page = lookup_page(t->pagedir, upage, false);
-	  spte -> page_vaddr = upage & PTE_ADDR;
+	  spte -> page_vaddr = (upage >> 12) << 12;
 	  spte -> file = file;
 	  spte -> ofs = ofs;
       spte -> read_bytes = page_read_bytes;
@@ -672,9 +673,9 @@ install_page (void *upage, void *kpage, bool writable)
      address, then map our page there. */
   bool result = pagedir_get_page (t->pagedir, upage) == NULL
           && pagedir_set_page (t->pagedir, upage, kpage, writable);
-  struct sup_page_table_entry *spte = malloc(sizeof(sup_page_table_entry));
+  struct sup_page_table_entry *spte = malloc(sizeof(struct sup_page_table_entry));
 	//spte -> page = lookup_page(t->pagedir, upage, false);
-  spte -> page_vaddr = upage & PTE_ADDR;
+  spte -> page_vaddr = (upage >> 12) << 12;
   spte -> type = HEAP;
   allocate_spt(t->spt, spte);
   return (result);

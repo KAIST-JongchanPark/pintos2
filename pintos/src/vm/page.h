@@ -8,7 +8,7 @@
 
 enum page_type
 {
-	DISK
+	DISK,
 	HEAP
 };
 
