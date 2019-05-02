@@ -114,6 +114,7 @@ start_process (void *f_name)
   if (!success) 
     exit_with_status(-1);
     //thread_exit ();
+  PANIC("ssibal");
   /* Start the user process by simulating a return from an
      interrupt, implemented by intr_exit (in
      threads/intr-stubs.S).  Because intr_exit takes all of its
