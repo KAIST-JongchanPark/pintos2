@@ -579,7 +579,7 @@ load_segment (struct file *file, off_t ofs, uint8_t *upage,
 	  spte -> type = DISK;
 	  
 	  //here
-	  PANIC("test");
+	  
 	  //add spte to spt.
 	  allocate_spt(thread_current()->spt, spte); // passing entry
 	  
