@@ -91,7 +91,7 @@ bool allocate_using_spt(void* addr)
 {
 	struct sup_page_table_entry *spte = malloc(sizeof(struct sup_page_table_entry));
 	spte = spt_get_page(addr);
-	struct file* file = malloc(sizeof(struct file));
+	struct file* file = NULL;
 	file = spte->file;
 	off_t ofs = spte->ofs;
 	uint32_t page_read_bytes = spte->read_bytes;
