@@ -486,7 +486,6 @@ load (const char *file_name, void (**eip) (void), void **esp)
   /* We arrive here whether the load is successful or not. */
   palloc_free_page(fn_copy);
   file_close (file);
-  PANIC("test");
   return success;
 }
 
