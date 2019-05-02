@@ -99,7 +99,6 @@ struct hash_elem *
 hash_insert (struct hash *h, struct hash_elem *new)
 {
   struct list *bucket = find_bucket (h, new);
-  PANIC("test");
   struct hash_elem *old = find_elem (h, bucket, new);
 
   if (old == NULL) 
@@ -307,6 +306,7 @@ static struct list *
 find_bucket (struct hash *h, struct hash_elem *e) 
 {
   size_t bucket_idx = h->hash (e, h->aux) & (h->bucket_cnt - 1);
+  PANIC("test");
   return &h->buckets[bucket_idx];
 }
 
