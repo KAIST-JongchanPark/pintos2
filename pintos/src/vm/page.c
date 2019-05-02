@@ -31,6 +31,7 @@ struct hash *spt_init (void)
 void allocate_spt (struct hash *spt, struct sup_page_table_entry *spte)
 {
 	hash_insert(spt, &(spte->elem));
+	PANIC("test");
 }
 
 void free_spt (struct sup_page_table_entry *spte)
@@ -55,14 +56,13 @@ void spt_destroy_func (struct hash_elem *e, void *aux)
 
 unsigned hash_spt (const struct hash_elem* e, void* aux)
 {
-	const void* buf_ = (hash_entry(e, struct sup_page_table_entry, elem)->page_vaddr);
-	size_t size = 4;
-	return hash_bytes(buf_, size);
+	struct sup_page_table_entry *spte= hash_entry(e, struct sup_page_table_entry, elem);
+	return hash_int((int)spte->page_vaddr);
 }
 
 bool hash_spt_less (const struct hash_elem *a, const struct hash_elem *b, void *aux)
 {
-	return hash_entry(a, struct sup_page_table_entry, elem)->page_vaddr<hash_entry(b, struct sup_page_table_entry, elem)->page_vaddr;
+	return (hash_entry(a, struct sup_page_table_entry, elem)->page_vaddr) < (hash_entry(b, struct sup_page_table_entry, elem)->page_vaddr);
 }
 
 bool allocate_and_init_to_zero(void* addr)
