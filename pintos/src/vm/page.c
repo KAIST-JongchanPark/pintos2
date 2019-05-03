@@ -102,7 +102,7 @@ bool allocate_using_spt(void* addr, struct sup_page_table_entry *spte)
 	  }
 	
 	  allocate_frame((void *)kpage);
-	  PANIC("test");
+	  
 	  /* Load this page. */
 	  if (file_read (file, kpage, page_read_bytes) != (int) page_read_bytes)
 		{
