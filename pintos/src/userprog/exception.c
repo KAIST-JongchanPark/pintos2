@@ -214,7 +214,6 @@ page_fault (struct intr_frame *f)
 	  
 	  
   
-  printf("%u\n", 
   PANIC("page fault algorithm arrived at wrong end.\n");
   
 
