@@ -585,8 +585,8 @@ load_segment (struct file *file, off_t ofs, uint8_t *upage,
 	  allocate_spt(thread_current()->spt, spte); // passing entry
 	  //
 	  
-	  
-      /* Get a page of memory.*/
+	  /*
+      /* Get a page of memory.
       uint8_t *kpage = palloc_get_page (PAL_USER);
 	  //here
 	  allocate_frame((void *)kpage);
@@ -594,7 +594,7 @@ load_segment (struct file *file, off_t ofs, uint8_t *upage,
       if (kpage == NULL)
         return false;
 
-      /* Load this page.*/
+      /* Load this page.
       if (file_read (file, kpage, page_read_bytes) != (int) page_read_bytes)
         {
           palloc_free_page (kpage);
@@ -607,7 +607,7 @@ load_segment (struct file *file, off_t ofs, uint8_t *upage,
 	  struct thread *t = thread_current ();
 	  bool result = pagedir_get_page (t->pagedir, upage) == NULL
           && pagedir_set_page (t->pagedir, upage, kpage, writable);
-      /* Add the page to the process's address space. */
+      /* Add the page to the process's address space. 
       if (!result)
         {
           palloc_free_page (kpage);
@@ -616,7 +616,7 @@ load_segment (struct file *file, off_t ofs, uint8_t *upage,
 		  //
           return false; 
         }
-
+	  */
       /* Advance. */
       read_bytes -= page_read_bytes;
       zero_bytes -= page_zero_bytes;

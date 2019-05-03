@@ -174,13 +174,14 @@ page_fault (struct intr_frame *f)
 	  }
   }*/
   //invalid and not in stack, alloc and init to zero
+  /*
   if(fault_addr>=0x80480000)
   {
 	  allocate_and_init_to_zero(fault_addr);
 	  return;
   }
-  else
-  {
+  else*/
+  if(fault_addr>=0x80480000){
 	  //valid but not present in spt?? heap data, init to zero
 	  if(!lookup_spt(fault_addr))
 	  {
@@ -189,8 +190,16 @@ page_fault (struct intr_frame *f)
 	  }
 	  else if(lookup_spt(fault_addr))
 	  {
-		  allocate_using_spt(fault_addr);
-		  return;
+		  if(spt_get_page(fault_addr)->type == DISK)
+		  {
+			  allocate_using_spt(fault_addr);
+			  return;
+		  }
+		  else
+		  {
+			  allocate_and_init_to_zero(fault_addr);
+			  return;
+		  }
 	  }
 	  else
 	  {
