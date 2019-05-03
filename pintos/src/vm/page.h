@@ -38,7 +38,7 @@ void allocate_spt (struct hash *spt, struct sup_page_table_entry *spte);
 void free_spt (struct sup_page_table_entry* spte);
 void destroy_spt (struct hash *spt);
 bool allocate_and_init_to_zero(void* addr);
-bool allocate_using_spt(void* addr);
+bool allocate_using_spt(void* addr, struct sup_page_table_entry *spte);
 bool lookup_spt(void* addr);
 struct sup_page_table_entry *spt_get_page(void *addr);
 
