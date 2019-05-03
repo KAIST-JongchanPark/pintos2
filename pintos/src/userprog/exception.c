@@ -192,6 +192,7 @@ page_fault (struct intr_frame *f)
 	  {
 		  if(spt_get_page(fault_addr)->type == DISK)
 		  {
+			  PANIC("test");
 			  allocate_using_spt(fault_addr);
 			  return;
 		  }
