@@ -181,7 +181,7 @@ page_fault (struct intr_frame *f)
 	  return;
   }
   else*/
-  if(fault_addr>=0x80480000){
+  if(fault_addr>=0x08048000){
 	  //valid but not present in spt?? heap data, init to zero
 	  if(!lookup_spt(fault_addr))
 	  {
@@ -214,7 +214,7 @@ page_fault (struct intr_frame *f)
 	  
 	  
   
- 
+  printf("%u\n", 
   PANIC("page fault algorithm arrived at wrong end.\n");
   
 
