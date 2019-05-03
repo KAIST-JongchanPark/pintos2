@@ -86,10 +86,8 @@ bool allocate_and_init_to_zero(void* addr)
   return true;
 }
 
-bool allocate_using_spt(void* addr)
+bool allocate_using_spt(void* addr, struct sup_page_table_entry *spte)
 {
-	struct sup_page_table_entry *spte = malloc(sizeof(struct sup_page_table_entry));
-	spte = spt_get_page(addr);
 	struct file* file = NULL;
 	file = spte->file;
 	off_t ofs = spte->ofs;
@@ -130,7 +128,7 @@ bool allocate_using_spt(void* addr)
 		  //
 		  return false; 
 		}
-
+	PANIC("test");
 	return true;
 }
 
