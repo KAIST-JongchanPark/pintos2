@@ -91,8 +91,8 @@ bool allocate_using_spt(void* addr, struct sup_page_table_entry *spte)
 	struct file* file = NULL;
 	file = spte->file;
 	off_t ofs = spte->ofs;
-	uint32_t page_read_bytes = spte->read_bytes;
-	uint32_t page_zero_bytes = PGSIZE - spte->read_bytes;
+	size_t page_read_bytes = spte->read_bytes;
+	size_t page_zero_bytes = PGSIZE - spte->read_bytes;
 	
 	uint8_t *kpage = palloc_get_page (PAL_USER);
 	
