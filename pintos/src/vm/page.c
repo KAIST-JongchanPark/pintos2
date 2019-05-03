@@ -96,13 +96,14 @@ bool allocate_using_spt(void* addr, struct sup_page_table_entry *spte)
 	
 	uint8_t *kpage = palloc_get_page (PAL_USER);
 	
+	
 	  if (kpage == NULL)
 	  {
 		return false;
 	  }
 	
 	  allocate_frame((void *)kpage);
-	  
+	  file_seek (file, ofs);
 	  /* Load this page. */
 	  if (file_read (file, kpage, page_read_bytes) != (int) page_read_bytes)
 		{
