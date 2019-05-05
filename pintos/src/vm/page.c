@@ -107,7 +107,7 @@ bool allocate_using_spt(void* addr, struct sup_page_table_entry *spte)
 	  file_seek (file, ofs);
 	  /* Load this page. */
 	  //ASSERT(file!=NULL);
-	  int read_bytes = file_read_at (file, (void *)kpage, (off_t)page_read_bytes, ofs);
+	  int read_bytes = file_read (file, (void *)kpage, (off_t)page_read_bytes);
 	  ASSERT(read_bytes!=0);
 	  if (read_bytes != (int) page_read_bytes)
 		{
