@@ -9,6 +9,7 @@
 #include "vm/frame.h"
 #include "threads/malloc.h"
 #include "userprog/pagedir.h"
+#include "thread/vaddr.h"
 #include <stdbool.h>
 
 void spt_destroy_func (struct hash_elem *e, void *aux);
@@ -121,7 +122,7 @@ bool allocate_using_spt(void* addr, struct sup_page_table_entry *spte)
 	  memset (kpage + page_read_bytes, 0, page_zero_bytes);
 	  //PANIC("test");
 	  /* Add the page to the process's address space. */
-	  uint8_t *upage = (uint8_t *)addr;
+	  uint8_t *upage = addr & ~PGMASK;
 	  bool result = pagedir_get_page (thread_current()->pagedir, upage) == NULL
           && pagedir_set_page (thread_current()->pagedir, upage, kpage, spte->writable);
 		  
