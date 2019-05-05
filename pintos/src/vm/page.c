@@ -105,9 +105,9 @@ bool allocate_using_spt(void* addr, struct sup_page_table_entry *spte)
 	  allocate_frame((void *)kpage);
 	  file_seek (file, ofs);
 	  /* Load this page. */
-	  ASSERT(file!=NULL);
+	  //ASSERT(file!=NULL);
 	  int read_bytes = file_read (file, kpage, page_read_bytes);
-	  ASSERT(read_bytes!=0);
+	  //ASSERT(read_bytes!=0);
 	  if (read_bytes != (int) page_read_bytes)
 		{
 		  //PANIC("test");
@@ -119,7 +119,7 @@ bool allocate_using_spt(void* addr, struct sup_page_table_entry *spte)
 		  return false; 
 		}
 	  memset (kpage + page_read_bytes, 0, page_zero_bytes);
-	  PANIC("test");
+	  //PANIC("test");
 	  /* Add the page to the process's address space. */
 	  bool result = pagedir_get_page (thread_current()->pagedir, addr) == NULL
           && pagedir_set_page (thread_current()->pagedir, addr, kpage, spte->writable);
