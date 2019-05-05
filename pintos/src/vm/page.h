@@ -28,7 +28,7 @@ struct sup_page_table_entry
 	struct file* file;
 	off_t ofs;
 	bool writable;
-    uint32_t read_bytes;
+    size_t read_bytes;
 	enum page_type type;
 
 };
