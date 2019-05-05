@@ -9,7 +9,7 @@
 #include "vm/frame.h"
 #include "threads/malloc.h"
 #include "userprog/pagedir.h"
-#include "thread/vaddr.h"
+#include "threads/vaddr.h"
 #include <stdbool.h>
 
 void spt_destroy_func (struct hash_elem *e, void *aux);
