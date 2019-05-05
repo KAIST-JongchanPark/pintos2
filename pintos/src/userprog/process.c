@@ -205,8 +205,12 @@ process_exit (void)
       pagedir_activate (NULL);
       pagedir_destroy (pd);
     }
-	sema_up(&curr->waiting);
-	sema_down(&curr->keep_alive);
+  if(curr->file!=NULL)
+  {
+	  file_close(curr->file);
+  }
+  sema_up(&curr->waiting);
+  sema_down(&curr->keep_alive);
 }
 
 /* Sets up the CPU for running user code in the current
@@ -312,6 +316,7 @@ load (const char *file_name, void (**eip) (void), void **esp)
   t->pagedir = pagedir_create ();
   if (t->pagedir == NULL) 
     goto done;
+  t->file = file;
   t->spt = spt_init();
   process_activate ();
 
