@@ -14,6 +14,8 @@ static long long page_fault_cnt;
 static void kill (struct intr_frame *);
 static void page_fault (struct intr_frame *);
 
+#define HEURISTIC PHYS_BASE-0x800000
+
 /* Registers handlers for interrupts that can be caused by user
    programs.
 
@@ -186,6 +188,16 @@ page_fault (struct intr_frame *f)
 	  if(!lookup_spt(fault_addr))
 	  {
 		  //allocate_and_init_to_zero(fault_addr);
+      if(fault_addr>HEURISTIC)
+      {
+        void* temp = pg_round_down(stack_page);
+        while(fault_addr<=temp)
+        {
+          allocate_and_init_to_zero(temp);
+          temp-=PGSIZE;
+        }
+
+      }
 		  exit(-1);
 	  }
 	  else if(lookup_spt(fault_addr))
