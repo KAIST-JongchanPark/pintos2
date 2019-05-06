@@ -192,7 +192,7 @@ page_fault (struct intr_frame *f)
 	  {
 		  if(spt_get_page(fault_addr)->type == DISK)
 		  {
-			  if(write)
+			  if(not_present&&write)
 			  {
 				  exit(-1);
 				  return;
