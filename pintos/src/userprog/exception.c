@@ -186,7 +186,7 @@ page_fault (struct intr_frame *f)
 	  if(!lookup_spt(fault_addr))
 	  {
 		  //allocate_and_init_to_zero(fault_addr);
-		  exit(-1);
+		  exit(-2);
 	  }
 	  else if(lookup_spt(fault_addr))
 	  {
