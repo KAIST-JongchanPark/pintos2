@@ -145,7 +145,7 @@ int read (int fd, void *buffer, unsigned size)
 {
   int return_value;
   if(fd<0||fd>=128)
-	printf("test1");
+	//printf("test1");
     return -1;
   //lock_acquire(&syscall_lock);
   if(fd==0)
@@ -164,7 +164,7 @@ int read (int fd, void *buffer, unsigned size)
     if(file==NULL)
     {
       //lock_release(&syscall_lock);
-	  printf("test2");
+	  //printf("test2");
       return -1;
     }
     return_value = file_read(file, buffer, (off_t)size);
@@ -174,7 +174,7 @@ int read (int fd, void *buffer, unsigned size)
   else
   {
     //lock_release(&syscall_lock);
-	printf("test3");
+	//printf("test3");
     return -1;
   }
 }
