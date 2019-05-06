@@ -22,8 +22,10 @@ test_main (void)
   byte_cnt = read (handle, buffer, sizeof sample - 1);
   msg ("test3\n");
   if (byte_cnt != sizeof sample - 1)
-	  msg ("test4\n");
+  {
+	msg ("test4\n");
     fail ("read() returned %d instead of %zu", byte_cnt, sizeof sample - 1);
+  }
   else if (strcmp (sample, buffer)) 
     {
 	  msg ("test5\n");
