@@ -317,8 +317,6 @@ load (const char *file_name, void (**eip) (void), void **esp)
   t->pagedir = pagedir_create ();
   if (t->pagedir == NULL) 
     goto done;
-  file_deny_write(file);
-  t->file = file;
   t->spt = spt_init();
   process_activate ();
 
@@ -489,7 +487,8 @@ load (const char *file_name, void (**eip) (void), void **esp)
   *eip = (void (*) (void)) ehdr.e_entry;
 
   success = true;
-
+  file_deny_write(file);
+  t->file = file;
  done:
   /* We arrive here whether the load is successful or not. */
   palloc_free_page(fn_copy);
