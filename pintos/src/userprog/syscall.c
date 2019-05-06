@@ -174,7 +174,7 @@ int read (int fd, void *buffer, unsigned size)
     {
       allocate_and_init_to_zero(upage);
       upage+=PGSIZE;
-      printf("1\n")
+      printf("1\n");
     }
 
     return_value = file_read(file, buffer, (off_t)size);
