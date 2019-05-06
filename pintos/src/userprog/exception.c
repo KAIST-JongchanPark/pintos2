@@ -185,8 +185,8 @@ page_fault (struct intr_frame *f)
 	  //valid but not present in spt?? heap data, init to zero
 	  if(!lookup_spt(fault_addr))
 	  {
-		  //allocate_and_init_to_zero(fault_addr);
-		  exit(-2);
+		  allocate_and_init_to_zero(fault_addr);
+		  //exit(-2);
 	  }
 	  else if(lookup_spt(fault_addr))
 	  {
