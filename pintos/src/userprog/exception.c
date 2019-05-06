@@ -190,7 +190,7 @@ page_fault (struct intr_frame *f)
 		  //allocate_and_init_to_zero(fault_addr);
       if(fault_addr>HEURISTIC)
       {
-        void* temp = pg_round_down(stack_page);
+        void* temp = pg_round_down(stack_pointer);
         while(fault_addr<=temp)
         {
           allocate_and_init_to_zero(temp);
