@@ -183,7 +183,6 @@ page_fault (struct intr_frame *f)
   else*/
   if(fault_addr>=0x08048000){
 	  //valid but not present in spt?? heap data, init to zero
-	  PANIC("test");
 	  if(!lookup_spt(fault_addr))
 	  {
 		  //allocate_and_init_to_zero(fault_addr);
@@ -193,6 +192,11 @@ page_fault (struct intr_frame *f)
 	  {
 		  if(spt_get_page(fault_addr)->type == DISK)
 		  {
+			  if(write)
+			  {
+				  exit(-1);
+				  return;
+			  }
 			  allocate_using_spt(fault_addr, spt_get_page(fault_addr));
 			  return;
 		  }
