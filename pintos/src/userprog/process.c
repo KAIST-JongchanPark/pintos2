@@ -207,6 +207,7 @@ process_exit (void)
     }
   if(curr->file!=NULL)
   {
+	  file_allow_write(curr->file);
 	  file_close(curr->file);
   }
   sema_up(&curr->waiting);
@@ -316,6 +317,7 @@ load (const char *file_name, void (**eip) (void), void **esp)
   t->pagedir = pagedir_create ();
   if (t->pagedir == NULL) 
     goto done;
+  file_deny_write(file);
   t->file = file;
   t->spt = spt_init();
   process_activate ();
