@@ -167,7 +167,17 @@ int read (int fd, void *buffer, unsigned size)
 	  //printf("test2");
       return -1;
     }
+
+    void* upage = pg_round_down(buffer);
+    while(upage<buffer+size)
+    {
+      allocate_and_init_to_zero(upage);
+      upage+=PGSIZE;
+    }
+
     return_value = file_read(file, buffer, (off_t)size);
+
+
     //lock_release(&syscall_lock);
     return return_value;
   }
