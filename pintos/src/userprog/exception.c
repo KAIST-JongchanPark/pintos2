@@ -211,15 +211,16 @@ page_fault (struct intr_frame *f)
 		  PANIC("page fault algorithm didn't worked properly.\n");
 	  }
   }
+  else
+  {
+	  exit(-1);
+	  return;
+  }
 
   
 	  
 	  
 	   //valid and in spt -> init frame data with using spt
-	  
-	  
-  
-  PANIC("page fault algorithm arrived at wrong end.\n");
   
 
 
