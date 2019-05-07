@@ -11,6 +11,8 @@
 #include "filesys/file.h"
 #include "threads/synch.h"
 #include "vm/page.h"
+#include "filesys/off_t.h"
+
 
 typedef int pid_t;
 typedef int mapid_t;
@@ -298,7 +300,7 @@ mapid_t mmap (int fd, void *addr)
       spte -> writable = true;
       spte -> read_bytes = page_read_bytes;
       spte -> type = FILE;
-      spte -> mapid = id
+      spte -> mapid = id;
       
       allocate_spt(thread_current()->spt, spte);
       read_bytes -= page_read_bytes;
@@ -314,7 +316,7 @@ mapid_t mmap (int fd, void *addr)
 void munmap (mapid_t mapping)
 {
     //iterate through spt, with comparing mapid
-    struct sup_page_table_entry *spte = sup_get_file_mapping(mapping)
+    struct sup_page_table_entry *spte = sup_get_file_mapping(mapping);
     while(spte!=NULL)
     {
        
@@ -411,9 +413,9 @@ syscall_handler (struct intr_frame *f)
       is_valid_ptr((void *)(f->esp+4));
       is_valid_ptr((void *)(f->esp+8));
       is_valid_ptr((void *)*(int *)(f->esp+8));
-      f->eax = mmap(*(int *)(f->esp+4), (void *)*(int *)(f->esp + 8))
+      f->eax = mmap(*(int *)(f->esp+4), (void *)*(int *)(f->esp + 8));
     case SYS_MUNMAP:   
       is_valid_ptr((void *)(f->esp+4));
-      f->eax = mummap(*(int *)(f->esp+4))
+      f->eax = mummap(*(int *)(f->esp+4));
   }
  }
