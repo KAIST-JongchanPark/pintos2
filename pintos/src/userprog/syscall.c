@@ -418,6 +418,7 @@ syscall_handler (struct intr_frame *f)
       break;
     case SYS_MUNMAP:   
       is_valid_ptr((void *)(f->esp+4));
+	  munmap(*(mapid_t *)(f->esp+4))
       //f->eax = munmap(*(int *)(f->esp+4));
       break;
   }
