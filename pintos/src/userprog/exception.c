@@ -188,18 +188,17 @@ page_fault (struct intr_frame *f)
 	  if(!lookup_spt(fault_addr))
 	  {
 		  //allocate_and_init_to_zero(fault_addr);
-      if(fault_addr>HEURISTIC||fault_addr==stack_pointer-4||fault_addr==stack_pointer-32
+      if(fault_addr>HEURISTIC||fault_addr==stack_pointer-4||fault_addr==stack_pointer-32)
       {
-        if(!lookup_spt(fault_addr))
-        {
           void* temp = pg_round_down(fault_addr);
           allocate_and_init_to_zero(temp);
           return;
-        }
-        return;
 
       }
-		  exit(-1);
+      else {
+        exit(-1);
+      }
+		  
 	  }
 	  else if(lookup_spt(fault_addr))
 	  {
