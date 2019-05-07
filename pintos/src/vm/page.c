@@ -103,6 +103,7 @@ bool allocate_using_spt(void* addr, struct sup_page_table_entry *spte)
 	
 	  if (kpage == NULL)
 	  {
+		PANIC("eviction is not implemented, skip page-linear");
 		return false;
 	  }
 	
