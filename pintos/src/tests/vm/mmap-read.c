@@ -20,7 +20,10 @@ test_main (void)
   msg("mmap read test00\n");
   /* Check that data is correct. */
   if (memcmp (actual, sample, strlen (sample)))
+  {
+	msg("mmap bad");
     fail ("read of mmap'd file reported bad data");
+  }
   msg("mmap read test000\n");
   /* Verify that data is followed by zeros. */
   for (i = strlen (sample); i < 4096; i++)
