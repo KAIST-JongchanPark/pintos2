@@ -214,8 +214,9 @@ page_fault (struct intr_frame *f)
 		  }
 		  else
 		  {
-			  allocate_and_init_to_zero(fault_addr);
-			  return;
+			  //allocate_and_init_to_zero(fault_addr);
+			  exit(-1);
+        return;
 		  }
 	  }
 	  else
