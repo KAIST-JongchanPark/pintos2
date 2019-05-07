@@ -323,7 +323,7 @@ mapid_t mmap (int fd, void *addr)
       addr += PGSIZE;
       ofs += PGSIZE;
     }
-  PANIC("mmap syscall test");
+  printf("return id: %d\n", id);
   return id;
 }
 
