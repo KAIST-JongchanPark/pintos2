@@ -145,6 +145,15 @@ bool lookup_spt(void* addr)
 	return hash_find(thread_current()->spt, &(spt->elem))!=NULL;
 }
 
+struct sup_page_table_entry *spt_get_file_mapping(mapid_t mapping)
+{
+	struct sup_page_table_entry* spt = malloc(sizeof(struct sup_page_table_entry));
+	spt->mapid = mapping
+	struct hash_elem *e = malloc(sizeof(struct hash_elem));
+	e = hash_find(thread_current()->spt, &(spt->elem));
+	return e != NULL ? hash_entry (e, struct sup_page_table_entry, elem) : NULL;
+}
+
 struct sup_page_table_entry *spt_get_page(void *addr)
 {
 	struct sup_page_table_entry* spt = malloc(sizeof(struct sup_page_table_entry));

@@ -13,7 +13,12 @@
 #include "vm/page.h"
 
 typedef int pid_t;
+typedef int mapid_t;
 struct lock syscall_lock;
+
+void munmap (mapid_t mapping);
+mapid_t mmap (int fd, void *addr);
+
 
 struct file 
   {
@@ -247,6 +252,85 @@ void close(int fd)
   thread_current()->fd[fd] = NULL;
 }
 
+mapid_t mmap (int fd, void *addr)
+{
+  //invalid fd
+  if (fd<0||fd>=128||fd==0||fd==1)
+    return -1;
+  //invalid addr
+  if (addr==0||addr>=PHYS_BASE-0x800000||addr<0x08048000)
+    return -1;
+  //file's size 0
+  struct file* file = thread_current()->fd[fd];
+  off_t size = file_length;
+  if (size==0)
+    return -1;
+  //conflicting with existing address region
+  if (pg_round_down(addr)!=addr)
+    PANIC("not page alligned, I don't know how to handle this\n")
+  off_t checker = 0;
+  whle(checker<size)
+  {
+    if(lookup_spt(addr+checker))
+      return -1;
+    checker+=PGSIZE;
+  }
+  //mmap with lazy loading => used in 
+
+  uint32_t read_bytes, zero_bytes;
+  off_t ofs = 0;
+  read_bytes = size;
+  zero_bytes = PGSIZE - size%PGSIZE;
+
+  file_seek(file,0);
+  mapid_t id = thread_current()->mapid+1;
+  thread_current()->mapid+=1;
+  while (read_bytes > 0 || zero_bytes > 0) 
+    {
+      size_t page_read_bytes = read_bytes < PGSIZE ? read_bytes : PGSIZE;
+      size_t page_zero_bytes = PGSIZE - page_read_bytes;
+    
+      struct sup_page_table_entry *spte = malloc(sizeof(struct sup_page_table_entry));
+      //spte -> page = lookup_page(t->pagedir, upage, false);
+      spte -> page_vaddr = (void *)(((uintptr_t)addr >> 12) << 12);
+      spte -> file = file;
+      spte -> ofs = ofs;
+      spte -> writable = true;
+      spte -> read_bytes = page_read_bytes;
+      spte -> type = FILE;
+      spte -> mapid = id
+      
+      allocate_spt(thread_current()->spt, spte);
+      read_bytes -= page_read_bytes;
+      zero_bytes -= page_zero_bytes;
+      addr += PGSIZE;
+      ofs += PGSIZE;
+    }
+  
+  return id;
+}
+
+
+void munmap (mapid_t mapping)
+{
+    //iterate through spt, with comparing mapid
+    struct sup_page_table_entry *spte = sup_get_file_mapping(mapping)
+    while(spte!=NULL)
+    {
+       
+       file_seek(spte->file, ofs);
+       file_write(spte->file, pagedir_get_page(thread_current()->pagedir, spte->page_vaddr),spte->read_bytes)
+       palloc_free_page(spte->page_vaddr);
+       free_frame((void *)spte->page_vaddr);
+       free_spt(spte);
+    }
+    //for each element, remove from spt and free it. 
+
+    //when freeing it, we should write content of the page back to disk. 
+}
+
+
+
 static void
 syscall_handler (struct intr_frame *f) 
 {
@@ -322,6 +406,14 @@ syscall_handler (struct intr_frame *f)
     case SYS_CLOSE:
       is_valid_ptr((void *)(f->esp+4));
       close(*(int *)(f->esp+4));
-    	break;     
+    	break;  
+    case SYS_MMAP:
+      is_valid_ptr((void *)(f->esp+4));
+      is_valid_ptr((void *)(f->esp+8));
+      is_valid_ptr((void *)*(int *)(f->esp+8));
+      f->eax = mmap(*(int *)(f->esp+4), (void *)*(int *)(f->esp + 8))
+    case SYS_MUNMAP:   
+      is_valid_ptr((void *)(f->esp+4));
+      f->eax = mummap(*(int *)(f->esp+4))
   }
  }

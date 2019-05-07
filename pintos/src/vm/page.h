@@ -30,6 +30,7 @@ struct sup_page_table_entry
 	bool writable;
     size_t read_bytes;
 	enum page_type type;
+	int mapid;
 
 };
 
@@ -40,6 +41,7 @@ void destroy_spt (struct hash *spt);
 bool allocate_and_init_to_zero(void* addr);
 bool allocate_using_spt(void* addr, struct sup_page_table_entry *spte);
 bool lookup_spt(void* addr);
+struct sup_page_table_entry *spt_get_file_mapping(mapid_t mapping);
 struct sup_page_table_entry *spt_get_page(void *addr);
 
 
