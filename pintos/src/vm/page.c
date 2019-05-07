@@ -16,6 +16,9 @@ void spt_destroy_func (struct hash_elem *e, void *aux);
 unsigned hash_spt (const struct hash_elem* elem, void* aux);
 bool hash_spt_less (const struct hash_elem *a, const struct hash_elem *b, void *aux);
 
+typedef int mapid_t;
+
+
 /*
  * Initialize supplementary page table
  */
