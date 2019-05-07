@@ -103,6 +103,7 @@ bool allocate_using_spt(void* addr, struct sup_page_table_entry *spte)
 	
 	  if (kpage == NULL)
 	  {
+		printf("%x\n", addr);
 		return false;
 	  }
 	
@@ -130,7 +131,6 @@ bool allocate_using_spt(void* addr, struct sup_page_table_entry *spte)
 		  
 	  if (!result) 
 		{
-		  printf("%x\n", addr);
 		  palloc_free_page (kpage);
 		  //here
 		  free_frame((void *)kpage);
