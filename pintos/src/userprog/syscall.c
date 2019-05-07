@@ -256,6 +256,7 @@ void close(int fd)
 
 mapid_t mmap (int fd, void *addr)
 {
+  printf("mmap syscall test");
   //invalid fd
   if (fd<0||fd>=128||fd==0||fd==1)
     return -1;
@@ -287,7 +288,6 @@ mapid_t mmap (int fd, void *addr)
   file_seek(file,0);
   mapid_t id = thread_current()->mapid+1;
   thread_current()->mapid+=1;
-  printf("mmap syscall test");
   while (read_bytes > 0 || zero_bytes > 0) 
     {
       size_t page_read_bytes = read_bytes < PGSIZE ? read_bytes : PGSIZE;
