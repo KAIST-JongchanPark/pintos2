@@ -226,8 +226,7 @@ page_fault (struct intr_frame *f)
   }
   else
   {
-	  //exit(-1);
-	  PANIC("UNUSED ADDR");
+	  exit(-1);
 	  return;
   }
 

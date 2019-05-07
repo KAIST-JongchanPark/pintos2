@@ -264,7 +264,7 @@ mapid_t mmap (int fd, void *addr)
     return -1;
   //file's size 0
   struct file* file = thread_current()->fd[fd];
-  off_t size = file_length;
+  off_t size = file_length(file);
   if (size==0)
     return -1;
   //conflicting with existing address region
