@@ -184,10 +184,10 @@ page_fault (struct intr_frame *f)
   }
   else*/
   if(fault_addr>=0x08048000){
-	  printf("%x\n", fault_addr);
 	  //valid but not present in spt?? heap data, init to zero
 	  if(!lookup_spt(fault_addr))
 	  {
+		  printf("%x\n", fault_addr);
 		  //allocate_and_init_to_zero(fault_addr);
 		  if(fault_addr>HEURISTIC&&(fault_addr>=stack_pointer||fault_addr==stack_pointer-4||fault_addr==stack_pointer-32))
 		  {
@@ -200,7 +200,6 @@ page_fault (struct intr_frame *f)
 		  {
 			exit(-1);
 		  }
-		  
 	  }
 	  else if(lookup_spt(fault_addr))
 	  {
