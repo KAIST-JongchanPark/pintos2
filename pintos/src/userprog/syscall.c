@@ -316,7 +316,7 @@ mapid_t mmap (int fd, void *addr)
 void munmap (mapid_t mapping)
 {
     //iterate through spt, with comparing mapid
-    struct sup_page_table_entry *spte = sup_get_file_mapping(mapping);
+    struct sup_page_table_entry *spte = spt_get_file_mapping(mapping);
     while(spte!=NULL)
     {
        
@@ -416,6 +416,6 @@ syscall_handler (struct intr_frame *f)
       f->eax = mmap(*(int *)(f->esp+4), (void *)*(int *)(f->esp + 8));
     case SYS_MUNMAP:   
       is_valid_ptr((void *)(f->esp+4));
-      f->eax = mummap(*(int *)(f->esp+4));
+      f->eax = munmap(*(int *)(f->esp+4));
   }
  }
