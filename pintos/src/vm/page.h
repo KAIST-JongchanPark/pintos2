@@ -10,7 +10,8 @@
 enum page_type
 {
 	DISK,
-	HEAP
+	HEAP,
+	FILE
 };
 
 
