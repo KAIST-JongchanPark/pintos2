@@ -13,8 +13,9 @@ test_main (void)
   int handle;
   mapid_t map;
   size_t i;
-msg("mmap read test0\n");
+  msg("mmap read test0\n");
   CHECK ((handle = open ("sample.txt")) > 1, "open \"sample.txt\"");
+  msg("handle: %d\n", handle);
   CHECK ((map = mmap (handle, actual)) != MAP_FAILED, "mmap \"sample.txt\"");
   msg("mmap read test00\n");
   /* Check that data is correct. */
