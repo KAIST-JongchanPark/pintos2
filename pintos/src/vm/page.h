@@ -5,6 +5,7 @@
 #include "filesys/file.h"
 #include "filesys/off_t.h"
 #include <stdbool.h>
+#include "userprog/syscall.h"
 
 
 enum page_type
@@ -42,7 +43,7 @@ void destroy_spt (struct hash *spt);
 bool allocate_and_init_to_zero(void* addr);
 bool allocate_using_spt(void* addr, struct sup_page_table_entry *spte);
 bool lookup_spt(void* addr);
-struct sup_page_table_entry *spt_get_file_mapping(mapid_t mapping);
+struct sup_page_table_entry *spt_get_file_mapping(mapid_t);
 struct sup_page_table_entry *spt_get_page(void *addr);
 
 
