@@ -269,9 +269,9 @@ mapid_t mmap (int fd, void *addr)
     return -1;
   //conflicting with existing address region
   if (pg_round_down(addr)!=addr)
-    PANIC("not page alligned, I don't know how to handle this\n")
+    PANIC("not page alligned, I don't know how to handle this\n");
   off_t checker = 0;
-  whle(checker<size)
+  while(checker<size)
   {
     if(lookup_spt(addr+checker))
       return -1;
@@ -320,8 +320,8 @@ void munmap (mapid_t mapping)
     while(spte!=NULL)
     {
        
-       file_seek(spte->file, ofs);
-       file_write(spte->file, pagedir_get_page(thread_current()->pagedir, spte->page_vaddr),spte->read_bytes)
+       file_seek(spte->file, spte->ofs);
+       file_write(spte->file, pagedir_get_page(thread_current()->pagedir, spte->page_vaddr),spte->read_bytes);
        palloc_free_page(spte->page_vaddr);
        free_frame((void *)spte->page_vaddr);
        free_spt(spte);
