@@ -260,15 +260,25 @@ mapid_t mmap (int fd, void *addr)
   //PANIC("mmap syscall test");
   //invalid fd
   if (fd<0||fd>=128||fd==0||fd==1)
+  {
+	PANIC("mmap syscall test1");
     return -1;
+  }
   //invalid addr
   if (addr==NULL||addr>=PHYS_BASE-0x800000||addr<0x08048000)
+  {
+	PANIC("mmap syscall test2");
     return -1;
+  }
   //file's size 0
+  
   struct file* file = thread_current()->fd[fd];
   off_t size = file_length(file);
   if (size==0)
+  {
+	PANIC("mmap syscall test3");
     return -1;
+  }
   //conflicting with existing address region
   if (pg_round_down(addr)!=addr)
     PANIC("not page alligned, I don't know how to handle this\n");
@@ -276,7 +286,10 @@ mapid_t mmap (int fd, void *addr)
   while(checker<size)
   {
     if(lookup_spt(addr+checker))
+	{
+	  PANIC("mmap syscall test4");
       return -1;
+	}
     checker+=PGSIZE;
   }
   //mmap with lazy loading => used in 
