@@ -204,9 +204,9 @@ page_fault (struct intr_frame *f)
 	  {
 		  if(spt_get_page(fault_addr)->type == DISK)
 		  {
-			  printf("%x\n", fault_addr);
 			  if(!not_present&&write)
 			  {
+				  printf("%x\n", fault_addr);
 				  exit(-1);
 				  return;
 			  }
