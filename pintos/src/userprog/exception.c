@@ -206,7 +206,6 @@ page_fault (struct intr_frame *f)
 		  {
 			  if(!not_present&&write)
 			  {
-				  printf("%x\n", fault_addr);
 				  exit(-1);
 				  return;
 			  }
