@@ -260,7 +260,7 @@ mapid_t mmap (int fd, void *addr)
   if (fd<0||fd>=128||fd==0||fd==1)
     return -1;
   //invalid addr
-  if (addr==0||addr>=PHYS_BASE-0x800000||addr<0x08048000)
+  if (addr==NULL||addr>=PHYS_BASE-0x800000||addr<0x08048000)
     return -1;
   //file's size 0
   struct file* file = thread_current()->fd[fd];
