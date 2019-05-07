@@ -256,7 +256,7 @@ void close(int fd)
 
 mapid_t mmap (int fd, void *addr)
 {
-  printf("mmap syscall test");
+  PANIC("mmap syscall test");
   //invalid fd
   if (fd<0||fd>=128||fd==0||fd==1)
     return -1;
