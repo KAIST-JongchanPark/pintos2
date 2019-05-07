@@ -13,14 +13,14 @@ test_main (void)
   int handle;
   mapid_t map;
   size_t i;
-
+msg("mmap read test0\n");
   CHECK ((handle = open ("sample.txt")) > 1, "open \"sample.txt\"");
   CHECK ((map = mmap (handle, actual)) != MAP_FAILED, "mmap \"sample.txt\"");
-  msg("mmap read test0\n");
+  msg("mmap read test00\n");
   /* Check that data is correct. */
   if (memcmp (actual, sample, strlen (sample)))
     fail ("read of mmap'd file reported bad data");
-  msg("mmap read test00\n");
+  msg("mmap read test000\n");
   /* Verify that data is followed by zeros. */
   for (i = strlen (sample); i < 4096; i++)
     if (actual[i] != 0)
