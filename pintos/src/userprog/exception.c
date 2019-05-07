@@ -188,16 +188,17 @@ page_fault (struct intr_frame *f)
 	  if(!lookup_spt(fault_addr))
 	  {
 		  //allocate_and_init_to_zero(fault_addr);
-      if(fault_addr>HEURISTIC&&(fault_addr>=stack_pointer||fault_addr==stack_pointer-4||fault_addr==stack_pointer-32))
-      {
-          void* temp = pg_round_down(fault_addr);
-          allocate_and_init_to_zero(temp);
-          return;
+		  if(fault_addr>HEURISTIC&&(fault_addr>=stack_pointer||fault_addr==stack_pointer-4||fault_addr==stack_pointer-32))
+		  {
+			  void* temp = pg_round_down(fault_addr);
+			  allocate_and_init_to_zero(temp);
+			  return;
 
-      }
-      else {
-        exit(-1);
-      }
+		  }
+		  else
+		  {
+			exit(-1);
+		  }
 		  
 	  }
 	  else if(lookup_spt(fault_addr))
@@ -216,7 +217,7 @@ page_fault (struct intr_frame *f)
 		  {
 			  //allocate_and_init_to_zero(fault_addr);
 			  exit(-1);
-        return;
+              return;
 		  }
 	  }
 	  else
@@ -226,7 +227,8 @@ page_fault (struct intr_frame *f)
   }
   else
   {
-	  exit(-1);
+	  //exit(-1);
+	  PANIC("UNUSED ADDR");
 	  return;
   }
 
