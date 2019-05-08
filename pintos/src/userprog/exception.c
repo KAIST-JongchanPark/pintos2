@@ -204,10 +204,6 @@ page_fault (struct intr_frame *f)
 	  {
 		  if(spt_get_page(fault_addr)->type == DISK || spt_get_page(fault_addr)->type == FILE )
 		  {
-			  if(spt_get_page(fault_addr)->type == FILE)
-			  {
-				  PANIC("type is FILE");
-			  }
 			  if(!not_present&&write)
 			  {
 				  exit(-1);
