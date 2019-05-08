@@ -335,17 +335,15 @@ void munmap (mapid_t mapping)
 {
     //iterate through spt, with comparing mapid
     struct sup_page_table_entry *spte = spt_get_file_mapping(mapping);
-	struct file *file = spte->file;
     while(spte!=NULL)
     {
-       file_seek(file, spte->ofs);
-       file_write(file, pagedir_get_page(thread_current()->pagedir, spte->page_vaddr), spte->read_bytes);
+       file_seek(spte->file, spte->ofs);
+       file_write(spte->file, spte->page_vaddr, spte->read_bytes);
        palloc_free_page(spte->page_vaddr);
        free_frame((void *)spte->page_vaddr);
        free_spt(spte);
 	   spte = spt_get_file_mapping(mapping);
     }
-	file_close(file);
     //for each element, remove from spt and free it. 
 
     //when freeing it, we should write content of the page back to disk. 
