@@ -80,7 +80,7 @@ exit_with_status(int status)
     struct mmap_elem *mme = list_entry(m_elem, struct mmap_elem, elem);
 
     // in sys_munmap(), the element is removed from the list
-    munmap (mme->id);
+    munmap (mme->mapid);
   }
 	thread_exit ();
 	//exit with given status => further used in process.c(when printing results)
