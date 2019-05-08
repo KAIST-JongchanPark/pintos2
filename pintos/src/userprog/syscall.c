@@ -343,6 +343,12 @@ mapid_t mmap (int fd, void *addr)
   return id;
 }
 
+static inline bool
+is_tail (struct list_elem *elem)
+{
+  return elem != NULL && elem->prev != NULL && elem->next == NULL;
+}
+
 struct list_elem *mmap_list_find_mapid (struct list *list, mapid_t mapid)
 {
   struct list_elem *curr_elem = malloc(sizeof(curr_elem));
