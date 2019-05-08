@@ -351,6 +351,10 @@ is_tail (struct list_elem *elem)
 
 struct list_elem *mmap_list_find_mapid (struct list *list, mapid_t mapid)
 {
+  if(list_empty(list))
+  {
+	  return NULL;
+  }
   struct list_elem *curr_elem = malloc(sizeof(curr_elem));
   curr_elem = list_front (list);
   while(!is_tail(curr_elem)) 
