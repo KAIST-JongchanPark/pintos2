@@ -393,7 +393,7 @@ void munmap (mapid_t mapping)
     {
        file_seek(spte->file, spte->ofs);
        file_write(spte->file, spte->page_vaddr, spte->read_bytes);
-	   void *kapge = pagedir_get_page(thread_current()->pagedir, spte->page_vaddr);
+	   void *kpage = pagedir_get_page(thread_current()->pagedir, spte->page_vaddr);
 	   if(kpage!=NULL)
 	   {
 			palloc_free_page(kpage);
