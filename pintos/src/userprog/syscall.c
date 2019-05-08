@@ -35,19 +35,18 @@ pid_t exec (const char *);
 
 void* is_valid_ptr(void* ptr)
 {
-	if(!is_user_vaddr(ptr)&&ptr==NULL)
+	if(!is_user_vaddr(ptr)||ptr==NULL)
 	{
 			//exit with status -1
 		exit_with_status(-1);
 		return 0;
 	} 
-	/*
-	if(!pagedir_get_page(thread_current()->pagedir, ptr))
+	if(!lookup_spt(ptr))
 	{
 		//exit with status -1
 		exit_with_status(-1);
 		return 0;
-	}*/
+	}
 	return ptr;
 }
 
