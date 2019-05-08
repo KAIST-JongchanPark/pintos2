@@ -338,9 +338,8 @@ void munmap (mapid_t mapping)
 	struct file *file = spte->file;
     while(spte!=NULL)
     {
-       
        file_seek(file, spte->ofs);
-       file_write(file, spte->page_vaddr, spte->read_bytes);
+       file_write(file, pagedir_get_page(thread_current()->pagedir, spte->page_vaddr), spte->read_bytes);
        palloc_free_page(spte->page_vaddr);
        free_frame((void *)spte->page_vaddr);
        free_spt(spte);
