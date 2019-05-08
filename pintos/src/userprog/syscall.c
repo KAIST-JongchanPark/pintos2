@@ -325,7 +325,7 @@ mapid_t mmap (int fd, void *addr)
       addr += PGSIZE;
       ofs += PGSIZE;
     }
-  printf("return id: %d\n", id);
+  //printf("return id: %d\n", id);
   return id;
 }
 
