@@ -202,7 +202,7 @@ page_fault (struct intr_frame *f)
 	  }
 	  else if(lookup_spt(fault_addr))
 	  {
-		  if(spt_get_page(fault_addr)->type == DISK)
+		  if(spt_get_page(fault_addr)->type == DISK || spt_get_page(fault_addr)->type == FILE )
 		  {
 			  if(!not_present&&write)
 			  {
