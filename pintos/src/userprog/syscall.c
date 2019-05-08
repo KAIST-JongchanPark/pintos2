@@ -261,13 +261,13 @@ mapid_t mmap (int fd, void *addr)
   //invalid fd
   if (fd<0||fd>=128||fd==0||fd==1)
   {
-	PANIC("mmap syscall test1");
+	//PANIC("mmap syscall test1");
     return -1;
   }
   //invalid addr
   if (addr==NULL||addr>=PHYS_BASE-0x800000||addr<0x08048000)
   {
-	PANIC("mmap syscall test2");
+	//PANIC("mmap syscall test2");
     return -1;
   }
   //file's size 0
@@ -279,7 +279,7 @@ mapid_t mmap (int fd, void *addr)
   
   if (size==0)
   {
-	PANIC("mmap syscall test3");
+	//PANIC("mmap syscall test3");
     return -1;
   }
   //conflicting with existing address region
@@ -290,7 +290,7 @@ mapid_t mmap (int fd, void *addr)
   {
     if(lookup_spt(addr+checker))
 	{
-	  PANIC("mmap syscall test4");
+	  //PANIC("mmap syscall test4");
       return -1;
 	}
     checker+=PGSIZE;

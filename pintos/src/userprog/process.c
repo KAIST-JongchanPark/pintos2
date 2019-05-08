@@ -584,6 +584,7 @@ load_segment (struct file *file, off_t ofs, uint8_t *upage,
 	  spte -> writable = writable;
       spte -> read_bytes = page_read_bytes;
 	  spte -> type = DISK;
+	  spte -> mapid = 0;
 	  
 	  //here
 	  
@@ -687,6 +688,7 @@ install_page (void *upage, void *kpage, bool writable)
 	//spte -> page = lookup_page(t->pagedir, upage, false);
   spte -> page_vaddr = (void *)(((uintptr_t)upage >> 12) << 12);
   spte -> type = HEAP;
+  spte -> mapid = 0;
   allocate_spt(t->spt, spte);
   return (result);
 }
