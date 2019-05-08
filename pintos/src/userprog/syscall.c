@@ -337,7 +337,7 @@ void munmap (mapid_t mapping)
     struct sup_page_table_entry *spte = spt_get_file_mapping(mapping);
 	if(spte == NULL)
 	{
-		PANIC("spte is null.")
+		PANIC("spte is null.");
 	}
     while(spte!=NULL)
     {
