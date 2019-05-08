@@ -445,6 +445,7 @@ init_thread (struct thread *t, const char *name, int priority)
   t->priority = priority;
   t->mapid = 0;
   t->magic = THREAD_MAGIC;
+  list_init(&(t->mmap_list));
 
 #ifdef USERPROG
   int i;

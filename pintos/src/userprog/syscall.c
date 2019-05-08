@@ -13,6 +13,7 @@
 #include "vm/page.h"
 #include "filesys/off_t.h"
 #include "threads/malloc.h"
+#include "lib/kernel/list.h"
 
 
 typedef int pid_t;
@@ -21,6 +22,14 @@ struct lock syscall_lock;
 
 void munmap (mapid_t mapping);
 mapid_t mmap (int fd, void *addr);
+struct list_elem *mmap_list_find_mapid (struct list *list, mapid_t mapid);
+struct sup_page_table_entry* mapping_to_spte(mapid_t mapping);
+struct mmap_elem
+{
+  struct list_elem elem;
+  mapid_t mapid;
+  void* vaddr;
+}
 
 
 struct file 
@@ -319,6 +328,10 @@ mapid_t mmap (int fd, void *addr)
       spte -> read_bytes = page_read_bytes;
       spte -> type = FILE;
       spte -> mapid = id;
+      struct mmap_elem* mme = malloc(sizeof(struct mmap_elem));
+      mme->mapid = id;
+      mme->vaddr = spte->page_vaddr;
+      list_push_back(thread_current()->mmap_list, &(mme->elem));
       
       allocate_spt(thread_current()->spt, spte);
       read_bytes -= page_read_bytes;
@@ -330,11 +343,38 @@ mapid_t mmap (int fd, void *addr)
   return id;
 }
 
+struct list_elem *mmap_list_find_mapid (struct list *list, mapid_t mapid)
+{
+  struct list_elem *curr_elem = malloc(sizeof(curr_elem));
+  curr_elem = list_front (list);
+  while(!is_tail(curr_elem)) 
+  {
+      if(list_entry (curr_elem, struct mmap_elem, elem)->mapid == mapid)
+    {
+        return curr_elem;
+    }
+    curr_elem = list_next(curr_elem);
+  }
+  return NULL;
+}
+
+struct sup_page_table_entry* mapping_to_spte(mapid_t mapping)
+{
+    struct list_elem * m_elem = mmap_list_find_mapid(thread_current()->mmap_list, mapping);
+    if(m_elem==NULL)
+      return NULL;
+    list_remove(thread_current()->mmap_list, m_elem);
+    struct mmap_elem* mme = list_entry(m_elem, struct mmap_elem, elem);
+    struct sup_page_table_entry *spte = spt_get_page(mme->vaddr);
+    return spte;
+}
 
 void munmap (mapid_t mapping)
 {
     //iterate through spt, with comparing mapid
-    struct sup_page_table_entry *spte = spt_get_file_mapping(mapping);
+    
+    struct sup_page_table_entry *spte = mapping_to_spte(mapping);
+
 	if(spte == NULL)
 	{
 		PANIC("spte is null.");
@@ -346,7 +386,8 @@ void munmap (mapid_t mapping)
        palloc_free_page(spte->page_vaddr);
        free_frame((void *)spte->page_vaddr);
        free_spt(spte);
-	   spte = spt_get_file_mapping(mapping);
+       spte = mapping_to_spte(mapping);
+	     
     }
     //for each element, remove from spt and free it. 
 

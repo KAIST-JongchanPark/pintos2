@@ -95,7 +95,8 @@ struct thread
     struct list_elem elem;              /* List element. */
 	struct hash *spt;
 	struct file *file;
-  int mapid;
+    int mapid;
+	struct list mmap_list;
 
 #ifdef USERPROG
     /* Owned by userprog/process.c. */
