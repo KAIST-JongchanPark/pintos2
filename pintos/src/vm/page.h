@@ -19,7 +19,7 @@ enum page_type
 
 struct sup_page_table_entry 
 {
-	uint32_t *page_vaddr;
+	void *page_vaddr;
 	/*
 	uint64_t access_time;
 

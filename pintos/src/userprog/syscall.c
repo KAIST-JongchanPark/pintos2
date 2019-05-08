@@ -389,8 +389,8 @@ void munmap (mapid_t mapping)
     {
        file_seek(spte->file, spte->ofs);
        file_write(spte->file, spte->page_vaddr, spte->read_bytes);
-       palloc_free_page(spte->page_vaddr);
-       free_frame((void *)spte->page_vaddr);
+       palloc_free_page(pagedir_get_page(thread_current()->pagedir, spte->page_vaddr));
+       free_frame(pagedir_get_page(thread_current()->pagedir, spte->page_vaddr));
        free_spt(spte);
        spte = mapping_to_spte(mapping);
 	     
