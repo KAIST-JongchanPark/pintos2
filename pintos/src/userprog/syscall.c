@@ -273,8 +273,9 @@ mapid_t mmap (int fd, void *addr)
   //file's size 0
   
   struct file* file = thread_current()->fd[fd];
+  struct file* refile = file_reopen(file);
   //PANIC("mmap syscall test");
-  off_t size = file_length(file);
+  off_t size = file_length(refile);
   
   if (size==0)
   {
@@ -301,7 +302,7 @@ mapid_t mmap (int fd, void *addr)
   read_bytes = size;
   zero_bytes = PGSIZE - size%PGSIZE;
 
-  file_seek(file,0);
+  file_seek(refile,0);
   mapid_t id = thread_current()->mapid+1;
   thread_current()->mapid+=1;
   while (read_bytes > 0 || zero_bytes > 0) 
@@ -312,7 +313,7 @@ mapid_t mmap (int fd, void *addr)
       struct sup_page_table_entry *spte = malloc(sizeof(struct sup_page_table_entry));
       //spte -> page = lookup_page(t->pagedir, upage, false);
       spte -> page_vaddr = (void *)(((uintptr_t)addr >> 12) << 12);
-      spte -> file = file;
+      spte -> file = refile;
       spte -> ofs = ofs;
       spte -> writable = true;
       spte -> read_bytes = page_read_bytes;
@@ -342,6 +343,7 @@ void munmap (mapid_t mapping)
        palloc_free_page(spte->page_vaddr);
        free_frame((void *)spte->page_vaddr);
        free_spt(spte);
+	   spte = spt_get_file_mapping(mapping);
     }
     //for each element, remove from spt and free it. 
 
