@@ -12,6 +12,7 @@
 #include "threads/synch.h"
 #include "vm/page.h"
 #include "filesys/off_t.h"
+#include "threads/malloc.h"
 
 
 typedef int pid_t;
