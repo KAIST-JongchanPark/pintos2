@@ -72,7 +72,15 @@ exit_with_status(int status)
       file_close(thread_current()->fd[i]);
       thread_current()->fd[i] = NULL;
     }
-      
+    
+  }
+  struct list *mmap_list = &thread_current()->mmap_list;
+  while (!list_empty(mmap_list)) {
+    struct list_elem *m_elem = list_begin (mmap_list);
+    struct mmap_elem *mme = list_entry(m_elem, struct mmap_elem, elem);
+
+    // in sys_munmap(), the element is removed from the list
+    munmap (mme->id);
   }
 	thread_exit ();
 	//exit with given status => further used in process.c(when printing results)
