@@ -429,7 +429,7 @@ syscall_handler (struct intr_frame *f)
     case SYS_MMAP:
       is_valid_ptr((void *)(f->esp+4));
       is_valid_ptr((void *)(f->esp+8));
-      is_valid_ptr((void *)*(int *)(f->esp+8));
+      //is_valid_ptr((void *)*(int *)(f->esp+8));
       f->eax = mmap(*(int *)(f->esp+4), (void *)*(int *)(f->esp + 8));
       break;
     case SYS_MUNMAP:   
