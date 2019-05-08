@@ -331,7 +331,7 @@ mapid_t mmap (int fd, void *addr)
       struct mmap_elem* mme = malloc(sizeof(struct mmap_elem));
       mme->mapid = id;
       mme->vaddr = spte->page_vaddr;
-      list_push_back(thread_current()->mmap_list, &(mme->elem));
+      list_push_back(&(thread_current()->mmap_list), &(mme->elem));
       
       allocate_spt(thread_current()->spt, spte);
       read_bytes -= page_read_bytes;
@@ -360,10 +360,10 @@ struct list_elem *mmap_list_find_mapid (struct list *list, mapid_t mapid)
 
 struct sup_page_table_entry* mapping_to_spte(mapid_t mapping)
 {
-    struct list_elem * m_elem = mmap_list_find_mapid(thread_current()->mmap_list, mapping);
+    struct list_elem * m_elem = mmap_list_find_mapid(&(thread_current()->mmap_list), mapping);
     if(m_elem==NULL)
       return NULL;
-    list_remove(thread_current()->mmap_list, m_elem);
+    list_remove(&(thread_current()->mmap_list), m_elem);
     struct mmap_elem* mme = list_entry(m_elem, struct mmap_elem, elem);
     struct sup_page_table_entry *spte = spt_get_page(mme->vaddr);
     return spte;
