@@ -399,7 +399,7 @@ void munmap (mapid_t mapping)
 			//palloc_free_page(kpage);
 			//free_frame(kpage);
 	   }
-       //free_spt(spte);
+       free_spt(spte);
        spte = mapping_to_spte(mapping);
 	     
     }
@@ -441,7 +441,7 @@ syscall_handler (struct intr_frame *f)
     	break;                   /* Wait for a child process to die. */
     case SYS_CREATE:
       is_valid_ptr((void *)(f->esp+4));
-      is_valid_ptr((void *)*(int *)(f->esp+4));
+      //is_valid_ptr((void *)*(int *)(f->esp+4));
       f->eax = create((const char *)*(int *)(f->esp+4), (off_t)*(unsigned *)(f->esp+8));
     	break;                 /* Create a file. */
     case SYS_REMOVE:
