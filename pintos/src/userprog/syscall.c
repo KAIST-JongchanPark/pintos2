@@ -335,6 +335,10 @@ void munmap (mapid_t mapping)
 {
     //iterate through spt, with comparing mapid
     struct sup_page_table_entry *spte = spt_get_file_mapping(mapping);
+	if(spte == NULL)
+	{
+		PANIC("spte is null.")
+	}
     while(spte!=NULL)
     {
        file_seek(spte->file, spte->ofs);
