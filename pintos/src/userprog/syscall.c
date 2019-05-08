@@ -29,7 +29,7 @@ struct mmap_elem
   struct list_elem elem;
   mapid_t mapid;
   void* vaddr;
-}
+};
 
 
 struct file 
@@ -363,7 +363,7 @@ struct sup_page_table_entry* mapping_to_spte(mapid_t mapping)
     struct list_elem * m_elem = mmap_list_find_mapid(&(thread_current()->mmap_list), mapping);
     if(m_elem==NULL)
       return NULL;
-    list_remove(&(thread_current()->mmap_list), m_elem);
+    list_remove(m_elem);
     struct mmap_elem* mme = list_entry(m_elem, struct mmap_elem, elem);
     struct sup_page_table_entry *spte = spt_get_page(mme->vaddr);
     return spte;
