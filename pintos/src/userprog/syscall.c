@@ -274,6 +274,7 @@ mapid_t mmap (int fd, void *addr)
   
   struct file* file = thread_current()->fd[fd];
   off_t size = file_length(file);
+  PANIC("mmap syscall test");
   if (size==0)
   {
 	PANIC("mmap syscall test3");
@@ -293,7 +294,7 @@ mapid_t mmap (int fd, void *addr)
     checker+=PGSIZE;
   }
   //mmap with lazy loading => used in 
-  PANIC("mmap syscall test");
+  
   uint32_t read_bytes, zero_bytes;
   off_t ofs = 0;
   read_bytes = size;
