@@ -273,8 +273,9 @@ mapid_t mmap (int fd, void *addr)
   //file's size 0
   
   struct file* file = thread_current()->fd[fd];
-  off_t size = file_length(file);
   PANIC("mmap syscall test");
+  off_t size = file_length(file);
+  
   if (size==0)
   {
 	PANIC("mmap syscall test3");
