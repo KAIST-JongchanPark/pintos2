@@ -35,7 +35,7 @@ pid_t exec (const char *);
 
 void* is_valid_ptr(void* ptr)
 {
-	if(!is_user_vaddr(ptr))
+	if(!is_user_vaddr(ptr)&&ptr==NULL)
 	{
 			//exit with status -1
 		exit_with_status(-1);
