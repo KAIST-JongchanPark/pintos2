@@ -28,6 +28,8 @@ struct mmap_elem
 {
   struct list_elem elem;
   mapid_t mapid;
+  off_t size;
+  struct file* file;
   void* vaddr;
 };
 
@@ -336,10 +338,6 @@ mapid_t mmap (int fd, void *addr)
       spte -> read_bytes = page_read_bytes;
       spte -> type = FILE;
       spte -> mapid = id;
-      struct mmap_elem* mme = malloc(sizeof(struct mmap_elem));
-      mme->mapid = id;
-      mme->vaddr = spte->page_vaddr;
-      list_push_back(&(thread_current()->mmap_list), &(mme->elem));
       
       allocate_spt(thread_current()->spt, spte);
       read_bytes -= page_read_bytes;
@@ -347,6 +345,12 @@ mapid_t mmap (int fd, void *addr)
       addr += PGSIZE;
       ofs += PGSIZE;
     }
+  struct mmap_elem* mme = malloc(sizeof(struct mmap_elem));
+  mme->mapid = id;
+  mme->vaddr = spte->page_vaddr;
+  mme->file = refile;
+  mme->size = size;
+  list_push_back(&(thread_current()->mmap_list), &(mme->elem));
   //printf("return id: %d\n", id);
   return id;
 }
@@ -363,8 +367,7 @@ struct list_elem *mmap_list_find_mapid (struct list *list, mapid_t mapid)
   {
 	  return NULL;
   }
-  struct list_elem *curr_elem = malloc(sizeof(curr_elem));
-  curr_elem = list_front (list);
+  struct list_elem *curr_elem = list_front (list);
   while(!is_tail(curr_elem)) 
   {
       if(list_entry (curr_elem, struct mmap_elem, elem)->mapid == mapid)
@@ -381,9 +384,9 @@ struct sup_page_table_entry* mapping_to_spte(mapid_t mapping)
     struct list_elem * m_elem = mmap_list_find_mapid(&(thread_current()->mmap_list), mapping);
     if(m_elem==NULL)
       return NULL;
-    list_remove(m_elem);
     struct mmap_elem* mme = list_entry(m_elem, struct mmap_elem, elem);
     struct sup_page_table_entry *spte = spt_get_page(mme->vaddr);
+	list_remove(m_elem);
     return spte;
 }
 
