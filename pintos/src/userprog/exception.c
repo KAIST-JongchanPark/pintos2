@@ -219,7 +219,6 @@ page_fault (struct intr_frame *f)
 			  printf("addr2: %x\n", fault_addr);
 			  if(!not_present&&write)
 			  {
-				  printf("addr3: %x\n", fault_addr);
 				  exit(-1);
 				  return;
 			  }
