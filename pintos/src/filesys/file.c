@@ -5,7 +5,7 @@
 #include "threads/synch.h"
 
 
-struct lock filesys_lock;
+//struct lock filesys_lock;
 /* An open file. */
 struct file 
   {
