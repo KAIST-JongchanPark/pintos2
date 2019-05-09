@@ -69,7 +69,8 @@ swap_in (void *addr) // when page_fault but already evicted addr called.
 	 /* 5. Use helper function read_from_disk in order to read the contents
 	 * of the disk into the frame. 
 	 */ 
-	for(int i=0; i<8; i++)
+	int i = 0;
+	for(i=0; i<8; i++)
 	{
 		read_from_disk(kpage, spte->swapped_place+i);
 	}
@@ -123,7 +124,8 @@ swap_out (void) // when palloc is null, page full.
 	{
 		PANIC("swap slots are fully used.");
 	}
-	for(int i=0; i<8; i++)
+	int i=0;
+	for(i=0; i<8; i++)
 	{
 		write_to_disk(kpage, place+i);
 	}
