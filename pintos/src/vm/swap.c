@@ -130,7 +130,6 @@ swap_out (void) // when palloc is null, page full.
 		return true;
 	}
 	size_t place = bitmap_scan(swap_table, 0, 8, false);
-	printf("addr4: %x\n", upage);
 	if(place==BITMAP_ERROR)
 	{
 		PANIC("swap slots are fully used.");
@@ -147,6 +146,7 @@ swap_out (void) // when palloc is null, page full.
 	pagedir_set_dirty(pd, kpage, false);
 	palloc_free_page(kpage); // add
 	spte->swapped_place = place;
+	printf("addr4: %x\n", upage);
 	return true;
 
 
