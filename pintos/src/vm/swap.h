@@ -2,6 +2,7 @@
 #define VM_SWAP_H
 
 #include <stdbool.h>
+#include "filesys/off_t.h"
 
 void swap_init (void);
 bool swap_in (void *addr);
