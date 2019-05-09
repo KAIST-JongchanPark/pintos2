@@ -160,6 +160,8 @@ void calculate_counter(void)
     
     struct frame_table_entry* fte = list_entry (curr_elem, struct frame_table_entry, elem);
     //struct sup_page_table_entry* spte = spt_get_page(fte->upage);
+	void *upage = fte->upage;
+	void *kpage = fte->kpage;
     bool accessed_bit = fte->accessed;
     uint32_t* pd = thread_current()->pagedir;
 
