@@ -117,7 +117,7 @@ main (void)
   serial_init_queue ();
   timer_calibrate ();
 #ifdef VM
-  disk_init ();
+  //disk_init ();
   swap_init ();
 #endif
 #ifdef FILESYS
