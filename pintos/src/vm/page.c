@@ -107,8 +107,8 @@ bool allocate_using_spt(void* addr, struct sup_page_table_entry *spte)
 	  {
 		//PANIC("eviction is not implemented, skip page-linear");
 		//return false;
-		printf("addr3: %x\n", addr);
 	  	swap_out();
+		printf("addr3: %x\n", addr);
 	  	kpage = palloc_get_page (PAL_USER);
 	  }
 	
