@@ -167,7 +167,7 @@ void read_from_disk (uint8_t *frame, int index)
 /* Write data to swap device from frame */
 void write_to_disk (uint8_t *frame, int index)
 {
-	struct list_elem *frame_elem = frame_find_addr (struct list *list, void *addr);
+	struct list_elem *frame_elem = frame_find_addr (&frame_table, frame);
 	struct frame_table_entry *fte = list_entry(frame_elem, struct frame_table_entry, elem);
 	if(fte->swapped)
 	{
