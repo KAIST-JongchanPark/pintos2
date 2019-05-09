@@ -116,8 +116,8 @@ main (void)
   serial_init_queue ();
   timer_calibrate ();
 #ifdef VM
-  swap_init ();
   disk_init ();
+  swap_init ();
 #endif
 #ifdef FILESYS
   /* Initialize file system. */
