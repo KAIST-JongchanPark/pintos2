@@ -7,6 +7,7 @@
 #include "filesys/file.h"
 #include "filesys/off_t.h"
 #include "vm/frame.h"
+#include "vm/swap.h"
 #include "threads/malloc.h"
 #include "userprog/pagedir.h"
 #include "threads/vaddr.h"
@@ -103,8 +104,10 @@ bool allocate_using_spt(void* addr, struct sup_page_table_entry *spte)
 	
 	  if (kpage == NULL)
 	  {
-		PANIC("eviction is not implemented, skip page-linear");
-		return false;
+		//PANIC("eviction is not implemented, skip page-linear");
+		//return false;
+	  	swap_out();
+	  	kpage = palloc_get_page (PAL_USER);
 	  }
 	
 	  allocate_frame((void *)kpage);
@@ -125,8 +128,7 @@ bool allocate_using_spt(void* addr, struct sup_page_table_entry *spte)
 		}
 	  memset (kpage + page_read_bytes, 0, page_zero_bytes);
 	  /* Add the page to the process's address space. */
-	  uint8_t *upage = (uint8_t *)((uint32_t)addr & ~PGMASK);
-	  bool result = pagedir_get_page (thread_current()->pagedir, upage) == NULL
+p	  bool result = pagedir_get_page (thread_current()->pagedir, upage) == NULL
           && pagedir_set_page (thread_current()->pagedir, upage, kpage, spte->writable);
 		  
 	  if (!result) 

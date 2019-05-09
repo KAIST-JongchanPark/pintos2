@@ -7,6 +7,7 @@
 #include "threads/vaddr.h"
 #include "vm/page.h"
 #include "vm/frame.h"
+#include "vm/swap.h"
 
 /* Number of page faults processed. */
 static long long page_fault_cnt;
@@ -203,7 +204,13 @@ page_fault (struct intr_frame *f)
 	  }
 	  else if(lookup_spt(fault_addr))
 	  {
-		  if(spt_get_page(fault_addr)->type == DISK || spt_get_page(fault_addr)->type == FILE )
+		  if(spt_get_page(faule_addr)->swapped == true)
+      {
+        swap_in(fault_addr);
+        return;
+      }
+
+      else if(spt_get_page(fault_addr)->type == DISK || spt_get_page(fault_addr)->type == FILE )
 		  {
 			  if(!not_present&&write)
 			  {

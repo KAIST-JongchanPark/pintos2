@@ -20,12 +20,14 @@ void frame_init (void)
 /* 
  * Make a new frame table entry for addr.
  */
-void allocate_frame (void *addr)
+void allocate_frame (void *kpage, void* upage)
 {
 	struct frame_table_entry *fte = malloc(sizeof(struct frame_table_entry));
 	
-	fte -> frame = (void *)vtop(addr);
+	fte -> kpage = (void *)vtop(kpage);
 	fte -> owner = thread_current();
+	fte -> upage = upage;
+	fte -> counter = 0;
 	
 	list_push_front(&frame_table, &(fte->elem));
 }
@@ -52,7 +54,7 @@ struct list_elem *frame_find_addr (struct list *list, void *addr)
   curr_elem = list_front (list);
   while(!is_tail(curr_elem)) 
   {
-      if(list_entry (curr_elem, struct frame_table_entry, elem)->frame == addr)
+      if(list_entry (curr_elem, struct frame_table_entry, elem)->kpage == addr)
 	  {
         return curr_elem;
 	  }
@@ -60,3 +62,30 @@ struct list_elem *frame_find_addr (struct list *list, void *addr)
   }
   return NULL;
 }
+
+struct frame_table_entry* find_frame_to_evict(void)
+{
+	struct list_elem* target_elem = list_pop_max(&frame_table);
+	struct frame_table_entry* fte = list_entry(target_elem, struct frame_table_entry, elem);
+	return fte;
+}
+
+
+struct list_elem *
+list_pop_max (struct list *list)
+{
+  struct list_elem *max_elem = list_front (list);
+  struct list_elem *curr_elem = list_front (list);
+  while(!is_tail(curr_elem)) 
+  {
+      if((list_entry (max_elem, struct thread, elem) -> counter) < (list_entry (curr_elem, struct thread, elem) -> counter))
+	  {
+        max_elem = curr_elem;
+	  }
+	  curr_elem = list_next(curr_elem);
+  }
+  list_remove(max_elem);
+  return max_elem;
+}   
+
+

@@ -347,6 +347,10 @@ mapid_t mmap (int fd, void *addr)
       spte -> read_bytes = page_read_bytes;
       spte -> type = FILE;
       spte -> mapid = id;
+
+      spte -> swapped = false;
+      spte -> accessed = false;
+      spte -> dirty = false;
       
       allocate_spt(thread_current()->spt, spte);
       read_bytes -= page_read_bytes;

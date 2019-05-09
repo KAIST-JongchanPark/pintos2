@@ -22,10 +22,11 @@ struct sup_page_table_entry
 	void *page_vaddr;
 	/*
 	uint64_t access_time;
-
+	*/
 	bool dirty;
 	bool accessed;
-	*/
+	bool swapped;
+	
 	struct hash_elem elem;
 	struct file* file;
 	off_t ofs;
@@ -33,6 +34,7 @@ struct sup_page_table_entry
     size_t read_bytes;
 	enum page_type type;
 	int mapid;
+	size_t swapped_place;
 
 };
 

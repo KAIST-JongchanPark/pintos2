@@ -11,6 +11,12 @@
 #include "threads/switch.h"
 #include "threads/synch.h"
 #include "threads/vaddr.h"
+
+#include "vm/page.h"
+#include "vm/frame.h"
+#include "vm/swap.h"
+
+
 #ifdef USERPROG
 #include "userprog/process.h"
 #endif
@@ -137,10 +143,43 @@ thread_tick (void)
   else
     kernel_ticks++;
 
+  calculate_counter();
+
   /* Enforce preemption. */
   if (++thread_ticks >= TIME_SLICE)
     intr_yield_on_return ();
 }
+
+void calculate_counter(void)
+{
+  struct list_elem *curr_elem = malloc(sizeof(curr_elem));
+  curr_elem = list_front (&frame_table);
+  while(!is_tail(curr_elem)) 
+  {
+    
+    struct frame_table_entry* fte = list_entry (curr_elem, struct frame_table_entry, elem);
+    struct sup_page_table_entry* spte = spt_get_page(fte->upage);
+    bool accessed_bit = spte->accessed;
+    uint32_t* pd = thread_current()->pagedir;
+
+
+    accessed bit = accessed_bit||pagedir_is_accessed(pd, upage)||pagedir_is_accessed(pd, kpage);
+    if(accessed_bit)
+    {
+      counter = 0;
+      spte->accessed = 0;
+    }
+    else
+    {
+      counter+=1;
+      spte->accessed = 0;
+    }
+    curr_elem = list_next(curr_elem);
+
+  }
+  return NULL;
+}
+
 
 /* Prints thread statistics. */
 void
