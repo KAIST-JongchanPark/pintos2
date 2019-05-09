@@ -205,7 +205,7 @@ page_fault (struct intr_frame *f)
 	  }
 	  else if(lookup_spt(fault_addr))
 	  {
-		  if(spt_get_page(faule_addr)->swapped == true)
+		  if(spt_get_page(fault_addr)->swapped == true)
 		  {
 			swap_in(fault_addr);
 			return;
@@ -246,7 +246,7 @@ page_fault (struct intr_frame *f)
 
 
 
-/*
+
   /* To implement virtual memory, delete the rest of the function
      body, and replace it with code that brings in the page to
      which fault_addr refers. 
@@ -256,6 +256,6 @@ page_fault (struct intr_frame *f)
           write ? "writing" : "reading",
           user ? "user" : "kernel");
   kill (f);
-*/
+  */
 }
 
