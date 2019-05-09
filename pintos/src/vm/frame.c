@@ -24,7 +24,7 @@ void allocate_frame (void *kpage, void* upage)
 {
 	struct frame_table_entry *fte = malloc(sizeof(struct frame_table_entry));
 	
-	fte -> kpage = (void *)vtop(kpage);
+	fte -> kpage = (void *)kpage;
 	fte -> owner = thread_current();
 	fte -> upage = (void *)(((uintptr_t)upage >> 12) << 12);
 	fte -> counter = 0;
