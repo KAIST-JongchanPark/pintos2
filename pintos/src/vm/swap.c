@@ -93,7 +93,7 @@ swap_out (void) // when palloc is null, page full.
 	 * (Ex. Least Recently Used policy -> Compare the timestamps when each 
 	 * frame is last accessed)
 	 */
-	struct frame_table_entry* fte = find_frame_to_evict();
+	struct frame_table_entry* fte = find_frame_to_evict(); // pick not evicted one?
 	if(fte==NULL)
 	{
 		PANIC("fte of swap out is null");
