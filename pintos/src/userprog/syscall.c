@@ -303,7 +303,9 @@ mapid_t mmap (int fd, void *addr)
   }
   //conflicting with existing address region
   if (pg_round_down(addr)!=addr)
-    PANIC("not page alligned, I don't know how to handle this\n");
+  {
+    return -1;
+  }
   off_t checker = 0;
   while(checker<size)
   {
