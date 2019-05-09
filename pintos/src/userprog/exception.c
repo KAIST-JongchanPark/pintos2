@@ -210,7 +210,6 @@ page_fault (struct intr_frame *f)
 		  printf("addr2: %x\n", fault_addr);
 		  if(spt_get_page(fault_addr)->swapped == true)
 		  {
-			printf("addr3: %x\n", fault_addr);
 			swap_in(fault_addr);
 			return;
 		  }
