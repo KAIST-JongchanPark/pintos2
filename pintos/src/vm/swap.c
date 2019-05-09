@@ -142,7 +142,7 @@ swap_out (void) // when palloc is null, page full.
 	}
 	//안됨
 	bitmap_set_multiple(swap_table, place, 8, true);
-	free_frame(kpage); // problem
+	list_remove(&fte->elem); // problem
 	pagedir_set_dirty(pd, upage, false);
 	pagedir_set_dirty(pd, kpage, false);
 	palloc_free_page(kpage); // add
