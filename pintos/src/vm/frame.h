@@ -3,6 +3,7 @@
 
 #include "lib/kernel/list.h"
 #include "threads/thread.h"
+#include <stdbool.h>
 
 struct frame_table_entry
 {
@@ -10,6 +11,7 @@ struct frame_table_entry
 	void* upage;
 	struct thread *owner;
 	bool dirty;
+	bool accessed;
 	//struct sup_page_table_entry* spte;
 	struct list_elem elem;
 	int counter;

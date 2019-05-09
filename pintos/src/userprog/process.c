@@ -582,12 +582,10 @@ load_segment (struct file *file, off_t ofs, uint8_t *upage,
 	  spte -> file = file;
 	  spte -> ofs = ofs;
 	  spte -> writable = writable;
-    spte -> read_bytes = page_read_bytes;
+      spte -> read_bytes = page_read_bytes;
 	  spte -> type = DISK;
 	  spte -> mapid = 0;
-	  
-    spte -> swapped = false;
-    spte -> accessed = false;
+	  spte -> swapped = false;
 
 
 	  //here
@@ -695,7 +693,6 @@ install_page (void *upage, void *kpage, bool writable)
   spte -> mapid = 0;
 
   spte -> swapped = false;
-  spte -> accessed = false;
 
   allocate_spt(t->spt, spte);
   return (result);

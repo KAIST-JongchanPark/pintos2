@@ -15,6 +15,7 @@
 #include "vm/page.h"
 #include "vm/frame.h"
 #include "vm/swap.h"
+#include "threads/init.h"
 
 
 #ifdef USERPROG
@@ -158,8 +159,8 @@ void calculate_counter(void)
   {
     
     struct frame_table_entry* fte = list_entry (curr_elem, struct frame_table_entry, elem);
-    struct sup_page_table_entry* spte = spt_get_page(fte->upage);
-    bool accessed_bit = spte->accessed;
+    //struct sup_page_table_entry* spte = spt_get_page(fte->upage);
+    bool accessed_bit = fte->accessed;
     uint32_t* pd = thread_current()->pagedir;
 
 
@@ -167,12 +168,12 @@ void calculate_counter(void)
     if(accessed_bit)
     {
       counter = 0;
-      spte->accessed = 0;
+      fte->accessed = 0;
     }
     else
     {
       counter+=1;
-      spte->accessed = 0;
+      fte->accessed = 0;
     }
     curr_elem = list_next(curr_elem);
 
