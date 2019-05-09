@@ -142,7 +142,7 @@ swap_out (void) // when palloc is null, page full.
 	}
 	//안됨
 	bitmap_set_multiple(swap_table, place, 8, true);
-	free_frame(kpage);
+	free_frame(kpage); // problem
 	pagedir_set_dirty(pd, upage, false);
 	pagedir_set_dirty(pd, kpage, false);
 	palloc_free_page(kpage); // add
@@ -166,7 +166,7 @@ void read_from_disk (uint8_t *frame, int index)
 /* Write data to swap device from frame */
 void write_to_disk (uint8_t *frame, int index)
 {
-	disk_write(swap_device, index, frame+index*512); // problem
+	disk_write(swap_device, index, frame+index*512);
 
 }
 
