@@ -108,6 +108,7 @@ main (void)
 #endif
 #ifdef VM
   frame_init();
+  swap_init ();
 #endif
 
   /* Start thread scheduler and enable interrupts. */
