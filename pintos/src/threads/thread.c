@@ -159,7 +159,7 @@ is_tail (struct list_elem *elem)
 
 void calculate_counter(void)
 {
-  if(list_empty(&frame_empty))
+  if(list_empty(&frame_table))
   {
 	  return;
   }
