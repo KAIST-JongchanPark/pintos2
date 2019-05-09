@@ -170,7 +170,8 @@ void write_to_disk (uint8_t *frame, int index)
 {
 	struct list_elem *frame_elem = frame_find_addr (&frame_table, frame);
 	struct frame_table_entry *fte = list_entry(frame_elem, struct frame_table_entry, elem);
-	if(fte->swapped)
+	struct sup_page_table_entry *spte = spt_get_page(fte->upage);
+	if(spte->swapped)
 	{
 		printf("swapin addr: %x\n", fte->upage);
 		swap_in(fte->upage);
