@@ -108,15 +108,17 @@ main (void)
 #endif
 #ifdef VM
   frame_init();
-  disk_init ();
-  swap_init ();
+  
 #endif
 
   /* Start thread scheduler and enable interrupts. */
   thread_start ();
   serial_init_queue ();
   timer_calibrate ();
-
+#ifdef VM
+  swap_init ();
+  disk_init ();
+#endif
 #ifdef FILESYS
   /* Initialize file system. */
   disk_init ();
