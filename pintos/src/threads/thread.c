@@ -151,6 +151,12 @@ thread_tick (void)
     intr_yield_on_return ();
 }
 
+static inline bool
+is_tail (struct list_elem *elem)
+{
+  return elem != NULL && elem->prev != NULL && elem->next == NULL;
+}
+
 void calculate_counter(void)
 {
   struct list_elem *curr_elem = malloc(sizeof(curr_elem));
