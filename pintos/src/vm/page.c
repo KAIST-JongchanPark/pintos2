@@ -75,7 +75,8 @@ bool allocate_and_init_to_zero(void* addr)
   
   if (kpage == NULL)
   {
-	return false;
+	swap_out();
+	kpage = palloc_get_page (PAL_USER | PAL_ZERO);
   }
   allocate_frame((void *)kpage);
   

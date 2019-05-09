@@ -9,6 +9,7 @@ struct frame_table_entry
 	void* kpage;
 	void* upage;
 	struct thread *owner;
+	bool dirty;
 	//struct sup_page_table_entry* spte;
 	struct list_elem elem;
 	int counter;

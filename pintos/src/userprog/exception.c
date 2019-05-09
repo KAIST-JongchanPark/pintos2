@@ -184,7 +184,8 @@ page_fault (struct intr_frame *f)
 	  return;
   }
   else*/
-  if(fault_addr>=0x08048000){
+  if(fault_addr>=0x08048000)
+  {
 	  //printf("addr: %x", fault_addr);
 	  //valid but not present in spt?? heap data, init to zero
 	  if(!lookup_spt(fault_addr))
@@ -205,12 +206,11 @@ page_fault (struct intr_frame *f)
 	  else if(lookup_spt(fault_addr))
 	  {
 		  if(spt_get_page(faule_addr)->swapped == true)
-      {
-        swap_in(fault_addr);
-        return;
-      }
-
-      else if(spt_get_page(fault_addr)->type == DISK || spt_get_page(fault_addr)->type == FILE )
+		  {
+			swap_in(fault_addr);
+			return;
+		  }
+		  else if(spt_get_page(fault_addr)->type == DISK || spt_get_page(fault_addr)->type == FILE )
 		  {
 			  if(!not_present&&write)
 			  {
@@ -224,7 +224,7 @@ page_fault (struct intr_frame *f)
 		  {
 			  //allocate_and_init_to_zero(fault_addr);
 			  exit(-1);
-              return;
+			  return;
 		  }
 	  }
 	  else

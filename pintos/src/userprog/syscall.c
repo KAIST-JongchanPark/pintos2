@@ -350,7 +350,6 @@ mapid_t mmap (int fd, void *addr)
 
       spte -> swapped = false;
       spte -> accessed = false;
-      spte -> dirty = false;
       
       allocate_spt(thread_current()->spt, spte);
       read_bytes -= page_read_bytes;

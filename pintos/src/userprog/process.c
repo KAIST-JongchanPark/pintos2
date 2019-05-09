@@ -588,7 +588,6 @@ load_segment (struct file *file, off_t ofs, uint8_t *upage,
 	  
     spte -> swapped = false;
     spte -> accessed = false;
-    spte -> dirty = false;
 
 
 	  //here
@@ -697,7 +696,6 @@ install_page (void *upage, void *kpage, bool writable)
 
   spte -> swapped = false;
   spte -> accessed = false;
-  spte -> dirty = false;
 
   allocate_spt(t->spt, spte);
   return (result);

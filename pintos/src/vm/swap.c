@@ -3,6 +3,7 @@
 #include "threads/synch.h"
 #include "vm/page.h"
 #include "vm/frame.h"
+#include "threads/palloc.h"
 #include <bitmap.h>
 #include <stdbool.h>
 
@@ -28,7 +29,7 @@ swap_init (void)
 
 
 bool 
-swap_in (void *addr)
+swap_in (void *addr) // when page_fault but already evicted addr called.
 {
 	/*
 	 * Reclaim a frame from swap device.
@@ -68,14 +69,16 @@ swap_in (void *addr)
 	 /* 5. Use helper function read_from_disk in order to read the contents
 	 * of the disk into the frame. 
 	 */ 
-
-	read_from_disk(kpage, spte->swapped_place);
+	for(int i=0; i<8; i++)
+	{
+		read_from_disk(kpage, spte->swapped_place+i);
+	}
 
 }
 
 
 bool
-swap_out (void)
+swap_out (void) // when palloc is null, page full.
 {
 	/* 
 	 * Evict a frame to swap device. 
@@ -94,7 +97,7 @@ swap_out (void)
 
 	uint32_t *pd = thread_current()->pagedir;
 	pagedir_clear_page(pd, upage);
-	fte -> upage = NULL;
+	//fte -> upage = NULL;
 	spte -> swapped = true;
 
 	 /* 3. Do NOT delete the supplementary page table entry. The process
@@ -105,10 +108,14 @@ swap_out (void)
 	 /* 4. Find a free block to write you data. Use swap table to get track
 	 * of in-use and free swap slots.
 	 */
-	bool dirty_bit = spte->dirty;
-	dirty bit = dirty_bit||pagedir_is_dirty(pd, upage)||pagedir_is_dirty(pd, kpage);
+	bool dirty_bit = fte->dirty;
+	dirty_bit = dirty_bit||pagedir_is_dirty(pd, upage)||pagedir_is_dirty(pd, kpage);
 	if(!dirty_bit)
 	{
+		free_frame(upage);
+		pagedir_set_dirty(pd, upage, false);
+		pagedir_set_dirty(pd, kpage, false);
+		palloc_free_page(kpage);
 		return true;
 	}
 	size_t place = bitmap_scan(swap_table, 0, 8, false);
@@ -116,9 +123,16 @@ swap_out (void)
 	{
 		PANIC("swap slots are fully used.");
 	}
-	write_to_disk(kpage, place);
+	for(int i=0; i<8; i++)
+	{
+		write_to_disk(kpage, place+i);
+	}
 	bitmap_set_multiple(swap_table, place, 8, true);
+	
 	free_frame(upage);
+	pagedir_set_dirty(pd, upage, false);
+	pagedir_set_dirty(pd, kpage, false);
+	palloc_free_page(kpage); // add
 	spte->swapped_place = place;
 	return true;
 
@@ -131,7 +145,7 @@ swap_out (void)
  */
 void read_from_disk (uint8_t *frame, int index)
 {
-	disk_read(swap_device, index*512, frame+index*512);
+	disk_read(swap_device, index, frame+index*512);
 
 }
 
