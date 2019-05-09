@@ -173,6 +173,10 @@ void calculate_counter(void)
 	void *kpage = fte->kpage;
     bool accessed_bit = fte->accessed;
     uint32_t* pd = thread_current()->pagedir;
+	if(pd==NULL)
+	{
+		return;
+	}
 
 
     accessed_bit = accessed_bit||pagedir_is_accessed(pd, upage)||pagedir_is_accessed(pd, kpage);
