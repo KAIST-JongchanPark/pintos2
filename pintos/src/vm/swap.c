@@ -99,7 +99,6 @@ swap_out (void) // when palloc is null, page full.
 	}
 	void* upage = fte->upage;
 	void* kpage = fte->kpage;
-	printf("addr3: %x\n", upage);
 	struct sup_page_table_entry * spte = spt_get_page(upage);
 	 /* 2. Evict the frame. Unlink the frame from the supplementray page table entry
 	 * Remove the frame from the frame table after freeing the frame with
@@ -108,6 +107,7 @@ swap_out (void) // when palloc is null, page full.
 
 	uint32_t *pd = thread_current()->pagedir;
 	pagedir_clear_page(pd, upage);
+	printf("addr3: %x\n", upage);
 	//fte -> upage = NULL;
 	spte -> swapped = true;
 
