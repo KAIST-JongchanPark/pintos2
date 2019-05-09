@@ -1,6 +1,8 @@
 #ifndef VM_SWAP_H
 #define VM_SWAP_H
 
+#include <stdbool.h>
+
 void swap_init (void);
 bool swap_in (void *addr);
 bool swap_out (void);
