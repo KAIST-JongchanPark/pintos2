@@ -22,6 +22,7 @@
 #include "vm/page.h"
 #include "threads/pte.h"
 #include "threads/malloc.h"
+#include "vm/swap.h"
 
 static thread_func start_process NO_RETURN;
 static bool load (const char *cmdline, void (**eip) (void), void **esp);
@@ -318,6 +319,7 @@ load (const char *file_name, void (**eip) (void), void **esp)
   if (t->pagedir == NULL) 
     goto done;
   t->spt = spt_init();
+  swap_init ();
   process_activate ();
 
 
