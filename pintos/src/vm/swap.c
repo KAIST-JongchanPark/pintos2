@@ -109,7 +109,6 @@ swap_out (void) // when palloc is null, page full.
 	uint32_t *pd = thread_current()->pagedir;
 	pagedir_clear_page(pd, upage);
 	//fte -> upage = NULL;
-	spte -> swapped = true;
 
 	 /* 3. Do NOT delete the supplementary page table entry. The process
 	 * should have the illusion that they still have the page allocated to
@@ -148,6 +147,7 @@ swap_out (void) // when palloc is null, page full.
 	pagedir_set_dirty(pd, upage, false);
 	pagedir_set_dirty(pd, kpage, false);
 	palloc_free_page(kpage); // add
+	spte -> swapped = true;
 	spte->swapped_place = place;
 	
 	return true;
