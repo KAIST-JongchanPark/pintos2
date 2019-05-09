@@ -6,8 +6,6 @@
 #include "threads/malloc.h"
 #include <stdbool.h>
 
-struct list_elem * frame_find_addr (struct list *list, void *addr);
-
 /*
  * Initialize frame table
  */
@@ -49,7 +47,7 @@ is_tail (struct list_elem *elem)
   return elem != NULL && elem->prev != NULL && elem->next == NULL;
 }
 
-struct list_elem *frame_find_addr (struct list *list, void *addr)
+struct list_elem *frame_find_addr (struct list *list, void *addr) // not work?
 {
   struct list_elem *curr_elem = list_front (list);
   while(!is_tail(curr_elem)) 
