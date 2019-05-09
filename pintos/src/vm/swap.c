@@ -137,11 +137,11 @@ swap_out (void) // when palloc is null, page full.
 	int i=0;
 	for(i=0; i<8; i++)
 	{
+		printf("addr4: %x\n", upage);
 		write_to_disk(kpage, place+i);
 	}
-	printf("addr4: %x\n", upage);
-	bitmap_set_multiple(swap_table, place, 8, true);
 	//안됨
+	bitmap_set_multiple(swap_table, place, 8, true);
 	free_frame(upage);
 	pagedir_set_dirty(pd, upage, false);
 	pagedir_set_dirty(pd, kpage, false);
