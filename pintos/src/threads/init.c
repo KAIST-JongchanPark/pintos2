@@ -118,7 +118,6 @@ main (void)
   timer_calibrate ();
 #ifdef VM
   //disk_init ();
-  swap_init ();
 #endif
 #ifdef FILESYS
   /* Initialize file system. */
