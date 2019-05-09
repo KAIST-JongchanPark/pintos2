@@ -176,7 +176,7 @@ void write_to_disk (uint8_t *frame, int index)
 		printf("swapin addr: %x\n", fte->upage);
 		swap_in(fte->upage);
 	}*/
-	disk_write(swap_device, index, frame+index*512);
+	disk_write(swap_device, index, frame+index*512); // evicted page called -> error?
 
 }
 
