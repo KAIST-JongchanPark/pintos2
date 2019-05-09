@@ -164,15 +164,15 @@ void calculate_counter(void)
     uint32_t* pd = thread_current()->pagedir;
 
 
-    accessed bit = accessed_bit||pagedir_is_accessed(pd, upage)||pagedir_is_accessed(pd, kpage);
+    accessed_bit = accessed_bit||pagedir_is_accessed(pd, upage)||pagedir_is_accessed(pd, kpage);
     if(accessed_bit)
     {
-      counter = 0;
+      fte->counter = 0;
       fte->accessed = 0;
     }
     else
     {
-      counter+=1;
+      fte->counter+=1;
       fte->accessed = 0;
     }
     curr_elem = list_next(curr_elem);
