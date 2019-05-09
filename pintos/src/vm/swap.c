@@ -5,6 +5,7 @@
 #include "vm/frame.h"
 #include "threads/palloc.h"
 #include "threads/vaddr.h"
+#include "threads/init.h"
 #include <bitmap.h>
 #include <stdbool.h>
 
