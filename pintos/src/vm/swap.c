@@ -93,8 +93,13 @@ swap_out (void) // when palloc is null, page full.
 	 * frame is last accessed)
 	 */
 	struct frame_table_entry* fte = find_frame_to_evict();
+	if(fte==NULL)
+	{
+		PANIC("fte of swap out is null");
+	}
 	void* upage = fte->upage;
 	void* kpage = fte->kpage;
+	printf("addr3: %x\n", upage);
 	struct sup_page_table_entry * spte = spt_get_page(upage);
 	 /* 2. Evict the frame. Unlink the frame from the supplementray page table entry
 	 * Remove the frame from the frame table after freeing the frame with
