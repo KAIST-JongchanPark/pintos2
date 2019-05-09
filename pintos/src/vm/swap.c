@@ -130,6 +130,7 @@ swap_out (void) // when palloc is null, page full.
 		return true;
 	}
 	size_t place = bitmap_scan(swap_table, 0, 8, false);
+	printf("place: %u\n", place);
 	if(place==BITMAP_ERROR)
 	{
 		PANIC("swap slots are fully used.");
