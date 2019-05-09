@@ -138,7 +138,7 @@ swap_out (void) // when palloc is null, page full.
 	for(i=0; i<8; i++)
 	{
 		printf("addr4: %x\n", upage);
-		write_to_disk(kpage, place+i);
+		write_to_disk(upage, place+i);
 	}
 	//안됨
 	bitmap_set_multiple(swap_table, place, 8, true);
@@ -166,7 +166,7 @@ void read_from_disk (uint8_t *frame, int index)
 /* Write data to swap device from frame */
 void write_to_disk (uint8_t *frame, int index)
 {
-	disk_write(swap_device, index*512, frame+index*512);
+	disk_write(swap_device, index*512, frame+index*512); // problem
 
 }
 
