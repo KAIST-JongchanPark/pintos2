@@ -24,6 +24,10 @@ void
 swap_init (void)
 {
   swap_device = disk_get(1,1);
+  if(swap_device == NULL)
+  {
+	  PANIC("swap disk is null");
+  }
   swap_table = bitmap_create(8*1024);
   lock_init(&swap_lock);
 }
