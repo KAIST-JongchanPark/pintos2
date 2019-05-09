@@ -140,13 +140,13 @@ swap_out (void) // when palloc is null, page full.
 		write_to_disk(kpage, place+i);
 	}
 	bitmap_set_multiple(swap_table, place, 8, true);
-	
+	printf("addr4: %x\n", upage);
 	free_frame(upage);
 	pagedir_set_dirty(pd, upage, false);
 	pagedir_set_dirty(pd, kpage, false);
 	palloc_free_page(kpage); // add
 	spte->swapped_place = place;
-	printf("addr4: %x\n", upage);
+	
 	return true;
 
 
