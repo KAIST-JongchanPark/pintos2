@@ -129,6 +129,7 @@ bool allocate_using_spt(void* addr, struct sup_page_table_entry *spte)
 		}
 	  memset (kpage + page_read_bytes, 0, page_zero_bytes);
 	  /* Add the page to the process's address space. */
+	  uint8_t *upage = (uint8_t *)((uint32_t)addr & ~PGMASK);
 	  bool result = pagedir_get_page (thread_current()->pagedir, upage) == NULL
           && pagedir_set_page (thread_current()->pagedir, upage, kpage, spte->writable);
 		  
