@@ -324,6 +324,13 @@ mapid_t mmap (int fd, void *addr)
   file_seek(refile,0);
   mapid_t id = thread_current()->mapid+1;
   thread_current()->mapid+=1;
+  struct mmap_elem* mme = malloc(sizeof(struct mmap_elem));
+  mme->mapid = id;
+  mme->vaddr = addr;
+  mme->file = refile;
+  mme->size = size;
+  list_push_back(&(thread_current()->mmap_list), &(mme->elem));
+  
   while (read_bytes > 0 || zero_bytes > 0) 
     {
       size_t page_read_bytes = read_bytes < PGSIZE ? read_bytes : PGSIZE;
@@ -345,12 +352,6 @@ mapid_t mmap (int fd, void *addr)
       addr += PGSIZE;
       ofs += PGSIZE;
     }
-  struct mmap_elem* mme = malloc(sizeof(struct mmap_elem));
-  mme->mapid = id;
-  mme->vaddr = spte->page_vaddr;
-  mme->file = refile;
-  mme->size = size;
-  list_push_back(&(thread_current()->mmap_list), &(mme->elem));
   //printf("return id: %d\n", id);
   return id;
 }
