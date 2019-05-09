@@ -167,6 +167,13 @@ void read_from_disk (uint8_t *frame, int index)
 /* Write data to swap device from frame */
 void write_to_disk (uint8_t *frame, int index)
 {
+	struct list_elem *frame_elem = frame_find_addr (struct list *list, void *addr);
+	struct frame_table_entry *fte = list_entry(frame_elem, struct frame_table_entry, elem);
+	if(fte->swapped)
+	{
+		printf("swapin addr: %x\n", fte->upage);
+		swap_in(fte->upage);
+	}
 	disk_write(swap_device, index, frame+index*512);
 
 }
