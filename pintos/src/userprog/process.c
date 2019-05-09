@@ -649,7 +649,7 @@ setup_stack (void **esp)
   {
     return false;
   }
-  allocate_frame((void *)kpage);
+  allocate_frame((void *)kpage, ((uint8_t *) PHYS_BASE) - PGSIZE);
   //
   if (kpage != NULL) 
     {

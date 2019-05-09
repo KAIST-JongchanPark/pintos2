@@ -26,7 +26,7 @@ void allocate_frame (void *kpage, void* upage)
 	
 	fte -> kpage = (void *)vtop(kpage);
 	fte -> owner = thread_current();
-	fte -> upage = upage;
+	fte -> upage = (void *)(((uintptr_t)upage >> 12) << 12);
 	fte -> counter = 0;
 	fte -> dirty = pagedir_is_dirty(thread_current()->pagedir, upage)||pagedir_is_dirty(thread_current()->pagedir, kpage);
 	fte -> accessed = pagedir_is_accessed(thread_current()->pagedir, upage)||pagedir_is_accessed(thread_current()->pagedir, kpage);
