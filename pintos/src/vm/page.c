@@ -78,7 +78,7 @@ bool allocate_and_init_to_zero(void* addr)
 	swap_out();
 	kpage = palloc_get_page (PAL_USER | PAL_ZERO);
   }
-  allocate_frame((void *)kpage);
+  allocate_frame((void *)kpage, addr);
   
   if (!install_page (addr, kpage, true)) 
   {
