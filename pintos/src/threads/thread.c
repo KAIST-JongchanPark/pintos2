@@ -159,6 +159,10 @@ is_tail (struct list_elem *elem)
 
 void calculate_counter(void)
 {
+  if(list_empty(&frame_empty))
+  {
+	  return;
+  }
   struct list_elem *curr_elem = list_front (&frame_table);
   while(!is_tail(curr_elem)) 
   {
