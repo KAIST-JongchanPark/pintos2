@@ -184,7 +184,7 @@ void calculate_counter(void)
     {
       fte->counter = 0;
       fte->accessed = 0;
-      printf("case1\n")
+      printf("case1\n");
     }
     else
     {
