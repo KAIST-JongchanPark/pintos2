@@ -52,7 +52,7 @@ struct list_elem *frame_find_addr (struct list *list, void *addr) // not work?
   struct list_elem *curr_elem = list_front (list);
   while(!is_tail(curr_elem)) 
   {
-      if(list_entry (curr_elem, struct frame_table_entry, elem)->kpage == addr)
+      if((list_entry (curr_elem, struct frame_table_entry, elem)->kpage) == addr)
 	  {
         return curr_elem;
 	  }
