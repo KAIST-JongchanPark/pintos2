@@ -35,10 +35,15 @@ void allocate_frame (void *kpage, void* upage)
 void free_frame (void *addr)
 {
 	struct list_elem *target_elem = frame_find_addr(&frame_table, (void *)addr);
+	printf("f1\n");
 	struct frame_table_entry *target_entry = malloc(sizeof(struct frame_table_entry));
+	printf("f2\n");
 	target_entry = list_entry (target_elem, struct frame_table_entry, elem);
+	printf("f3\n");
 	free(target_entry);
+	printf("f4\n");
 	list_remove(target_elem);
+	printf("f5\n");
 	//free(target_entry);
 }
 
