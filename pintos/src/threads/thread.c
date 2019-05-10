@@ -193,7 +193,7 @@ void calculate_counter(void)
       //printf("case2\n");
     }
     curr_elem = list_next(curr_elem);
-
+	pagedir_set_accessed(pd, upage, false);
   }
   return NULL;
 }
