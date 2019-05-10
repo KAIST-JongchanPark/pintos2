@@ -123,7 +123,7 @@ swap_out (void) // when palloc is null, page full.
 	if(!dirty_bit)
 	{
 		//printf("addr3: %x\n", upage);
-		free_frame(upage);
+		free_frame(kpage);
 		pagedir_set_dirty(pd, upage, false);
 		pagedir_set_dirty(pd, kpage, false);
 		palloc_free_page(kpage);
@@ -147,6 +147,7 @@ swap_out (void) // when palloc is null, page full.
 	pagedir_set_dirty(pd, upage, false);
 	pagedir_set_dirty(pd, kpage, false);
 	palloc_free_page(kpage); // add
+	free_frame(kpage);
 	spte -> swapped = true;
 	spte->swapped_place = place;
 	
