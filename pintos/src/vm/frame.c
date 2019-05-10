@@ -40,7 +40,7 @@ void free_frame (void *addr)
 	printf("f2\n");
 	target_entry = list_entry (target_elem, struct frame_table_entry, elem);
 	printf("f3\n");
-	free(target_entry);
+	//free(target_entry);
 	printf("f4\n");
 	list_remove(target_elem);
 	printf("f5\n");
