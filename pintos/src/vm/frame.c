@@ -95,7 +95,7 @@ list_pop_max (struct list *list)
 	  }
 	  curr_elem = list_next(curr_elem);
   }
-  list_remove(max_elem);
+  //list_remove(max_elem);
   return max_elem;
 }   
 
