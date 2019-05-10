@@ -34,10 +34,7 @@ void allocate_frame (void *kpage, void* upage)
 
 void free_frame (void *addr)
 {
-	if(list_empty(&frame_table))
-	{
-		PANIC("list is empty");
-	}
+
 	struct list_elem *target_elem = frame_find_addr(&frame_table, (void *)addr);
 	if(target_elem==NULL)
 	{
@@ -72,6 +69,7 @@ struct list_elem *frame_find_addr (struct list *list, void *addr) // not work?
 	  }
 	  curr_elem = list_next(curr_elem);
   }
+  printf("hello\n")
   return NULL;
 }
 
