@@ -40,15 +40,15 @@ void free_frame (void *addr)
 	{
 		PANIC("target_elem is null");
 	}
-	printf("f1\n");
+	//printf("f1\n");
 	struct frame_table_entry *target_entry = malloc(sizeof(struct frame_table_entry));
-	printf("f2\n");
+	//printf("f2\n");
 	target_entry = list_entry (target_elem, struct frame_table_entry, elem);
-	printf("f3\n");
+	//printf("f3\n");
 	//free(target_entry);
-	printf("f4\n");
+	//printf("f4\n");
 	list_remove(target_elem);
-	printf("f5\n");
+	//printf("f5\n");
 	//free(target_entry);
 }
 

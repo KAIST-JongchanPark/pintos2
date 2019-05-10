@@ -37,6 +37,7 @@ swap_init (void)
 bool 
 swap_in (void *addr) // when page_fault but already evicted addr called.
 {
+	lock_acquire(&swap_lock);
 	/*
 	 * Reclaim a frame from swap device.
 	 * 1. Check that the page has been already evicted. 
@@ -91,6 +92,7 @@ swap_in (void *addr) // when page_fault but already evicted addr called.
 		read_from_disk(kpage, spte->swapped_place+i);
 	}
 	bitmap_set_multiple(swap_table, spte->swapped_place, 8, false);
+	lock_release(&swap_lock);
 	return true;
 }
 
@@ -104,6 +106,7 @@ swap_out (void) // when palloc is null, page full.
 	 * (Ex. Least Recently Used policy -> Compare the timestamps when each 
 	 * frame is last accessed)
 	 */
+	lock_acquire(&swap_lock);
 	struct frame_table_entry* fte = find_frame_to_evict(); // pick not evicted one?
 	if(fte==NULL)
 	{
@@ -138,10 +141,11 @@ swap_out (void) // when palloc is null, page full.
 		pagedir_set_dirty(pd, upage, false);
 		pagedir_set_dirty(pd, kpage, false);
 		palloc_free_page(kpage);
+		lock_release(&swap_lock);
 		return true;
 	}
 	size_t place = bitmap_scan(swap_table, 0, 8, false);
-	printf("place: %u\n", place);
+	//printf("place: %u\n", place);
 	if(place==BITMAP_ERROR)
 	{
 		PANIC("swap slots are fully used.");
@@ -150,7 +154,7 @@ swap_out (void) // when palloc is null, page full.
 	int i=0;
 	for(i=0; i<8; i++)
 	{
-		printf("addr4: %x\n", upage);
+		//printf("addr4: %x\n", upage);
 		write_to_disk(kpage, place+i);
 	}
 	//안됨
@@ -169,6 +173,8 @@ swap_out (void) // when palloc is null, page full.
 	spte->swapped_place = place;
 	printf("swap out place: %d\n", place);
 	
+
+	lock_release(&swap_lock);
 	return true;
 
 
