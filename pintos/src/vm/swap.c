@@ -66,6 +66,15 @@ swap_in (void *addr) // when page_fault but already evicted addr called.
 	spte->swapped = false;
 	allocate_frame(kpage, addr);
 	printf("swapin 3\n");
+
+	int i = 0;
+	for(i=0; i<8; i++)
+	{
+		printf("read addr: %x\n", upage);
+		read_from_disk(kpage, spte->swapped_place+i);
+	}
+	bitmap_set_multiple(swap_table, spte->swapped_place, 8, false);
+	
 	if(!pagedir_set_page(thread_current()->pagedir, upage, kpage, spte->writable))
 	{
 		printf("swap mapping failed\n");
@@ -82,13 +91,7 @@ swap_in (void *addr) // when page_fault but already evicted addr called.
 	 /* 5. Use helper function read_from_disk in order to read the contents
 	 * of the disk into the frame. 
 	 */ 
-	int i = 0;
-	for(i=0; i<8; i++)
-	{
-		printf("read addr: %x\n", upage);
-		read_from_disk(kpage, spte->swapped_place+i);
-	}
-	bitmap_set_multiple(swap_table, spte->swapped_place, 8, false);
+	
 	return true;
 }
 
@@ -177,7 +180,7 @@ swap_out (void) // when palloc is null, page full.
  */
 void read_from_disk (uint8_t *frame, int index)
 {
-	
+
 	disk_read(swap_device, index, frame+index*512);
 
 }
