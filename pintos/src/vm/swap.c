@@ -56,15 +56,17 @@ swap_in (void *addr) // when page_fault but already evicted addr called.
 	{
 		bool result = swap_out();
 	}
+	printf("swapin 1\n");
 	kpage = palloc_get_page (PAL_USER);
-
+	printf("swapin 2\n");
 	 /* 3. Re-link the new frame with the corresponding supplementary
 	 * page table entry. 
 	 */
 	spte->swapped = false;
 	allocate_frame(kpage, addr);
+	printf("swapin 3\n");
 	pagedir_set_page(thread_current()->pagedir, upage, kpage, spte->writable);
-
+	printf("swapin 4\n");
 
 
 	 /* 4. Do NOT create a new supplementray page table entry. Use the 
