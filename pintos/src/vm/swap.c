@@ -56,31 +56,23 @@ swap_in (void *addr) // when page_fault but already evicted addr called.
 	if(kpage==NULL)
 	{
 		bool result = swap_out();
+		kpage = palloc_get_page (PAL_USER);
 	}
-	printf("swapin 1\n");
-	kpage = palloc_get_page (PAL_USER);
-	printf("swapin 2\n");
+	//printf("swapin 1\n");
+	
+	//printf("swapin 2\n");
 	 /* 3. Re-link the new frame with the corresponding supplementary
 	 * page table entry. 
 	 */
 	spte->swapped = false;
 	allocate_frame(kpage, addr);
-	printf("swapin 3\n");
-
-	int i = 0;
-	for(i=0; i<8; i++)
-	{
-		printf("read addr: %x\n", upage);
-		read_from_disk(kpage, spte->swapped_place+i);
-	}
-	bitmap_set_multiple(swap_table, spte->swapped_place, 8, false);
-	
+	//printf("swapin 3\n");
 	if(!pagedir_set_page(thread_current()->pagedir, upage, kpage, spte->writable))
 	{
 		printf("swap mapping failed\n");
 	}
 	
-	printf("swapin 4\n");
+	//printf("swapin 4\n");
 
 
 	 /* 4. Do NOT create a new supplementray page table entry. Use the 
@@ -91,7 +83,13 @@ swap_in (void *addr) // when page_fault but already evicted addr called.
 	 /* 5. Use helper function read_from_disk in order to read the contents
 	 * of the disk into the frame. 
 	 */ 
-	
+	int i = 0;
+	for(i=0; i<8; i++)
+	{
+		printf("read addr: %x\n", upage);
+		read_from_disk(kpage, spte->swapped_place+i);
+	}
+	bitmap_set_multiple(swap_table, spte->swapped_place, 8, false);
 	return true;
 }
 
