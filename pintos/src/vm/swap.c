@@ -47,6 +47,7 @@ swap_in (void *addr) // when page_fault but already evicted addr called.
 		PANIC("Not a swapped page");
 	}
 
+	printf("place in %d\n", spte->swapped_place);
 	 /* 2. You will want to evict an already existing frame
 	 * to make space to read from the disk to cache. 
 	 */
@@ -85,8 +86,9 @@ swap_in (void *addr) // when page_fault but already evicted addr called.
 	for(i=0; i<8; i++)
 	{
 		printf("read addr: %x\n", kpage);
-		read_from_disk(vtop(kpage), spte->swapped_place+i);
+		read_from_disk(kpage, spte->swapped_place+i);
 	}
+	bitmap_set_multiple(swap_table, spte->swapped_place, 8, false);
 	return true;
 }
 
@@ -146,7 +148,7 @@ swap_out (void) // when palloc is null, page full.
 	for(i=0; i<8; i++)
 	{
 		printf("addr4: %x\n", kpage);
-		write_to_disk(vtop(kpage), place+i);
+		write_to_disk(kpage, place+i);
 	}
 	//안됨
 	printf("reached1\n");
@@ -162,6 +164,7 @@ swap_out (void) // when palloc is null, page full.
 	//free_frame(kpage);
 	spte -> swapped = true;
 	spte->swapped_place = place;
+	printf("place out %d\n", place);
 	
 	return true;
 
