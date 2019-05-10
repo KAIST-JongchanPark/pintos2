@@ -145,7 +145,7 @@ swap_out (void) // when palloc is null, page full.
 	int i=0;
 	for(i=0; i<8; i++)
 	{
-		printf("addr4: %x\n", upage);
+		printf("addr4: %x\n", kpage);
 		write_to_disk(kpage, place+i);
 	}
 	//안됨
