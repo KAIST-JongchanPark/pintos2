@@ -37,8 +37,9 @@ void free_frame (void *addr)
 	struct list_elem *target_elem = frame_find_addr(&frame_table, (void *)addr);
 	struct frame_table_entry *target_entry = malloc(sizeof(struct frame_table_entry));
 	target_entry = list_entry (target_elem, struct frame_table_entry, elem);
-	list_remove(target_elem);
 	free(target_entry);
+	list_remove(target_elem);
+	//free(target_entry);
 }
 
 static inline bool
