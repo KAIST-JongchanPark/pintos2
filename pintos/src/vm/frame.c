@@ -92,9 +92,10 @@ list_pop_max (struct list *list)
       if((list_entry (max_elem, struct frame_table_entry, elem) -> counter) < (list_entry (curr_elem, struct frame_table_entry, elem) -> counter))
 	  {
         max_elem = curr_elem;
+        printf("hello\n");
 	  }
 	  curr_elem = list_next(curr_elem);
-	  printf("hello\n");
+	  
   }
   //list_remove(max_elem);
   return max_elem;
