@@ -169,14 +169,14 @@ void calculate_counter(void)
     
     struct frame_table_entry* fte = list_entry (curr_elem, struct frame_table_entry, elem);
     //struct sup_page_table_entry* spte = spt_get_page(fte->upage);
-	void *upage = fte->upage;
-	void *kpage = fte->kpage;
+  	void *upage = fte->upage;
+  	void *kpage = fte->kpage;
     bool accessed_bit = fte->accessed;
     uint32_t* pd = thread_current()->pagedir;
-	if(pd==NULL)
-	{
-		return;
-	}
+  	if(pd==NULL)
+  	{
+  		return;
+  	}
 
 
     accessed_bit = accessed_bit||pagedir_is_accessed(pd, upage)||pagedir_is_accessed(pd, kpage);
@@ -184,11 +184,13 @@ void calculate_counter(void)
     {
       fte->counter = 0;
       fte->accessed = 0;
+      printf("case1\n")
     }
     else
     {
       fte->counter+=1;
       fte->accessed = 0;
+      printf("case2\n");
     }
     curr_elem = list_next(curr_elem);
 
