@@ -34,6 +34,10 @@ void allocate_frame (void *kpage, void* upage)
 
 void free_frame (void *addr)
 {
+	if(list_empty(&frame_table))
+	{
+		PANIC("list is empty");
+	}
 	struct list_elem *target_elem = frame_find_addr(&frame_table, (void *)addr);
 	if(target_elem==NULL)
 	{
