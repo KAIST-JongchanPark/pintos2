@@ -29,7 +29,7 @@ void allocate_frame (void *kpage, void* upage)
 	fte -> dirty = pagedir_is_dirty(thread_current()->pagedir, upage)||pagedir_is_dirty(thread_current()->pagedir, kpage);
 	fte -> accessed = pagedir_is_accessed(thread_current()->pagedir, upage)||pagedir_is_accessed(thread_current()->pagedir, kpage);
 	
-	list_push_front(&frame_table, &(fte->elem));
+	list_push_back(&frame_table, &(fte->elem));
 }
 
 void free_frame (void *addr)
