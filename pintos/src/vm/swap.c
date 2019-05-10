@@ -80,9 +80,10 @@ swap_in (void *addr) // when page_fault but already evicted addr called.
 	int i = 0;
 	for(i=0; i<8; i++)
 	{
+		printf("read addr: %x\n", kpage);
 		read_from_disk(kpage, spte->swapped_place+i);
 	}
-
+	return true;
 }
 
 
