@@ -177,6 +177,7 @@ swap_out (void) // when palloc is null, page full.
  */
 void read_from_disk (uint8_t *frame, int index)
 {
+	
 	disk_read(swap_device, index, frame+index*512);
 
 }
