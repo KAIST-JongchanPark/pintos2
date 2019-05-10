@@ -51,12 +51,12 @@ swap_in (void *addr) // when page_fault but already evicted addr called.
 	 /* 2. You will want to evict an already existing frame
 	 * to make space to read from the disk to cache. 
 	 */
-	uint8_t *kpage = palloc_get_page (PAL_USER);
+	uint8_t *kpage = palloc_get_page (PAL_USER|PAL_ZERO);
     uint8_t *upage = (uint8_t *)((uint32_t)addr & ~PGMASK);
 	if(kpage==NULL)
 	{
 		bool result = swap_out();
-		kpage = palloc_get_page (PAL_USER);
+		kpage = palloc_get_page (PAL_USER|PAL_ZERO);
 	}
 	//printf("swapin 1\n");
 	
