@@ -85,7 +85,7 @@ swap_in (void *addr) // when page_fault but already evicted addr called.
 	int i = 0;
 	for(i=0; i<8; i++)
 	{
-		printf("read addr: %x\n", kpage);
+		printf("read addr: %x\n", upage);
 		read_from_disk(kpage, spte->swapped_place+i);
 	}
 	bitmap_set_multiple(swap_table, spte->swapped_place, 8, false);
@@ -147,7 +147,7 @@ swap_out (void) // when palloc is null, page full.
 	int i=0;
 	for(i=0; i<8; i++)
 	{
-		printf("addr4: %x\n", kpage);
+		printf("addr4: %x\n", upage);
 		write_to_disk(kpage, place+i);
 	}
 	//안됨
