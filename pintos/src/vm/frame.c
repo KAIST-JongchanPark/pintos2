@@ -35,6 +35,10 @@ void allocate_frame (void *kpage, void* upage)
 void free_frame (void *addr)
 {
 	struct list_elem *target_elem = frame_find_addr(&frame_table, (void *)addr);
+	if(target_elem==NULL)
+	{
+		PANIC("target_elem is null");
+	}
 	printf("f1\n");
 	struct frame_table_entry *target_entry = malloc(sizeof(struct frame_table_entry));
 	printf("f2\n");
