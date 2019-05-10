@@ -47,7 +47,7 @@ swap_in (void *addr) // when page_fault but already evicted addr called.
 		PANIC("Not a swapped page");
 	}
 
-	printf("place in %d\n", spte->swapped_place);
+	printf("swap in place: %d\n", spte->swapped_place);
 	 /* 2. You will want to evict an already existing frame
 	 * to make space to read from the disk to cache. 
 	 */
@@ -83,10 +83,11 @@ swap_in (void *addr) // when page_fault but already evicted addr called.
 	 /* 5. Use helper function read_from_disk in order to read the contents
 	 * of the disk into the frame. 
 	 */ 
+	printf("swap in uaddr: %x\n", upage);
 	int i = 0;
 	for(i=0; i<8; i++)
 	{
-		printf("read addr: %x\n", upage);
+		
 		read_from_disk(kpage, spte->swapped_place+i);
 	}
 	bitmap_set_multiple(swap_table, spte->swapped_place, 8, false);
@@ -145,6 +146,7 @@ swap_out (void) // when palloc is null, page full.
 	{
 		PANIC("swap slots are fully used.");
 	}
+	printf("swap out uaddr: %x\n", upage);
 	int i=0;
 	for(i=0; i<8; i++)
 	{
@@ -152,20 +154,20 @@ swap_out (void) // when palloc is null, page full.
 		write_to_disk(kpage, place+i);
 	}
 	//안됨
-	printf("reached1\n");
+	//printf("reached1\n");
 	bitmap_set_multiple(swap_table, place, 8, true);
 	//list_remove(&fte->elem); // problem
 	pagedir_set_dirty(pd, upage, false);
 	pagedir_set_dirty(pd, kpage, false);
-	printf("reached2\n");
+	//printf("reached2\n");
 	free_frame(kpage);
-	printf("reached3\n");
+	//printf("reached3\n");
 	palloc_free_page(kpage); // add
-	printf("reached4\n");
+	//printf("reached4\n");
 	//free_frame(kpage);
 	spte -> swapped = true;
 	spte->swapped_place = place;
-	printf("place out %d\n", place);
+	printf("swap out place: %d\n", place);
 	
 	return true;
 
