@@ -76,7 +76,7 @@ list_pop_max (struct list *list)
   struct list_elem *curr_elem = list_front (list);
   while(!is_tail(curr_elem)) 
   {
-      if(((list_entry (max_elem, struct frame_table_entry, elem) -> counter) < (list_entry (curr_elem, struct frame_table_entry, elem) -> counter)) && !(spt_get_page(list_entry (curr_elem, struct frame_table_entry, elem) -> upage) -> swapped))
+      if((list_entry (max_elem, struct frame_table_entry, elem) -> counter) < (list_entry (curr_elem, struct frame_table_entry, elem) -> counter))
 	  {
         max_elem = curr_elem;
 	  }
