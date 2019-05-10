@@ -184,13 +184,13 @@ void calculate_counter(void)
     {
       fte->counter = 0;
       fte->accessed = 0;
-      printf("case1\n");
+      //printf("case1\n");
     }
     else
     {
       fte->counter+=1;
       fte->accessed = 0;
-      printf("case2\n");
+      //printf("case2\n");
     }
     curr_elem = list_next(curr_elem);
 
