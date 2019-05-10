@@ -56,7 +56,9 @@ swap_in (void *addr) // when page_fault but already evicted addr called.
     uint8_t *upage = (uint8_t *)((uint32_t)addr & ~PGMASK);
 	if(kpage==NULL)
 	{
+		lock_release(&swap_lock);
 		bool result = swap_out();
+		lock_acquire(&swap_lock);
 		kpage = palloc_get_page (PAL_USER|PAL_ZERO);
 	}
 	//printf("swapin 1\n");
