@@ -194,6 +194,7 @@ void calculate_counter(void)
     }
     curr_elem = list_next(curr_elem);
 	pagedir_set_accessed(pd, upage, false);
+  pagedir_set_accessed(pd, kpage, false);
   }
   return NULL;
 }
