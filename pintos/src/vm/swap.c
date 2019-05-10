@@ -142,16 +142,16 @@ swap_out (void) // when palloc is null, page full.
 		write_to_disk(kpage, place+i);
 	}
 	//안됨
-	printf("reached1\n")
+	printf("reached1\n");
 	bitmap_set_multiple(swap_table, place, 8, true);
 	//list_remove(&fte->elem); // problem
 	pagedir_set_dirty(pd, upage, false);
 	pagedir_set_dirty(pd, kpage, false);
-	printf("reached2\n")
+	printf("reached2\n");
 	free_frame(kpage);
-	printf("reached3\n")
+	printf("reached3\n");
 	palloc_free_page(kpage); // add
-	printf("reached4\n")
+	printf("reached4\n");
 	//free_frame(kpage);
 	spte -> swapped = true;
 	spte->swapped_place = place;
