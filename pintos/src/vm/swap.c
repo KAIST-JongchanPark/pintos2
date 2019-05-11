@@ -61,6 +61,10 @@ swap_in (void *addr) // when page_fault but already evicted addr called.
 		bool result = swap_out();
 		//lock_acquire(&swap_lock);
 		kpage = palloc_get_page (PAL_USER|PAL_ZERO);
+		if(kpage==NULL)
+		{
+			PANIC("getpage error");
+		}
 	}
 	//printf("swapin 1\n");
 	if(frame_find_addr(&frame_table, kpage)!=NULL)
