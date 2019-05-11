@@ -160,11 +160,9 @@ page_fault (struct intr_frame *f)
   
   //If given address is invalid and in stack range, terminate
   
-  if (not_present&&!user)
+  if (!user)
   {
-    f->eip = (void*)f->eax;
-    f->eax = 0xffffffff;
-    return;
+	  printf("page_fault in kernel mode\n");
   }
 
   if (!user || fault_addr == NULL || is_kernel_vaddr(fault_addr)) 
