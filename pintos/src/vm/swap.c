@@ -105,6 +105,10 @@ swap_in (void *addr) // when page_fault but already evicted addr called.
 	}
 	bitmap_set_multiple(swap_table, spte->swapped_place, 8, false);
 	//lock_release(&swap_lock);
+	if(pagedir_get_page (thread_current()->pagedir, upage) == NULL)
+	{
+		PANIC("pagedir get page is null after swap in");
+	}
 	return true;
 }
 
