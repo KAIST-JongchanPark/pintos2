@@ -62,7 +62,8 @@ swap_in (void *addr) // when page_fault but already evicted addr called.
 		kpage = palloc_get_page (PAL_USER|PAL_ZERO);
 	}
 	//printf("swapin 1\n");
-	
+	if(frame_find_addr(&frame_table, kpage)!=NULL)
+		PANIC("error");
 	//printf("swapin 2\n");
 	 /* 3. Re-link the new frame with the corresponding supplementary
 	 * page table entry. 
