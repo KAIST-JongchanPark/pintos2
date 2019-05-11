@@ -8,6 +8,7 @@
 #include "vm/page.h"
 #include "vm/frame.h"
 #include "vm/swap.h"
+#include "threads/init.h"
 
 /* Number of page faults processed. */
 static long long page_fault_cnt;
@@ -160,9 +161,10 @@ page_fault (struct intr_frame *f)
   
   //If given address is invalid and in stack range, terminate
   
-  if (!user)
+  if (!user&&is_kernel_vaddr(fault_addr))
   {
-	  printf("page_fault in kernel mode\n");
+	  swap_in(frame_find_addr (&frame_table, fault_addr));
+	  return;
   }
 
   if (!user || fault_addr == NULL || is_kernel_vaddr(fault_addr)) 
