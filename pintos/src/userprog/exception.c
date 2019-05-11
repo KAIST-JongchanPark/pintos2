@@ -160,7 +160,9 @@ page_fault (struct intr_frame *f)
   
   //If given address is invalid and in stack range, terminate
   
-  if (!user || fault_addr == NULL || is_kernel_vaddr(fault_addr)) {
+  if (!user || fault_addr == NULL || is_kernel_vaddr(fault_addr)) 
+  {
+	printf("exit -1 1\n");
     exit(-1);
   }
   
@@ -238,6 +240,7 @@ page_fault (struct intr_frame *f)
   }
   else
   {
+	  printf("exit -1 1\n");
 	  exit(-1);
 	  return;
   }
