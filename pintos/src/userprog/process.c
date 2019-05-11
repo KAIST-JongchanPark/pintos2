@@ -649,7 +649,13 @@ setup_stack (void **esp)
   //here
   if (kpage == NULL)
   {
-    return false;
+	swap_out();
+	kpage = palloc_get_page (PAL_USER | PAL_ZERO);
+	if(kpage == NULL)
+	{
+		PANIC("swap is not working in setup stack");
+	}
+    //return false;
   }
   allocate_frame((void *)kpage, ((uint8_t *) PHYS_BASE) - PGSIZE);
   //
