@@ -110,7 +110,7 @@ bool allocate_using_spt(void* addr, struct sup_page_table_entry *spte)
 	  	swap_out();
 	  	kpage = palloc_get_page (PAL_USER);
 	  }
-	
+	  printf("alloc_spt kpage: %x\n", kpage);
 	  allocate_frame((void *)kpage, addr);
 	  file_seek (file, ofs);
 	  /* Load this page. */

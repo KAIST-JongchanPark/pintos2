@@ -593,7 +593,6 @@ load_segment (struct file *file, off_t ofs, uint8_t *upage,
 	  //here
 	  
 	  //add spte to spt.
-	  printf("what adress in load_segment: %x\n", upage);
 	  allocate_spt(thread_current()->spt, spte); // passing entry
 	  //
 	  
