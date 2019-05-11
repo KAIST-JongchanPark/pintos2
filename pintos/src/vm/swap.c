@@ -6,6 +6,7 @@
 #include "threads/palloc.h"
 #include "threads/vaddr.h"
 #include "threads/init.h"
+#include "filesys/off_t.h"
 #include <bitmap.h>
 #include <stdbool.h>
 
@@ -53,7 +54,7 @@ swap_in (void *addr) // when page_fault but already evicted addr called.
 	 * to make space to read from the disk to cache. 
 	 */
 	uint8_t *kpage = palloc_get_page (PAL_USER|PAL_ZERO);
-    uint8_t *upage = (uint8_t *)((addr >> 12) << 12);
+    uint8_t *upage = (void *)(((uintptr_t)addr >> 12) << 12);
 	if(kpage==NULL)
 	{
 		//lock_release(&swap_lock);
