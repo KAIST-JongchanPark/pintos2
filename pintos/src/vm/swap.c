@@ -158,7 +158,7 @@ swap_out (void) // when palloc is null, page full.
 	{
 		printf("addr4 upage: %x\n", upage);
 		printf("addr4 kpage: %x\n", kpage);
-		write_to_disk(kpage, place+i);
+		write_to_disk(kpage, place, i);
 	}
 	//안됨
 	printf("reached1\n");
@@ -195,7 +195,7 @@ void read_from_disk (uint8_t *frame, int index)
 }
 
 /* Write data to swap device from frame */
-void write_to_disk (uint8_t *frame, int index)
+void write_to_disk (uint8_t *frame, size_t place, int index)
 {
 	/*struct list_elem *frame_elem = frame_find_addr (&frame_table, frame); // not work?
 	struct frame_table_entry *fte = list_entry(frame_elem, struct frame_table_entry, elem);
@@ -205,7 +205,7 @@ void write_to_disk (uint8_t *frame, int index)
 		printf("swapin addr: %x\n", fte->upage);
 		swap_in(fte->upage);
 	}*/
-	disk_write(swap_device, index, frame+index*512); // evicted page called -> error?
+	disk_write(swap_device, place+index, frame+index*512); // evicted page called -> error?
 
 }
 
