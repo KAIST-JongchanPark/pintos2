@@ -255,9 +255,9 @@ disk_write (struct disk *d, disk_sector_t sec_no, const void *buffer)
   issue_pio_command (c, CMD_WRITE_SECTOR_RETRY);
   if (!wait_while_busy (d))
     PANIC ("%s: disk write failed, sector=%"PRDSNu, d->name, sec_no);
-  printf("before output in disk_write\m");
+  printf("before output in disk_write\n");
   output_sector (c, buffer);
-  printf("after output in disk_write\m");
+  printf("after output in disk_write\n");
   sema_down (&c->completion_wait);
   d->write_cnt++;
   lock_release (&c->lock);
