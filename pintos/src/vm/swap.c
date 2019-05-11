@@ -153,6 +153,7 @@ swap_out (void) // when palloc is null, page full.
 	if(!dirty_bit)
 	{
 		//printf("addr3: %x\n", upage);
+		PANIC("not dirty");
 		free_frame(kpage);
 		pagedir_set_dirty(pd, upage, false);
 		pagedir_set_dirty(pd, kpage, false);
