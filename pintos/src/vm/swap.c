@@ -53,8 +53,8 @@ swap_in (void *addr) // when page_fault but already evicted addr called.
 	 /* 2. You will want to evict an already existing frame
 	 * to make space to read from the disk to cache. 
 	 */
-	uint8_t *kpage = palloc_get_page (PAL_USER|PAL_ZERO);
-    uint8_t *upage = (void *)(((uintptr_t)addr >> 12) << 12);
+	void *kpage = palloc_get_page (PAL_USER|PAL_ZERO);
+    void *upage = (void *)(((uintptr_t)addr >> 12) << 12);
 	if(pagedir_get_page (thread_current()->pagedir, upage) != NULL)
 	{
 		PANIC("pagedir get page error");
