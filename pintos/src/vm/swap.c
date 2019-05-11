@@ -55,6 +55,10 @@ swap_in (void *addr) // when page_fault but already evicted addr called.
 	 */
 	uint8_t *kpage = palloc_get_page (PAL_USER|PAL_ZERO);
     uint8_t *upage = (void *)(((uintptr_t)addr >> 12) << 12);
+	if(pagedir_get_page (thread_current()->pagedir, upage) != NULL)
+	{
+		PANIC("pagedir get page error");
+	}
 	if(kpage==NULL)
 	{
 		//lock_release(&swap_lock);
