@@ -160,7 +160,7 @@ page_fault (struct intr_frame *f)
   
   //If given address is invalid and in stack range, terminate
   
-  if (not_present&&kernel)
+  if (not_present&&!user)
   {
     f->eip = (void*)f->eax;
     f->eax = 0xffffffff;
