@@ -3,6 +3,7 @@
 
 #include <stdbool.h>
 #include "filesys/off_t.h"
+#include "threads/vaddr.h"
 
 void swap_init (void);
 bool swap_in (void *addr);
