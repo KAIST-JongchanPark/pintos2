@@ -93,7 +93,7 @@ swap_in (void *addr) // when page_fault but already evicted addr called.
 		
 		read_from_disk(kpage, spte->swapped_place+i);
 	}
-	//bitmap_set_multiple(swap_table, spte->swapped_place, 8, false);
+	bitmap_set_multiple(swap_table, spte->swapped_place, 8, false);
 	lock_release(&swap_lock);
 	return true;
 }
