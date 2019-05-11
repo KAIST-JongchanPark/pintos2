@@ -91,7 +91,7 @@ swap_in (void *addr) // when page_fault but already evicted addr called.
 	for(i=0; i<8; i++)
 	{
 		
-		read_from_disk(kpage, spte->swapped_place+i);
+		read_from_disk(kpage, spte->swapped_place, i);
 	}
 	bitmap_set_multiple(swap_table, spte->swapped_place, 8, false);
 	//lock_release(&swap_lock);
@@ -187,10 +187,10 @@ swap_out (void) // when palloc is null, page full.
  * Read data from swap device to frame. 
  * Look at device/disk.c
  */
-void read_from_disk (uint8_t *frame, int index)
+void read_from_disk (uint8_t *frame, size_t place, int index)
 {
 
-	disk_read(swap_device, index, frame+index*512);
+	disk_read(swap_device, place+index, frame+index*512);
 
 }
 
