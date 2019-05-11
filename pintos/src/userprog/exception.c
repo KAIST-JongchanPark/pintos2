@@ -163,7 +163,7 @@ page_fault (struct intr_frame *f)
   
   if (!user&&is_kernel_vaddr(fault_addr))
   {
-	  swap_in(list_entry (frame_find_addr (&frame_table, fault_addr), struct frame_table_entry, elem)->upage);
+	  //swap_in(list_entry (frame_find_addr (&frame_table, fault_addr), struct frame_table_entry, elem)->upage);
 	  //return;
   }
 
