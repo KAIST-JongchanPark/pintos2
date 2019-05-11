@@ -68,7 +68,7 @@ swap_in (void *addr) // when page_fault but already evicted addr called.
 	 * page table entry. 
 	 */
 	spte->swapped = false;
-	allocate_frame(kpage, addr);
+	allocate_frame(kpage, upage);
 	//printf("swapin 3\n");
 	if(!pagedir_set_page(thread_current()->pagedir, upage, kpage, spte->writable))
 	{
