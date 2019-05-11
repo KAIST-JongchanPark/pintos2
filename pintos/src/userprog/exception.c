@@ -162,7 +162,7 @@ page_fault (struct intr_frame *f)
   
   if (!user || fault_addr == NULL || is_kernel_vaddr(fault_addr)) 
   {
-	printf("exit -1 1\n");
+	printf("exit -1 %x\n", fault_addr);
     exit(-1);
   }
   
