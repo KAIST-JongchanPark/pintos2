@@ -240,7 +240,7 @@ page_fault (struct intr_frame *f)
   }
   else
   {
-	  printf("exit -1 1\n");
+	  printf("exit -1 2\n");
 	  exit(-1);
 	  return;
   }
