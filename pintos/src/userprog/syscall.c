@@ -202,13 +202,13 @@ int read (int fd, void *buffer, unsigned size)
 			temp+=PGSIZE;
 			printf("not spt calc addr: %x\n", temp);
 		}
-		printf("what is temp: %d\n", *temp);
+		//printf("what is temp: %d\n", *temp);
 		if(is_user_vaddr(temp))
 		{
 			exit_with_status(-1);
 			//return -1;
 		}
-		printf("what is temp: %d\n", *temp);
+		//printf("what is temp: %d\n", *temp);
 	}
   else if(fd>2)
   {
@@ -231,6 +231,7 @@ int read (int fd, void *buffer, unsigned size)
 
 
     //lock_release(&syscall_lock);
+	printf("return value: %d\n", return_value);
     return return_value;
   }
   else
