@@ -65,7 +65,7 @@ void* is_valid_ptr(void* ptr)
 			printf("not spt calc addr: %x\n", temp);
 		}
 		
-		if(!is_user_vaddr(temp))
+		if(is_user_vaddr(temp))
 		{
 			exit_with_status(-1);
 			//return -1;
