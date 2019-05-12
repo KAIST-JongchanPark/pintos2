@@ -49,14 +49,14 @@ swap_in (void *addr) // when page_fault but already evicted addr called.
 		PANIC("Not a swapped page");
 	}
 
-	printf("swap in place: %d\n", spte->swapped_place);
+	//printf("swap in place: %d\n", spte->swapped_place);
 	 /* 2. You will want to evict an already existing frame
 	 * to make space to read from the disk to cache. 
 	 */
 	void *kpage = palloc_get_page (PAL_USER);
     void *upage = (void *)(((uintptr_t)addr >> 12) << 12);
 	uint32_t *pd = spte->thread->pagedir;
-	printf("thread current: %s, thread saved: %s\n", thread_current()->name, spte->thread->name);
+	//printf("thread current: %s, thread saved: %s\n", thread_current()->name, spte->thread->name);
 	if(pagedir_get_page (pd, upage) != NULL)
 	{
 		PANIC("pagedir get page error");
@@ -84,7 +84,7 @@ swap_in (void *addr) // when page_fault but already evicted addr called.
 	//printf("swapin 3\n");
 	if(!pagedir_set_page(pd, upage, kpage, true))
 	{
-		printf("swap mapping failed\n");
+		//printf("swap mapping failed\n");
 	}
 	
 	//printf("swapin 4\n");
@@ -98,7 +98,7 @@ swap_in (void *addr) // when page_fault but already evicted addr called.
 	 /* 5. Use helper function read_from_disk in order to read the contents
 	 * of the disk into the frame. 
 	 */ 
-	printf("swap in uaddr: %x\n", upage);
+	//printf("swap in uaddr: %x\n", upage);
 	int i = 0;
 	for(i=0; i<8; i++)
 	{
@@ -168,7 +168,7 @@ swap_out (void) // when palloc is null, page full.
 	{
 		PANIC("swap slots are fully used.");
 	}
-	printf("swap out uaddr: %x\n", upage);
+	//printf("swap out uaddr: %x\n", upage);
 	int i=0;
 	for(i=0; i<8; i++)
 	{
@@ -190,7 +190,7 @@ swap_out (void) // when palloc is null, page full.
 	//free_frame(kpage);
 	spte -> swapped = true;
 	spte->swapped_place = place;
-	printf("swap out place: %d\n", place);
+	//printf("swap out place: %d\n", place);
 	
 
 	//lock_release(&swap_lock);

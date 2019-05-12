@@ -122,7 +122,7 @@ bool allocate_using_spt(void* addr, struct sup_page_table_entry *spte)
 	  //ASSERT(read_bytes!=0);
 	  if (read_bytes != (int) page_read_bytes)
 		{
-		  printf("swap addr: %x\n", kpage);
+		  //printf("swap addr: %x\n", kpage);
 		  //PANIC("test");
 		  palloc_free_page (kpage);
 		  //here
