@@ -179,6 +179,7 @@ int read (int fd, void *buffer, unsigned size)
   if(!lookup_spt(buffer)&&pg_ofs(buffer)!=0)
   {
 	  printf("error addr: %x\n", buffer);
+	  printf("stack addr: %x\n", thread_current()->stack);
 	  exit_with_status(-1);
   }
   if(fd==0)
