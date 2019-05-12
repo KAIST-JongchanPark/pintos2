@@ -35,6 +35,7 @@ struct hash *spt_init (void)
  */
 void allocate_spt (struct hash *spt, struct sup_page_table_entry *spte)
 {
+	spte->thread = thread_current();
 	hash_insert(spt, &(spte->elem));
 }
 

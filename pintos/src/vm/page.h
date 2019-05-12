@@ -6,6 +6,7 @@
 #include "filesys/off_t.h"
 #include <stdbool.h>
 #include "userprog/syscall.h"
+#include "threads/thread.h"
 
 
 enum page_type
@@ -25,6 +26,8 @@ struct sup_page_table_entry
 	*/
 	bool accessed;
 	bool swapped;
+	
+	struct thread *thread;
 	
 	struct hash_elem elem;
 	struct file* file;

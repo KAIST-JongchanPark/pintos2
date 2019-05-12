@@ -55,7 +55,8 @@ swap_in (void *addr) // when page_fault but already evicted addr called.
 	 */
 	void *kpage = palloc_get_page (PAL_USER|PAL_ZERO);
     void *upage = (void *)(((uintptr_t)addr >> 12) << 12);
-	if(pagedir_get_page (thread_current()->pagedir, upage) != NULL)
+	uint32_t *pd = spte->thread->pagedir;
+	if(pagedir_get_page (pd, upage) != NULL)
 	{
 		PANIC("pagedir get page error");
 	}
@@ -80,7 +81,7 @@ swap_in (void *addr) // when page_fault but already evicted addr called.
 	spte->swapped = false;
 	allocate_frame(kpage, upage);
 	//printf("swapin 3\n");
-	if(!pagedir_set_page(thread_current()->pagedir, upage, kpage, spte->writable))
+	if(!pagedir_set_page(pd, upage, kpage, spte->writable))
 	{
 		printf("swap mapping failed\n");
 	}
@@ -105,7 +106,7 @@ swap_in (void *addr) // when page_fault but already evicted addr called.
 	}
 	bitmap_set_multiple(swap_table, spte->swapped_place, 8, false);
 	//lock_release(&swap_lock);
-	if(pagedir_get_page (thread_current()->pagedir, upage) == NULL)
+	if(pagedir_get_page (pd, upage) == NULL)
 	{
 		PANIC("pagedir get page is null after swap in");
 	}
@@ -136,7 +137,7 @@ swap_out (void) // when palloc is null, page full.
 	 * pagedir_clear_page. 
 	 */
 
-	uint32_t *pd = thread_current()->pagedir;
+	uint32_t *pd = spte->thread->pagedir;
 	pagedir_clear_page(pd, upage);
 	//fte -> upage = NULL;
 
