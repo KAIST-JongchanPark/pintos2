@@ -57,7 +57,14 @@ void* is_valid_ptr(void* ptr)
 	{
 		//exit with status -1
 		//printf("not spt addr: %x\n", ptr);
-		if(spt_get_page((void *)(((uintptr_t)ptr >> 12) << 12))->type!=DISK)
+		int i=0;
+		struct sup_page_table_entry *spte = spt_get_page((void *)(((uintptr_t)ptr >> 12) << 12));
+		while(spte==NULL)
+		{
+			spte = spt_get_page((void *)((((uintptr_t)ptr >> 12)+i) << 12));
+			i++;
+		}
+		if(spte->type==DISK)
 		{
 			exit_with_status(-1);
 			//return -1;
@@ -148,6 +155,7 @@ int open (const char *ptr)
   struct sup_page_table_entry *spte = spt_get_page(ptr);
   spte -> file = file;
   spte -> type = DISK;
+  ASSERT(spt_get_page(ptr)->type==DISK);
   int i;
   for(i=3;i<128;i++)
   {
