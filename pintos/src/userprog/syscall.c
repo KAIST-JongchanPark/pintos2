@@ -61,7 +61,7 @@ void* is_valid_ptr(void* ptr)
 		struct sup_page_table_entry *spte = spt_get_page((void *)(((uintptr_t)ptr >> 12) << 12));
 		while(spte==NULL)
 		{
-			spte = spt_get_page((void *)((((uintptr_t)ptr >> 12)+i) << 12));
+			spte = spt_get_page((void *)(((ptr >> 12)+i) << 12));
 			i++;
 		}
 		if(spte->type==DISK)
