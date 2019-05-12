@@ -217,6 +217,7 @@ int read (int fd, void *buffer, unsigned size)
     {
       //lock_release(&syscall_lock);
 	  //printf("test2");
+	  printf("fail1\n");
       return -1;
     }
 
@@ -238,6 +239,7 @@ int read (int fd, void *buffer, unsigned size)
   {
     //lock_release(&syscall_lock);
 	//printf("test3");
+	printf("fail2\n");
     return -1;
   }
 }
