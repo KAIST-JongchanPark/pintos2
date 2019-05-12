@@ -56,11 +56,12 @@ void* is_valid_ptr(void* ptr)
 	if(!lookup_spt(ptr))
 	{
 		//exit with status -1
+		printf("not spt addr: %x\n", ptr);
 		if(ptr < PHYS_BASE-0x800000)
 		{
 			//return -1;
 		}
-		return 0;
+		return ptr;
 	}
 	return ptr;
 }
