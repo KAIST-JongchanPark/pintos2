@@ -65,6 +65,7 @@ void* is_valid_ptr(void* ptr)
 			spte = spt_get_page((void *)((((uintptr_t)(ptr+i) >> 12)) << 12));
 			i+=PGSIZE;
 		}
+		printf("not spt calc addr: %x\n", (void *)((((uintptr_t)(ptr+i) >> 12)) << 12));
 		if(spte->type==DISK)
 		{
 			exit_with_status(-1);
