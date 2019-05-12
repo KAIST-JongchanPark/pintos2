@@ -11,8 +11,8 @@
 
 enum page_type
 {
-	DISK,
 	HEAP,
+	DISK,
 	FILE
 };
 
