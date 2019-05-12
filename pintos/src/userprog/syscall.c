@@ -176,6 +176,10 @@ int read (int fd, void *buffer, unsigned size)
 	//printf("test1");
     return -1;
   //lock_acquire(&syscall_lock);
+  if(!lookup_spt(buffer))
+  {
+	  return -1;
+  }
   if(fd==0)
   {
     int i;
