@@ -56,7 +56,7 @@ void* is_valid_ptr(void* ptr)
 	if(!lookup_spt(ptr))
 	{
 		//exit with status -1
-		exit_with_status(-1);
+		exit_with_status(-2);
 		return 0;
 	}
 	return ptr;
