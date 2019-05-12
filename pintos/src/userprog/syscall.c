@@ -197,7 +197,6 @@ int read (int fd, void *buffer, unsigned size)
 		//printf("not spt addr: %x\n", ptr);
 		printf("not spt addr: %x\n", buffer);
 		int *temp = buffer+PGSIZE;
-		printf("what is temp: %d\n", *temp);
 		while(is_user_vaddr(temp)&&!lookup_spt(temp))
 		{
 			temp+=PGSIZE;
@@ -209,6 +208,7 @@ int read (int fd, void *buffer, unsigned size)
 			exit_with_status(-1);
 			//return -1;
 		}
+		printf("what is temp: %d\n", *temp);
 	}
   else if(fd>2)
   {
