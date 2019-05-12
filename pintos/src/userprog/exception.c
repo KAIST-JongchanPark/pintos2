@@ -209,7 +209,7 @@ page_fault (struct intr_frame *f)
 			  printf("stack pointer: %x\n", stack_pointer);
 			  void* temp = pg_round_down(fault_addr);
 			  allocate_and_init_to_zero(temp);
-			  f->esp = stack_pointer-4;
+			  
 			  return;
 
 		  }
