@@ -178,6 +178,7 @@ int read (int fd, void *buffer, unsigned size)
   //lock_acquire(&syscall_lock);
   if(!lookup_spt(buffer)&&pg_ofs(buffer)!=0)
   {
+	  printf("error addr: %x\n", buffer);
 	  exit_with_status(-1);
   }
   if(fd==0)
