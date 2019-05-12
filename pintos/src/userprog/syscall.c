@@ -57,8 +57,9 @@ void* is_valid_ptr(void* ptr)
 	{
 		//exit with status -1
 		//printf("not spt addr: %x\n", ptr);
-		if(ptr < PHYS_BASE-0x800000)
+		if(spt_get_page((void *)(((uintptr_t)ptr >> 12 +1) << 12))->type==DISK)
 		{
+			exit_with_status(-1);
 			//return -1;
 		}
 		return ptr;
@@ -144,7 +145,10 @@ int open (const char *ptr)
     //lock_release(&syscall_lock);
     return -1;
   }
-  
+  struct sup_page_table_entry *spte = spt_get_page(ptr);
+  spte -> page_vaddr = (void *)(((uintptr_t)upage >> 12) << 12);
+  spte -> file = file;
+  spte -> type = DISK;
   int i;
   for(i=3;i<128;i++)
   {
