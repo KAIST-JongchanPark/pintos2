@@ -58,7 +58,7 @@ void* is_valid_ptr(void* ptr)
 		//exit with status -1
 		if(ptr < PHYS_BASE-0x800000)
 		{
-			exit_with_status(-1);
+			return -1;
 		}
 		return 0;
 	}
