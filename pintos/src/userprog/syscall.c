@@ -53,12 +53,12 @@ void* is_valid_ptr(void* ptr)
 		exit_with_status(-1);
 		return 0;
 	} 
-	if(!lookup_spt(ptr))
-	{
+	//if(!lookup_spt(ptr))
+	//{
 		//exit with status -1
-		exit_with_status(-2);
-		return 0;
-	}
+	//	exit_with_status(-1);
+	//	return 0;
+	//}
 	return ptr;
 }
 
