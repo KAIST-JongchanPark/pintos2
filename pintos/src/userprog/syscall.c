@@ -62,7 +62,7 @@ void* is_valid_ptr(void* ptr)
 		while(*temp==NULL&&is_user_vaddr(temp))
 		{
 			temp+=PGSIZE;
-			printf("not spt calc addr: %x\n", (void *)((((uintptr_t)(ptr+i) >> 12)) << 12));
+			printf("not spt calc addr: %x\n", temp);
 		}
 		
 		if(!is_user_vaddr(temp))
