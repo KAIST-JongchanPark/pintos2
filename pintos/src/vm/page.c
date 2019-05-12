@@ -79,6 +79,7 @@ bool allocate_and_init_to_zero(void* addr)
 	swap_out();
 	kpage = palloc_get_page (PAL_USER | PAL_ZERO);
   }
+  //struct sup_page_table_entry *spte = malloc(sizeof(struct sup_page_table_entry));
   allocate_frame((void *)kpage, addr);
   
   if (!install_page (addr, kpage, true)) 
@@ -113,6 +114,7 @@ bool allocate_using_spt(void* addr, struct sup_page_table_entry *spte)
 	  }
 	  //printf("alloc_spt kpage: %x\n", kpage);
 	  allocate_frame((void *)kpage, addr);
+	  spte->thread = thread_current();
 	  file_seek (file, ofs);
 	  /* Load this page. */
 	  //ASSERT(file!=NULL);

@@ -56,6 +56,7 @@ swap_in (void *addr) // when page_fault but already evicted addr called.
 	void *kpage = palloc_get_page (PAL_USER|PAL_ZERO);
     void *upage = (void *)(((uintptr_t)addr >> 12) << 12);
 	uint32_t *pd = spte->thread->pagedir;
+	printf("thread current: %s, thread saved: %s\n", thread_current()->name, spte->thread->name);
 	if(pagedir_get_page (pd, upage) != NULL)
 	{
 		PANIC("pagedir get page error");
