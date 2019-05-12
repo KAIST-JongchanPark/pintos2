@@ -100,12 +100,13 @@ swap_in (void *addr) // when page_fault but already evicted addr called.
 	 */ 
 	//printf("swap in uaddr: %x\n", upage);
 	int i = 0;
+	lock_acquire(&swap_lock);
 	for(i=0; i<8; i++)
 	{
 		read_from_disk(kpage, spte->swapped_place, i);
 	}
 	bitmap_set_multiple(swap_table, spte->swapped_place, 8, false);
-	//lock_release(&swap_lock);
+	lock_release(&swap_lock);
 	if(pagedir_get_page (pd, upage) == NULL)
 	{
 		PANIC("pagedir get page is null after swap in");
@@ -170,6 +171,7 @@ swap_out (void) // when palloc is null, page full.
 	}
 	//printf("swap out uaddr: %x\n", upage);
 	int i=0;
+	lock_acquire(&swap_lock);
 	for(i=0; i<8; i++)
 	{
 		//printf("addr4 upage: %x\n", upage);
@@ -179,6 +181,7 @@ swap_out (void) // when palloc is null, page full.
 	//안됨
 	//printf("reached1\n");
 	bitmap_set_multiple(swap_table, place, 8, true);
+	lock_release(&swap_lock);
 	//list_remove(&fte->elem); // problem
 	pagedir_set_dirty(pd, upage, false);
 	pagedir_set_dirty(pd, kpage, false);
