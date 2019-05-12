@@ -195,15 +195,15 @@ int read (int fd, void *buffer, unsigned size)
 	{
 		//exit with status -1
 		//printf("not spt addr: %x\n", ptr);
-		//printf("not spt addr: %x\n", ptr);
+		printf("not spt addr: %x\n", buffer);
 		int *temp = buffer+PGSIZE;
-		//printf("what is temp: %d\n", *temp);
+		printf("what is temp: %d\n", *temp);
 		while(is_user_vaddr(temp)&&!lookup_spt(temp))
 		{
 			temp+=PGSIZE;
-			//printf("not spt calc addr: %x\n", temp);
+			printf("not spt calc addr: %x\n", temp);
 		}
-		//printf("what is temp: %d\n", *temp);
+		printf("what is temp: %d\n", *temp);
 		if(is_user_vaddr(temp))
 		{
 			exit_with_status(-1);
