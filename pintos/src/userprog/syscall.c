@@ -57,7 +57,7 @@ void* is_valid_ptr(void* ptr)
 	{
 		//exit with status -1
 		//printf("not spt addr: %x\n", ptr);
-		printf("not spt addr: %x", ptr);
+		printf("not spt addr: %x\n", ptr);
 		int i=0;
 		struct sup_page_table_entry *spte = spt_get_page((void *)(((uintptr_t)ptr >> 12) << 12));
 		while(spte==NULL)
