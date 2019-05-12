@@ -176,9 +176,9 @@ int read (int fd, void *buffer, unsigned size)
 	//printf("test1");
     return -1;
   //lock_acquire(&syscall_lock);
-  if(!lookup_spt(buffer))
+  if(!lookup_spt(buffer)&&pg_ofs(buffer)!=0)
   {
-	  return -1;
+	  exit_with_status(-1);
   }
   if(fd==0)
   {
