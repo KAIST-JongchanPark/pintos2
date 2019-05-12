@@ -53,7 +53,7 @@ swap_in (void *addr) // when page_fault but already evicted addr called.
 	 /* 2. You will want to evict an already existing frame
 	 * to make space to read from the disk to cache. 
 	 */
-	void *kpage = palloc_get_page (PAL_USER|PAL_ZERO);
+	void *kpage = palloc_get_page (PAL_USER);
     void *upage = (void *)(((uintptr_t)addr >> 12) << 12);
 	uint32_t *pd = spte->thread->pagedir;
 	printf("thread current: %s, thread saved: %s\n", thread_current()->name, spte->thread->name);
@@ -66,7 +66,7 @@ swap_in (void *addr) // when page_fault but already evicted addr called.
 		//lock_release(&swap_lock);
 		bool result = swap_out();
 		//lock_acquire(&swap_lock);
-		kpage = palloc_get_page (PAL_USER|PAL_ZERO);
+		kpage = palloc_get_page (PAL_USER);
 		if(kpage==NULL)
 		{
 			PANIC("getpage error");
@@ -102,7 +102,6 @@ swap_in (void *addr) // when page_fault but already evicted addr called.
 	int i = 0;
 	for(i=0; i<8; i++)
 	{
-		
 		read_from_disk(kpage, spte->swapped_place, i);
 	}
 	bitmap_set_multiple(swap_table, spte->swapped_place, 8, false);
