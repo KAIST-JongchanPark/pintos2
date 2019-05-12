@@ -58,16 +58,14 @@ void* is_valid_ptr(void* ptr)
 		//exit with status -1
 		//printf("not spt addr: %x\n", ptr);
 		printf("not spt addr: %x\n", ptr);
-		int i=0;
-		struct sup_page_table_entry *spte = spt_get_page((void *)(((uintptr_t)ptr >> 12) << 12));
-		while(spte==NULL)
+		void *temp = ptr+PGSIZE;
+		while(*temp==NULL&&is_user_vaddr(temp))
 		{
-			spte = spt_get_page((void *)((((uintptr_t)(ptr+i) >> 12)) << 12));
-			i+=PGSIZE;
+			temp+=PGSIZE;
 			printf("not spt calc addr: %x\n", (void *)((((uintptr_t)(ptr+i) >> 12)) << 12));
 		}
 		
-		if(spte->type==DISK)
+		if(!is_user_vaddr(temp))
 		{
 			exit_with_status(-1);
 			//return -1;
@@ -155,12 +153,12 @@ int open (const char *ptr)
     //lock_release(&syscall_lock);
     return -1;
   }
-  struct sup_page_table_entry *spte = spt_get_page(ptr);
-  ASSERT(spte!=NULL);
-  printf("open ptr: %x\n", ptr);
-  spte -> file = file;
-  spte -> type = DISK;
-  ASSERT(spt_get_page(ptr)->type==DISK);
+  //struct sup_page_table_entry *spte = spt_get_page(ptr);
+  //ASSERT(spte!=NULL);
+  //printf("open ptr: %x\n", ptr);
+  //spte -> file = file;
+  //spte -> type = DISK;
+  //ASSERT(spt_get_page(ptr)->type==DISK);
   int i;
   for(i=3;i<128;i++)
   {
