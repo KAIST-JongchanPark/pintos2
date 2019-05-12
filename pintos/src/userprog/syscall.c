@@ -53,26 +53,6 @@ void* is_valid_ptr(void* ptr)
 		exit_with_status(-1);
 		return 0;
 	} 
-	if(!lookup_spt(ptr))
-	{
-		//exit with status -1
-		//printf("not spt addr: %x\n", ptr);
-		//printf("not spt addr: %x\n", ptr);
-		int *temp = ptr+PGSIZE;
-		//printf("what is temp: %d\n", *temp);
-		while(is_user_vaddr(temp)&&!lookup_spt(temp))
-		{
-			temp+=PGSIZE;
-			//printf("not spt calc addr: %x\n", temp);
-		}
-		//printf("what is temp: %d\n", *temp);
-		if(is_user_vaddr(temp))
-		{
-			exit_with_status(-1);
-			//return -1;
-		}
-		return ptr;
-	}
 	return ptr;
 }
 
@@ -211,6 +191,25 @@ int read (int fd, void *buffer, unsigned size)
     //lock_release(&syscall_lock);
     return size;
   } 
+  if(!lookup_spt(buffer))
+	{
+		//exit with status -1
+		//printf("not spt addr: %x\n", ptr);
+		//printf("not spt addr: %x\n", ptr);
+		int *temp = buffer+PGSIZE;
+		//printf("what is temp: %d\n", *temp);
+		while(is_user_vaddr(temp)&&!lookup_spt(temp))
+		{
+			temp+=PGSIZE;
+			//printf("not spt calc addr: %x\n", temp);
+		}
+		//printf("what is temp: %d\n", *temp);
+		if(is_user_vaddr(temp))
+		{
+			exit_with_status(-1);
+			//return -1;
+		}
+	}
   else if(fd>2)
   {
     struct file* file = thread_current ()->fd[fd];
