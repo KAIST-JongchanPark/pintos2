@@ -156,6 +156,8 @@ int open (const char *ptr)
     return -1;
   }
   struct sup_page_table_entry *spte = spt_get_page(ptr);
+  ASSERT(spte!=NULL);
+  printf("open ptr: %x\n", ptr);
   spte -> file = file;
   spte -> type = DISK;
   ASSERT(spt_get_page(ptr)->type==DISK);
