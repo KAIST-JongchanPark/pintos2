@@ -12,5 +12,6 @@ test_main (void)
 
   CHECK ((handle = open ("sample.txt")) > 1, "open \"sample.txt\"");
   read (handle, (char *) &handle - 4096, 1);
+  msg("handle: %x", &handle);
   fail ("survived reading data into bad address");
 }
