@@ -60,7 +60,7 @@ void* is_valid_ptr(void* ptr)
 		printf("not spt addr: %x\n", ptr);
 		int *temp = ptr+PGSIZE;
 		//printf("what is temp: %d\n", *temp);
-		while((thread_current()->fd[*temp]==NULL )&&is_user_vaddr(temp)&&!lookup_spt(temp))
+		while(!lookup_spt(temp)||((thread_current()->fd[*temp]==NULL )&&is_user_vaddr(temp)))
 		{
 			temp+=PGSIZE;
 			printf("not spt calc addr: %x\n", temp);
