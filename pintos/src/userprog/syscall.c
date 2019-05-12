@@ -181,18 +181,8 @@ int read (int fd, void *buffer, unsigned size)
 	  //printf("stack addr: %x\n", thread_current()->stack);
 	  //exit_with_status(-1);
   //}
-  if(fd==0)
-  {
-    int i;
-    for(i=0;i<size;i++)
-    {
-      ((uint8_t *)buffer)[i] = input_getc();
-    }
-    //lock_release(&syscall_lock);
-    return size;
-  } 
   if(!lookup_spt(buffer))
-	{
+  {
 		//exit with status -1
 		//printf("not spt addr: %x\n", ptr);
 		printf("not spt addr: %x\n", buffer);
@@ -209,7 +199,17 @@ int read (int fd, void *buffer, unsigned size)
 			//return -1;
 		}
 		//printf("what is temp: %d\n", *temp);
-	}
+  }
+  if(fd==0)
+  {
+    int i;
+    for(i=0;i<size;i++)
+    {
+      ((uint8_t *)buffer)[i] = input_getc();
+    }
+    //lock_release(&syscall_lock);
+    return size;
+  } 
   else if(fd>2)
   {
     struct file* file = thread_current ()->fd[fd];
