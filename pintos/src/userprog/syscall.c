@@ -58,8 +58,8 @@ void* is_valid_ptr(void* ptr)
 		//exit with status -1
 		//printf("not spt addr: %x\n", ptr);
 		printf("not spt addr: %x\n", ptr);
-		void *temp = ptr+PGSIZE;
-		while(*temp==NULL&&is_user_vaddr(temp))
+		int *temp = ptr+PGSIZE;
+		while((*temp>128||*temp<0 )->&&is_user_vaddr(temp))
 		{
 			temp+=PGSIZE;
 			printf("not spt calc addr: %x\n", temp);
