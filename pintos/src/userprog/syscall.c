@@ -202,12 +202,12 @@ int read (int fd, void *buffer, unsigned size)
       return -1;
     }
 
-    void* upage = pg_round_down(buffer);
-    while(upage<buffer+size)
-    {
-      allocate_and_init_to_zero(upage);
-      upage+=PGSIZE;
-    }
+    //void* upage = pg_round_down(buffer);
+    //while(upage<buffer+size)
+    //{
+    //  allocate_and_init_to_zero(upage);
+    //  upage+=PGSIZE;
+    //}
 
     return_value = file_read(file, buffer, (off_t)size);
 
