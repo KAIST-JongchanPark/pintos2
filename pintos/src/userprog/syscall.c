@@ -57,7 +57,7 @@ void* is_valid_ptr(void* ptr)
 	{
 		//exit with status -1
 		//printf("not spt addr: %x\n", ptr);
-		if(spt_get_page((void *)(((uintptr_t)ptr >> 12 +1) << 12))->type==DISK)
+		if(spt_get_page((void *)(((uintptr_t)ptr >> 12) << 12))->type!=DISK)
 		{
 			exit_with_status(-1);
 			//return -1;
