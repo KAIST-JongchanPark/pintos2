@@ -439,7 +439,10 @@ void munmap (mapid_t mapping)
     while(spte!=NULL)
     {
        file_seek(spte->file, spte->ofs);
-       //if(pagedir_is_dirty(thread_current()->pagedir, spte->page_vaddr)||pagedir_is_dirty(thread_current()->pagedir, pagedir_get_page(thread_current()->pagedir, spte->page_vaddr)))
+       if(pagedir_is_dirty(thread_current()->pagedir, spte->page_vaddr));
+       {
+        printf("is dirty\n");
+       }
         file_write(spte->file, spte->page_vaddr, spte->read_bytes);
 	   void *kpage = pagedir_get_page(thread_current()->pagedir, spte->page_vaddr);
 	   if(kpage!=NULL)
