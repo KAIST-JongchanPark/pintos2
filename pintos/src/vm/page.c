@@ -146,10 +146,7 @@ bool allocate_using_spt(void* addr, struct sup_page_table_entry *spte)
 		  //
 		  return false; 
 		}
-	if(spte->type == FILE)
-	{
-		pagedir_set_dirty(thread_current()->pagedir, upage, false);
-	}
+
 
 	return true;
 }
