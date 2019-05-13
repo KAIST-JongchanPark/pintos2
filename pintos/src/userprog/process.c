@@ -88,8 +88,11 @@ process_execute (const char *file_name)
 	struct thread *t = list_entry (e, struct thread, child_elem);
 	if(t->exit_status == -1)
 	{
+    /*
 	  printf("exec error\n");
 	  return process_wait(tid);
+    */
+    return tid;
 	}
   }
   return tid;
