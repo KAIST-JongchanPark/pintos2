@@ -195,7 +195,7 @@ page_fault (struct intr_frame *f)
   else*/
   if(fault_addr>=0x08048000)
   {
-	  printf("addr: %x\n", fault_addr);
+	  //printf("addr: %x\n", fault_addr);
 	  //printf("addr: %x", fault_addr);
 	  //valid but not present in spt?? heap data, init to zero
 	  if(!lookup_spt(fault_addr))
@@ -221,7 +221,7 @@ page_fault (struct intr_frame *f)
 	  }
 	  else if(lookup_spt(fault_addr))
 	  {
-		  printf("addr2: %x\n", fault_addr);
+		  //printf("addr2: %x\n", fault_addr);
 		  if(spt_get_page(fault_addr)->swapped == true)
 		  {
 			//printf("addr2-1: %x\n", fault_addr);
