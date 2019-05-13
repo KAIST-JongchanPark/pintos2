@@ -446,13 +446,13 @@ void munmap (mapid_t mapping)
         file_write(spte->file, spte->page_vaddr, spte->read_bytes);
        }
         
-	   
+	    void *kpage = pagedir_get_page(thread_current()->pagedir, spte->page_vaddr);
 		pagedir_clear_page(thread_current()->pagedir, spte->page_vaddr);
         palloc_free_page(kpage);
 		free_frame(kpage);
 	   
-       free_spt(spte);
-       spte = mapping_to_spte(mapping);
+        free_spt(spte);
+        spte = mapping_to_spte(mapping);
 	     
     }
     //for each element, remove from spt and free it. 
