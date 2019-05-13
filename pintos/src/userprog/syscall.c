@@ -442,13 +442,15 @@ void munmap (mapid_t mapping)
        file_seek(spte->file, spte->ofs);
        if(pagedir_is_dirty(spte->thread->pagedir, spte->page_vaddr));
        {
-        printf("is dirty\n");
-       }
+        //printf("is dirty\n");
         file_write(spte->file, spte->page_vaddr, spte->read_bytes);
+       }
+        
 	   void *kpage = pagedir_get_page(thread_current()->pagedir, spte->page_vaddr);
 	   if(kpage!=NULL)
 	   {
-			//palloc_free_page(kpage);
+			pagedir_clear_page(thread_current()->pagedir, spte->page_vaddr);
+      //palloc_free_page(kpage);
 			//free_frame(kpage);
 	   }
        free_spt(spte);
