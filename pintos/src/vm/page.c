@@ -146,6 +146,8 @@ bool allocate_using_spt(void* addr, struct sup_page_table_entry *spte)
 		  //
 		  return false; 
 		}
+	if(spte->type == FILE)
+		pagedir_set_dirty(thread_current()->pagedir, addr, false);
 	if(pagedir_is_dirty(thread_current()->pagedir, addr));
        {
         printf("is dirty\n");
