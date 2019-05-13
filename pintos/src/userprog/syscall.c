@@ -173,7 +173,7 @@ int read (int fd, void *buffer, unsigned size)
   int return_value;
   if(fd<0||fd>=128)
   {
-	printf("test1");
+	//printf("test1");
     return -1;
   }
   //lock_acquire(&syscall_lock);
@@ -197,7 +197,7 @@ int read (int fd, void *buffer, unsigned size)
 		//printf("what is temp: %d\n", *temp);
 		if(is_user_vaddr(temp))
 		{
-			printf("test2");
+			//printf("test2");
 			exit_with_status(-1);
 			//return -1;
 		}
@@ -221,7 +221,7 @@ int read (int fd, void *buffer, unsigned size)
       //lock_release(&syscall_lock);
 	  //printf("test2");
 	  //printf("fail1\n");
-	  printf("test3");
+	  //printf("test3");
       return -1;
     }
 
