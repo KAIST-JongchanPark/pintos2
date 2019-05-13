@@ -447,10 +447,13 @@ void munmap (mapid_t mapping)
        }
         
 	    void *kpage = pagedir_get_page(thread_current()->pagedir, spte->page_vaddr);
-        
-		free_frame(kpage);
-		palloc_free_page(kpage);
-		pagedir_clear_page(thread_current()->pagedir, spte->page_vaddr);
+        if(kpage!=NULL)
+		{
+			free_frame(kpage);
+			palloc_free_page(kpage);
+			pagedir_clear_page(thread_current()->pagedir, spte->page_vaddr);
+		}
+		
 	   
         free_spt(spte);
         spte = mapping_to_spte(mapping);
