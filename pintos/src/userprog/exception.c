@@ -200,7 +200,7 @@ page_fault (struct intr_frame *f)
 	  //valid but not present in spt?? heap data, init to zero
 	  if(!lookup_spt(fault_addr))
 	  {
-		  //printf("not spt addr: %x\n", fault_addr);
+		  printf("not spt addr: %x\n", fault_addr);
 		  //printf("not lookup spt: %x\n", fault_addr);
 		  //allocate_and_init_to_zero(fault_addr);
 		  if(fault_addr>HEURISTIC&&(fault_addr>=stack_pointer||fault_addr==stack_pointer-4||fault_addr==stack_pointer-32))
@@ -221,7 +221,7 @@ page_fault (struct intr_frame *f)
 	  }
 	  else if(lookup_spt(fault_addr))
 	  {
-		  //printf("addr2: %x\n", fault_addr);
+		  printf("addr2: %x\n", fault_addr);
 		  if(spt_get_page(fault_addr)->swapped == true)
 		  {
 			//printf("addr2-1: %x\n", fault_addr);
