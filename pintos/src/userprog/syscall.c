@@ -456,6 +456,7 @@ void munmap (mapid_t mapping)
 		
 	   
         free_spt(spte);
+		free(spte);
         spte = mapping_to_spte(mapping);
 	     
     }
