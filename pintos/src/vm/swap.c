@@ -73,6 +73,7 @@ swap_in (void *addr) // when page_fault but already evicted addr called.
 		}
 	}
 	//printf("swapin 1\n");/
+	/*
 	if(frame_find_addr(&frame_table, kpage)!=NULL)
 		PANIC("error");
 	//printf("swapin 2\n");
