@@ -215,6 +215,7 @@ page_fault (struct intr_frame *f)
 		  }
 		  else
 		  {
+			printf("exit -1 1\n");
 			exit(-1);
 		  }
 	  }
@@ -231,7 +232,7 @@ page_fault (struct intr_frame *f)
 		  {
 			  if(!not_present&&write)
 			  {
-				  //printf("addr2-3: %x\n", fault_addr);
+				  printf("addr2-3: %x\n", fault_addr);
 				  exit(-1);
 				  return;
 			  }
@@ -240,7 +241,7 @@ page_fault (struct intr_frame *f)
 		  }
 		  else
 		  {
-			  //printf("addr2-4: %x\n", fault_addr);
+			  printf("addr2-4: %x\n", fault_addr);
 			  //allocate_and_init_to_zero(fault_addr);
 			  exit(-1);
 			  return;
@@ -253,7 +254,7 @@ page_fault (struct intr_frame *f)
   }
   else
   {
-	  //printf("exit -1 2\n");
+	  printf("exit -1 2\n");
 	  exit(-1);
 	  return;
   }
