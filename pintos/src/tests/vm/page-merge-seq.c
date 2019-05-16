@@ -88,7 +88,7 @@ merge (void)
   op = buf2;
   while (mp_left > 0) 
     {
-	  msg ("merge3");
+	  //msg ("merge3");
       /* Find smallest value. */
       size_t min = 0;
       for (i = 1; i < mp_left; i++)
