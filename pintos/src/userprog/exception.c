@@ -254,7 +254,7 @@ page_fault (struct intr_frame *f)
   }
   else
   {
-	  printf("exit -1 2\n");
+	  printf("exit -1 2: %x\n", fault_addr);
 	  exit(-1);
 	  return;
   }
