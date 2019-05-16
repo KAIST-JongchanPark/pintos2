@@ -139,7 +139,7 @@ swap_out (void) // when palloc is null, page full.
 	 * pagedir_clear_page. 
 	 */
 
-	uint32_t *pd = spte->thread->pagedir;
+	uint32_t *pd = thread_current()->pagedir;
 	pagedir_clear_page(pd, upage);
 	//fte -> upage = NULL;
 
