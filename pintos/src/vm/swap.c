@@ -16,6 +16,8 @@ static struct disk *swap_device;
 /* Tracks in-use and free swap slots */
 static struct bitmap *swap_table;
 
+static bool inited = false;
+
 /* Protects swap_table */
 static struct lock swap_lock;
 
@@ -31,9 +33,15 @@ swap_init (void)
 	  PANIC("swap disk is null");
   }
   swap_table = bitmap_create(8*1024);
+  inited = true;
   lock_init(&swap_lock);
 }
 
+bool
+swap_init_check (void)
+{
+  return inited;
+}
 
 bool 
 swap_in (void *addr) // when page_fault but already evicted addr called.

@@ -325,7 +325,10 @@ load (const char *file_name, void (**eip) (void), void **esp)
   if (t->pagedir == NULL) 
     goto done;
   t->spt = spt_init();
-  swap_init ();
+  if(!swap_init_check())
+  {
+	swap_init ();
+  }
   process_activate ();
 
 
