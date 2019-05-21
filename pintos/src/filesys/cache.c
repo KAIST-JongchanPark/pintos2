@@ -4,6 +4,7 @@
 #include "threads/synch.h"
 #include "devices/disk.h"
 #include "lib/string.h"
+#include "filesys/filesys.h"
 
 struct list cache_list;
 struct lock cache_lock;
@@ -27,7 +28,7 @@ void cache_init(void)
 	{
 		if(!i%8)
 		{
-			page = palloc_get_page(PAL_USER|PAL_ZERO);
+			upage = palloc_get_page(PAL_USER|PAL_ZERO);
 		}
 		else
 		{
