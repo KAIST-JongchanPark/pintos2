@@ -38,7 +38,7 @@ void cache_init(void)
 			upage+=512;
 		}
 		printf("3\n");
-		//celem = malloc(sizeof(struct cache_elem*)); // *빼야될듯?
+		celem = malloc(sizeof(struct cache_elem)); // *빼야될듯?
 		celem->addr = upage;
 		celem->allocated = false;
 		celem->index = i;
