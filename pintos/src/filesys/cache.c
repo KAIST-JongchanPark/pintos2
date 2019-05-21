@@ -34,7 +34,7 @@ void cache_init(void)
 			page+=512;
 		}
 
-		celem = malloc(sizeof(struct cache_elem*));
+		celem = malloc(sizeof(struct cache_elem*)); // *빼야될듯?
 		celem->addr = page;
 		celem->allocated = false;
 		celem->index = i;
@@ -116,7 +116,7 @@ struct cache_elem* cache_find(disk_sector_t sec_no)
 	for(e = list_begin(&cache_list) ; e != list_end(&cache_list) ; e = list_next(e))
 	{
 		celem = list_entry(e, struct cache_elem, elem);
-		if(celem->sector = sec_no)
+		if(celem->sector == sec_no)
 			return celem;
 	}
 	return NULL;
@@ -130,7 +130,7 @@ struct list_elem* cache_empty_slot(void)
 	for(e = list_begin(&cache_list) ; e != list_end(&cache_list) ; e = list_next(e))
 	{
 		celem = list_entry(e, struct cache_elem, elem);
-		if(celem->allocated = false)
+		if(celem->allocated == false)
 			return e;
 	}
 	return NULL;
@@ -165,7 +165,7 @@ void cache_evict(struct disk *d, disk_sector_t sec_no)
 	for(e = list_begin(&cache_list) ; e != list_end(&cache_list) ; e = list_next(e))
 	{
 		celem = list_entry(e, struct cache_elem, elem);
-		if(celem->index = evict_counter)
+		if(celem->index == evict_counter)
 			break;
 	}
 	celem->allocated = false;
@@ -187,7 +187,8 @@ void cache_write_behind(void)
 		celem->allocated = false;
 		if(celem->dirty)
 		{
-			disk_write(d, sec_no, celem->addr);
+			// celem->dirty = false; //이것도 해야될듯?
+			disk_write(d, sec_no, celem->addr); // sec_no가 아니라 celem->sector?
 		}
 		memset(celem->addr, 0, 512);
 	}
@@ -195,6 +196,8 @@ void cache_write_behind(void)
 	lock_release(&cache_lock);
 }
 //read ahead 하기 이거 어떻게 하는지 잘 모르겠음. (뭘 하라고 하는건지.. )
+
+// periodical하게 disk에 write 해주기 100 마다?
 
 //eviction 알고리즘도 만들어야 함. 
 

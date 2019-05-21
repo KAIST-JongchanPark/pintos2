@@ -11,6 +11,7 @@
 #include "threads/switch.h"
 #include "threads/synch.h"
 #include "threads/vaddr.h"
+#include "filesys/cache.h"
 #ifdef USERPROG
 #include "userprog/process.h"
 #endif
@@ -136,7 +137,10 @@ thread_tick (void)
 #endif
   else
     kernel_ticks++;
-
+  if(timer_ticks() % 100 == 0)
+  {
+    cache_write_behind();
+  }
   /* Enforce preemption. */
   if (++thread_ticks >= TIME_SLICE)
     intr_yield_on_return ();
