@@ -195,9 +195,7 @@ void cache_write_behind(void)
 		if(celem->dirty)
 		{
 			// celem->dirty = false; //이것도 해야될듯?
-			intr_enable ();
 			disk_write(filesys_disk, celem->sector, celem->addr); // sec_no가 아니라 celem->sector?
-			intr_disable ();
 		}
 		memset(celem->addr, 0, 512);
 	}
