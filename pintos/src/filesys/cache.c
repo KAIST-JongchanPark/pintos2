@@ -5,6 +5,7 @@
 #include "devices/disk.h"
 #include "lib/string.h"
 #include "filesys/filesys.h"
+#include <stdio.h>
 
 struct list cache_list;
 struct lock cache_lock;
@@ -15,6 +16,7 @@ int evict_counter;
 void cache_init(void)
 {
 	//init the list
+	printf("cache_init started\n");
 	list_init(&cache_list);
 	lock_init(&cache_lock);
 
@@ -41,6 +43,7 @@ void cache_init(void)
 		celem->index = i;
 		list_push_back(&cache_list, &celem->elem);
 	}
+	printf("cache_init finished\n");
 
 }
 
@@ -180,6 +183,7 @@ void cache_evict(struct disk *d)
 void cache_write_behind(void)
 {
 	//lock_acquire(&cache_lock);
+	printf("cache_write_behind started\n");
 	struct list_elem *e;
 	struct cache_elem* celem;
 	for(e = list_begin(&cache_list) ; e != list_end(&cache_list) ; e = list_next(e))
@@ -194,6 +198,8 @@ void cache_write_behind(void)
 		memset(celem->addr, 0, 512);
 	}
 	evict_counter = 0;
+	printf("cache_write_behind finished\n");
+
 	//lock_release(&cache_lock);
 }
 //read ahead 하기 이거 어떻게 하는지 잘 모르겠음. (뭘 하라고 하는건지.. )
