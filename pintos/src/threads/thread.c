@@ -139,7 +139,8 @@ thread_tick (void)
     kernel_ticks++;
   if(timer_ticks() % 100 == 0)
   {
-	thread_create("periodic thread", PRI_DEFAULT, cache_write_behind, NULL);
+	tid_t tid = thread_create("periodic thread", PRI_DEFAULT, cache_write_behind, NULL);
+	process_wait(tid);
   }
   /* Enforce preemption. */
   if (++thread_ticks >= TIME_SLICE)
