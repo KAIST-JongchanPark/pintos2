@@ -32,11 +32,11 @@ void cache_init(void)
 		}
 		else
 		{
-			page+=512;
+			upage+=512;
 		}
 
 		//celem = malloc(sizeof(struct cache_elem*)); // *빼야될듯?
-		celem->addr = page;
+		celem->addr = upage;
 		celem->allocated = false;
 		celem->index = i;
 		list_push_back(&cache_list, &celem->elem);
