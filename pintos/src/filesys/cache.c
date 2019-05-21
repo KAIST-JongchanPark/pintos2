@@ -184,7 +184,8 @@ void cache_evict(struct disk *d)
 void cache_write_behind(void)
 {
 	//lock_acquire(&cache_lock);
-	printf("cache_write_behind started\n");
+	//printf("cache_write_behind started\n");
+	
 	struct list_elem *e;
 	struct cache_elem* celem;
 	for(e = list_begin(&cache_list) ; e != list_end(&cache_list) ; e = list_next(e))
@@ -194,12 +195,14 @@ void cache_write_behind(void)
 		if(celem->dirty)
 		{
 			// celem->dirty = false; //이것도 해야될듯?
+			intr_enable ();
 			disk_write(filesys_disk, celem->sector, celem->addr); // sec_no가 아니라 celem->sector?
+			intr_disable ();
 		}
 		memset(celem->addr, 0, 512);
 	}
 	evict_counter = 0;
-	printf("cache_write_behind finished\n");
+	//printf("cache_write_behind finished\n");
 
 	//lock_release(&cache_lock);
 }
