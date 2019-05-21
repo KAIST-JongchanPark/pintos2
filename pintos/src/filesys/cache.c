@@ -179,7 +179,7 @@ void cache_evict(struct disk *d)
 //write behind thread 모르겠어서 그냥 함수로만 만들어놓음. 
 void cache_write_behind(void)
 {
-	lock_acquire(&cache_lock);
+	//lock_acquire(&cache_lock);
 	struct list_elem *e;
 	struct cache_elem* celem;
 	for(e = list_begin(&cache_list) ; e != list_end(&cache_list) ; e = list_next(e))
@@ -194,7 +194,7 @@ void cache_write_behind(void)
 		memset(celem->addr, 0, 512);
 	}
 	evict_counter = 0;
-	lock_release(&cache_lock);
+	//lock_release(&cache_lock);
 }
 //read ahead 하기 이거 어떻게 하는지 잘 모르겠음. (뭘 하라고 하는건지.. )
 
