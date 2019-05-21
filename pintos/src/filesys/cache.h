@@ -21,5 +21,5 @@ void cache_write(struct disk *, disk_sector_t, void*);
 struct cache_elem* cache_find(disk_sector_t);
 struct list_elem* cache_empty_slot(void);
 void cache_install(struct disk *, disk_sector_t);
-void cache_evict(struct disk *, disk_sector_t);
+void cache_evict(struct disk *);
 void cache_write_behind(void);

@@ -34,7 +34,7 @@ void cache_init(void)
 			page+=512;
 		}
 
-		celem = malloc(sizeof(struct cache_elem*)); // *빼야될듯?
+		//celem = malloc(sizeof(struct cache_elem*)); // *빼야될듯?
 		celem->addr = page;
 		celem->allocated = false;
 		celem->index = i;
@@ -143,7 +143,7 @@ void cache_install(struct disk *d, disk_sector_t sec_no)
 	struct list_elem* cache_slot = cache_empty_slot();
 	if(!cache_slot)
 	{
-		cache_evict(d, sec_no);
+		cache_evict(d);
 		cache_slot = cache_empty_slot();
 		
 	}
@@ -158,7 +158,7 @@ void cache_install(struct disk *d, disk_sector_t sec_no)
 }
 
 //캐시중에 evict할 entry를 찾아서 evict 하고(disk에 다시 쓰고) return 하기. 우선 FIFO 로 만들어놓고 나중에 
-void cache_evict(struct disk *d, disk_sector_t sec_no)
+void cache_evict(struct disk *d)
 {
 	struct list_elem *e;
 	struct cache_elem* celem;
@@ -169,7 +169,7 @@ void cache_evict(struct disk *d, disk_sector_t sec_no)
 			break;
 	}
 	celem->allocated = false;
-	disk_write(d, sec_no, celem->addr);
+	disk_write(d, celem->sector, celem->addr);
 	memset(celem->addr, 0, 512);
 	evict_counter = evict_counter==63? 0 : evict_counter+1;
 
@@ -188,7 +188,7 @@ void cache_write_behind(void)
 		if(celem->dirty)
 		{
 			// celem->dirty = false; //이것도 해야될듯?
-			disk_write(d, sec_no, celem->addr); // sec_no가 아니라 celem->sector?
+			disk_write(filesys_disk, celem->sector, celem->addr); // sec_no가 아니라 celem->sector?
 		}
 		memset(celem->addr, 0, 512);
 	}
