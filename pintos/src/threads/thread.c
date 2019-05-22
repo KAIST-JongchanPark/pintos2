@@ -140,9 +140,7 @@ thread_tick (void)
     kernel_ticks++;
   if(timer_ticks() % 100 == 0)
   {
-	intr_disable();
-    cache_write_behind();
-	intr_enable();
+	thread_yield();
   }
   /* Enforce preemption. */
   if (++thread_ticks >= TIME_SLICE)

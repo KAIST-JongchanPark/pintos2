@@ -201,7 +201,7 @@ void cache_write_behind(void)
 		memset(celem->addr, 0, 512);
 	}
 	evict_counter = 0;
-	timer_sleep (100);
+	thread_yield();
 	//printf("cache_write_behind finished\n");
 
 	//lock_release(&cache_lock);
