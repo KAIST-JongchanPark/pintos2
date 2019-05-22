@@ -44,7 +44,7 @@ void cache_init(void)
 		celem->index = i;
 		list_push_back(&cache_list, &celem->elem);
 	}
-	tid_t tid = thread_create("periodic thread", PRI_DEFAULT, cache_write_behind, NULL);
+	tid_t tid = thread_create("periodic", PRI_DEFAULT, cache_write_behind, NULL);
 	printf("cache_init finished\n");
 
 }
