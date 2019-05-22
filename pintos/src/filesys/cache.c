@@ -44,7 +44,7 @@ void cache_init(void)
 		celem->index = i;
 		list_push_back(&cache_list, &celem->elem);
 	}
-	tid_t tid = thread_create("periodic", PRI_DEFAULT, cache_write_behind, NULL);
+	//tid_t tid = thread_create("periodic", PRI_DEFAULT, cache_write_behind, NULL);
 	printf("cache_init finished\n");
 
 }
@@ -201,7 +201,7 @@ void cache_write_behind(void)
 		memset(celem->addr, 0, 512);
 	}
 	evict_counter = 0;
-	thread_yield();
+	//thread_yield();
 	//printf("cache_write_behind finished\n");
 
 	//lock_release(&cache_lock);

@@ -140,7 +140,7 @@ thread_tick (void)
     kernel_ticks++;
   if(timer_ticks() % 100 == 0)
   {
-	thread_yield();
+	//thread_yield();
   }
   /* Enforce preemption. */
   if (++thread_ticks >= TIME_SLICE)
