@@ -20,7 +20,6 @@ void cache_init(void)
 	printf("cache_init started\n");
 	list_init(&cache_list);
 	lock_init(&cache_lock);
-	printf("1\n");
 	int i;
 	struct cache_elem *celem;
 	void *upage;
@@ -28,7 +27,6 @@ void cache_init(void)
 	//push elements into the list
 	for(i=0;i<64;i++)
 	{
-		printf("2\n");
 		if(!i%8)
 		{
 			upage = palloc_get_page(PAL_USER|PAL_ZERO);
@@ -37,7 +35,6 @@ void cache_init(void)
 		{
 			upage+=512;
 		}
-		printf("3\n");
 		celem = malloc(sizeof(struct cache_elem)); // *빼야될듯?
 		celem->addr = upage;
 		celem->allocated = false;
