@@ -139,8 +139,9 @@ thread_tick (void)
     kernel_ticks++;
   if(timer_ticks() % 100 == 0)
   {
-	tid_t tid = thread_create("periodic thread", PRI_DEFAULT, cache_write_behind, NULL);
-	thread_yield();
+	old_level = intr_disable ();
+    cache_write_behind();
+    intr_set_level (old_level);
   }
   /* Enforce preemption. */
   if (++thread_ticks >= TIME_SLICE)
