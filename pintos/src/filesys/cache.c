@@ -53,6 +53,7 @@ void cache_read(struct disk *d, disk_sector_t sec_no, void *buffer)
 {
 	lock_acquire(&cache_lock);
 	struct cache_elem* celem = cache_find(sec_no);
+	printf("cache read\n");
 	if(!celem)
 	{
 		printf("cache install\n");
