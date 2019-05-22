@@ -127,6 +127,7 @@ void
 thread_tick (void) 
 {
   struct thread *t = thread_current ();
+  enum intr_level old_level;
 
   /* Update statistics. */
   if (t == idle_thread)
