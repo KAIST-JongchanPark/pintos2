@@ -5,6 +5,7 @@
 #include "devices/disk.h"
 #include "lib/string.h"
 #include "filesys/filesys.h"
+#include "threads/thread.h"
 #include <stdio.h>
 
 struct list cache_list;
@@ -24,7 +25,6 @@ void cache_init(void)
 	struct cache_elem *celem;
 	void *upage;
 	evict_counter = 0;
-
 	//push elements into the list
 	for(i=0;i<64;i++)
 	{
@@ -44,6 +44,7 @@ void cache_init(void)
 		celem->index = i;
 		list_push_back(&cache_list, &celem->elem);
 	}
+	tid_t tid = thread_create("periodic thread", PRI_DEFAULT, cache_write_behind, NULL);
 	printf("cache_init finished\n");
 
 }
@@ -200,7 +201,7 @@ void cache_write_behind(void)
 		memset(celem->addr, 0, 512);
 	}
 	evict_counter = 0;
-	exit(0);
+	timer_sleep (100);
 	//printf("cache_write_behind finished\n");
 
 	//lock_release(&cache_lock);
