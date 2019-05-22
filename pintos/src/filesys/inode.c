@@ -138,7 +138,7 @@ inode_open (disk_sector_t sector)
   inode->open_cnt = 1;
   inode->deny_write_cnt = 0;
   inode->removed = false;
-  disk_read (filesys_disk, inode->sector, &inode->data);
+  cache_read (filesys_disk, inode->sector, &inode->data);
   return inode;
 }
 
