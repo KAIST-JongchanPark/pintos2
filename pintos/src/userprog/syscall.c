@@ -110,7 +110,6 @@ int open (const char *ptr)
   if(file==NULL)
   {
     //lock_release(&syscall_lock);
-	printf("die 1\n");
     return -1;
   }
   
@@ -129,7 +128,6 @@ int open (const char *ptr)
     }
   }
   //lock_release(&syscall_lock);
-  printf("die 2\n");
   return -1;
 }
 

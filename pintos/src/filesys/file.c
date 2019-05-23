@@ -30,14 +30,6 @@ file_open (struct inode *inode)
     }
   else
     {
-	  if(inode==NULL)
-	  {
-		  printf("inode NULL\n");
-	  }
-	  else
-	  {
-		  printf("file NULL\n");
-	  }
       inode_close (inode);
       free (file);
       return NULL; 
