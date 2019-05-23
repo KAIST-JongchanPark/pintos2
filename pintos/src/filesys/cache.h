@@ -15,7 +15,7 @@ struct cache_elem
 };
 
 void cache_init(void);
-void cache_read(struct disk *, disk_sector_t, void*);
+void cache_read(struct disk *, disk_sector_t, void* , int);
 void cache_read_ofs(struct disk *, disk_sector_t, void*, int ofs, int size);
 void cache_write(struct disk *, disk_sector_t, void*);
 void cache_write_ofs(struct disk *d, disk_sector_t sec_no, void* buffer, int ofs, int size);

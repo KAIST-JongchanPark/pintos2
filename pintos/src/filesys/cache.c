@@ -49,7 +49,7 @@ void cache_init(void)
 //동기화 하기 위해서 cache_r/w에 lock 걸어놓고, 나머지 함수는 그 안에서만 부르면 될듯?
 
 //disk_read 대신 cache 에서 읽는 함수
-void cache_read(struct disk *d, disk_sector_t sec_no, void *buffer)
+void cache_read(struct disk *d, disk_sector_t sec_no, void *buffer, int sector_ofs)
 {
 	lock_acquire(&cache_lock);
 	struct cache_elem* celem = cache_find(sec_no);
@@ -61,7 +61,7 @@ void cache_read(struct disk *d, disk_sector_t sec_no, void *buffer)
 		celem = cache_find(sec_no);
 	}
 
-	memcpy(buffer, celem->addr, 512);
+	memcpy(buffer, celem->addr+sector_ofs, 512);
 	celem->accessed = true;
 	lock_release(&cache_lock);
 }
