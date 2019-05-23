@@ -40,6 +40,7 @@ filesys_init (bool format)
 void
 filesys_done (void) 
 {
+  cache_write_behind();
   free_map_close ();
 }
 
