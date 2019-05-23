@@ -138,7 +138,7 @@ inode_open (disk_sector_t sector)
   inode->open_cnt = 1;
   inode->deny_write_cnt = 0;
   inode->removed = false;
-  cache_read (filesys_disk, inode->sector, &inode->data, 0);
+  cache_read (filesys_disk, inode->sector, &inode->data, 0, 512);
   return inode;
 }
 
@@ -243,7 +243,7 @@ inode_read_at (struct inode *inode, void *buffer_, off_t size, off_t offset)
           cache_read_ofs(filesys_disk, sector_idx, buffer+bytes_read, sector_ofs, chunk_size);
         }
     */  
-	  cache_read (filesys_disk, sector_idx, buffer + bytes_read, sector_ofs); 
+	  cache_read (filesys_disk, sector_idx, buffer + bytes_read, sector_ofs, chunk_size); 
       /* Advance. */
       size -= chunk_size;
       offset += chunk_size;
