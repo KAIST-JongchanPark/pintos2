@@ -85,7 +85,7 @@ void cache_read_ofs(struct disk *d, disk_sector_t sec_no, void* buffer, int ofs,
 }
 
 //disk_write 대신. 
-void cache_write(struct disk *d, disk_sector_t sec_no, void *buffer)
+void cache_write(struct disk *d, disk_sector_t sec_no, void *buffer) // write도 write at 이랑 합쳐야 될지 잘 모르겠음
 {
 	lock_acquire(&cache_lock);
 	struct cache_elem* celem = cache_find(sec_no);
