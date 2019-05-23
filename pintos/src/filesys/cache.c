@@ -37,7 +37,7 @@ void cache_init(void)
 			upage+=512;
 		}
 		*/
-		upage = malloc(sizeof(DISK_SECTOR_SIZE));
+		upage = malloc(DISK_SECTOR_SIZE);
 		celem = malloc(sizeof(struct cache_elem)); // *빼야될듯?
 		celem->addr = upage;
 		celem->allocated = false;
