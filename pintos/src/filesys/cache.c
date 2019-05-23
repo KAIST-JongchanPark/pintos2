@@ -37,7 +37,7 @@ void cache_init(void)
 			upage+=512;
 		}
 		*/
-		upage = malloc(DISK_SECTOR_SIZE);
+		upage = malloc(DISK_SECTOR_SIZE); // user context page error 뜨길래 malloc으로 메모리 할당해줌
 		celem = malloc(sizeof(struct cache_elem)); // *빼야될듯?
 		celem->addr = upage;
 		celem->allocated = false;
@@ -52,7 +52,7 @@ void cache_init(void)
 //동기화 하기 위해서 cache_r/w에 lock 걸어놓고, 나머지 함수는 그 안에서만 부르면 될듯?
 
 //disk_read 대신 cache 에서 읽는 함수
-void cache_read(struct disk *d, disk_sector_t sec_no, void *buffer, int sector_ofs, int chunk_size)
+void cache_read(struct disk *d, disk_sector_t sec_no, void *buffer, int sector_ofs, int chunk_size) // reat at 이랑 한꺼번에 합침.
 {
 	lock_acquire(&cache_lock);
 	struct cache_elem* celem = cache_find(sec_no);
