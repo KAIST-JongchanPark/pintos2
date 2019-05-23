@@ -27,6 +27,7 @@ void cache_init(void)
 	//push elements into the list
 	for(i=0;i<64;i++)
 	{
+		/*
 		if(!i%8)
 		{
 			upage = palloc_get_page(PAL_USER|PAL_ZERO);
@@ -35,6 +36,8 @@ void cache_init(void)
 		{
 			upage+=512;
 		}
+		*/
+		upage = malloc(sizeof(DISK_SECTOR_SIZE));
 		celem = malloc(sizeof(struct cache_elem)); // *빼야될듯?
 		celem->addr = upage;
 		celem->allocated = false;
