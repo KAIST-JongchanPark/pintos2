@@ -35,6 +35,14 @@ filesys_init (bool format)
   lock_init(&filesys_lock);
 }
 
+struct dir *
+open_parent_dir(char *name)
+{
+  //parsing
+  dir_lookup(thread_current()->dir, parsingname, &inode);
+  dir_open(inode);
+}
+
 /* Shuts down the file system module, writing any unwritten data
    to disk. */
 void
@@ -49,15 +57,16 @@ filesys_done (void)
    Fails if a file named NAME already exists,
    or if internal memory allocation fails. */
 bool
-filesys_create (const char *name, off_t initial_size) 
+filesys_create (const char *name, off_t initial_size, bool is_dir) 
 {
   lock_acquire(&filesys_lock);
   disk_sector_t inode_sector = 0;
-  struct dir *dir = dir_open_root ();
+  struct dir *dir = /*dir_open_root ()*/ open_parent_dir(name);
+  char *file_name = //parsing
   bool success = (dir != NULL
                   && free_map_allocate (1, &inode_sector)
                   && inode_create (inode_sector, initial_size)
-                  && dir_add (dir, name, inode_sector));
+                  && dir_add (dir, file_name, inode_sector));
   if (!success && inode_sector != 0) 
     free_map_release (inode_sector, 1);
   dir_close (dir);
@@ -74,11 +83,12 @@ struct file *
 filesys_open (const char *name)
 {
   lock_acquire(&filesys_lock);
-  struct dir *dir = dir_open_root ();
+  struct dir *dir = /*dir_open_root ()*/ open_parent_dir(name);
+  char *file_name = //parsing
   struct inode *inode = NULL;
 
   if (dir != NULL)
-    dir_lookup (dir, name, &inode);
+    dir_lookup (dir, file_name, &inode);
   dir_close (dir);
   lock_release(&filesys_lock);
   return file_open (inode);
@@ -92,7 +102,8 @@ bool
 filesys_remove (const char *name) 
 {
   lock_acquire(&filesys_lock);
-  struct dir *dir = dir_open_root ();
+  struct dir *dir =  /*dir_open_root ()*/ open_parent_dir(name); // need to implement, open that path and return parent dir
+  char *file_name = //parsing
   bool success = dir != NULL && dir_remove (dir, name);
   dir_close (dir); 
   lock_release(&filesys_lock);

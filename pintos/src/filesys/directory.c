@@ -19,14 +19,31 @@ struct dir_entry
     disk_sector_t inode_sector;         /* Sector number of header. */
     char name[NAME_MAX + 1];            /* Null terminated file name. */
     bool in_use;                        /* In use or free? */
+    bool is_dir;
   };
 
 /* Creates a directory with space for ENTRY_CNT entries in the
    given SECTOR.  Returns true if successful, false on failure. */
 bool
-dir_create (disk_sector_t sector, size_t entry_cnt) 
+dir_create (disk_sector_t sector, size_t entry_cnt, const char *dir_name) 
 {
-  return inode_create (sector, entry_cnt * sizeof (struct dir_entry));
+  bool result = inode_create (sector, entry_cnt * sizeof (struct dir_entry), true);
+  /*
+  char name[14]; 
+  char name2[14]; 
+  strlcpy(".", name, 14);
+  strlcpy("..", name, 14);
+  if(!result)
+  {
+    struct inode *inode = inode_open(sector);
+    struct dir *dir_new = dir_open(inode);
+    dir_add (dir_new, name, inode->sector); // 현재폴더 .으로 넣기
+    dir_add (dir_new, name2, thread_current()->inode->sector)// 상위폴더 ..으로 넣기 thread_current() -> dir
+    dir_close(inode);
+  }
+  dir_add (thread_current()->dir, const char *dir_name, inode->sector);
+  */
+  return result;
 }
 
 /* Opens and returns the directory for the given INODE, of which
