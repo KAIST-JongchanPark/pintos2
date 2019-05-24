@@ -57,21 +57,77 @@ filesys_done (void)
    Fails if a file named NAME already exists,
    or if internal memory allocation fails. */
 bool
-filesys_create (const char *name, off_t initial_size, bool is_dir, struct dir* parent_dir) 
+filesys_create (const char *name, off_t initial_size, bool is_dir) 
 {
   lock_acquire(&filesys_lock);
   disk_sector_t inode_sector = 0;
-  struct dir *dir = parent_dir;
-  char *file_name = name
+  struct dir *dir = get_parent_dir(name);
+  char *file_name = get_name(name);
   bool success = (dir != NULL
                   && free_map_allocate (1, &inode_sector)
-                  && inode_create (inode_sector, initial_size)
+                  && inode_create (inode_sector, initial_size, is_dir)
                   && dir_add (dir, file_name, inode_sector));
   if (!success && inode_sector != 0) 
     free_map_release (inode_sector, 1);
   dir_close (dir);
   lock_release(&filesys_lock);
   return success;
+}
+
+struct dir* get_parent_dir(char* dir)
+{
+  char* dir_copy;
+  strcpy(dir_copy, dir);
+  struct dir* current_dir;
+  char* ret_ptr;
+  char* next_ptr;
+  struct inode* inode;
+
+  if(dir_copy[0]=='/')
+  {
+    current_dir = dir_open_root();
+  }
+  else
+  {
+    current_dir = thread_current()->dir;
+  }
+
+  ret_ptr = strtok_r(dir_copy, "/", &next_ptr);
+  while(ret_ptr!=NULL)
+  {
+    if(next_ptr==NULL)
+    {
+      break;
+    }
+    if(!dir_lookup(current_dir, ret_ptr, &inode))
+      return NULL;
+    current_dir = dir_open(inode);
+    if(current_dir==NULL)
+    {
+      return NULL;
+    }
+    ret_ptr = strtok_r(NULL, "/", &next_ptr);
+  }
+  
+}
+
+char* get_name(char* dir)
+{
+  char* dir_copy;
+  strcpy(dir_copy, dir);
+  char* ret_ptr;
+  char* next_ptr;
+
+  ret_ptr = strtok_r(dir_copy, "/", &next_ptr);
+  while(ret_ptr!=NULL)
+  {
+    if(next_ptr==NULL)
+    {
+      break;
+    }
+    ret_ptr = strtok_r(NULL, "/", &next_ptr);
+  }
+  return ret_ptr;
 }
 
 /* Opens the file with the given NAME.

@@ -101,7 +101,7 @@ bool create (const char *ptr, unsigned size)
   {
     exit_with_status(-1);
   }
-  return filesys_create(ptr, size);
+  return filesys_create(ptr, size, false);
 }
 
 bool remove (const char *ptr)
@@ -309,8 +309,6 @@ struct dir* chdir_parse_dir(char* dir)
     }
     ret_ptr = strtok_r(NULL, "/", &next_ptr);
   }
-  if(!dir_lookup(current_dir, ret_ptr, &inode))
-    return NULL;
   current_dir = dir_open(inode);
   return current_dir;
 }
@@ -326,7 +324,7 @@ void* mkdir_parse_dir(char* dir, int option)
   char* next_ptr;
   struct inode* inode;
 
-  if(dir[0]=="/")
+  if(dir[0]=='/')
   {
     current_dir = thread_current()->dir;
   }
@@ -335,7 +333,7 @@ void* mkdir_parse_dir(char* dir, int option)
     current_dir = dir_open_root();
   }
 
-  ret_ptr = strtok_r(ptr, "/", &next_ptr);
+  ret_ptr = strtok_r(dir, "/", &next_ptr);
   while(ret_ptr!=NULL)
   {
     if(!dir_lookup(current_dir, ret_ptr, &inode))
@@ -347,8 +345,6 @@ void* mkdir_parse_dir(char* dir, int option)
     }
     ret_ptr = strtok_r(NULL, "/", &next_ptr);
   }
-  if(dir_lookup(current_dir, next_ptr, &inode))
-    return NULL;
   if(option==1)
   {
     return (void *)current_dir;
