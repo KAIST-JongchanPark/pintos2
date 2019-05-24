@@ -277,7 +277,7 @@ bool is_dir(char *ptr)
 
 }
 
-struct dir* parse_dir(char* dir)
+struct dir* chdir_parse_dir(char* dir)
 {
   if(!is_dir(dir))
     PANIC("Not a directory");
@@ -301,27 +301,70 @@ struct dir* parse_dir(char* dir)
   while(ret_ptr!=NULL)
   {
     if(!dir_lookup(current_dir, ret_ptr, &inode))
-      return false;
+      return NULL;
     current_dir = dir_open(inode);
     if(current_dir==NULL)
     {
-      return false;
+      return NULL;
     }
     ret_ptr = strtok_r(NULL, "/", &next_ptr);
   }
+  if(!dir_lookup(current_dir, ret_ptr, &inode))
+    return NULL;
+  current_dir = dir_open(inode);
+  return current_dir;
+}
 
+struct dir* mkdir_parse_dir(char* dir)
+{
+  if(!is_dir(dir))
+    PANIC("Not a directory");
+  char* dir_copy;
+  strcpy(dir_copy, dir);
+  struct dir* current_dir;
+  char* ret_ptr;
+  char* next_ptr;
+  struct inode* inode;
+
+  if(dir[0]=="/")
+  {
+    current_dir = thread_current()->dir;
+  }
+  else
+  {
+    current_dir = dir_open_root();
+  }
+
+  ret_ptr = strtok_r(ptr, "/", &next_ptr);
+  while(ret_ptr!=NULL)
+  {
+    if(!dir_lookup(current_dir, ret_ptr, &inode))
+      return NULL;
+    current_dir = dir_open(inode);
+    if(current_dir==NULL)
+    {
+      return NULL;
+    }
+    ret_ptr = strtok_r(NULL, "/", &next_ptr);
+  }
+  if(dir_lookup(current_dir, ret_ptr, &inode))
+    return NULL;
   return current_dir;
 }
 
 bool chdir (const char *dir)
 {
-  struct dir* target_dir = parse_dir(dir);
-  
+  struct dir* target_dir = chdir_parse_dir(dir);
+  if(target_dir==NULL)
+    return false;
+  thread_current()->dir = target_dir;
+  return true;
 }
 
 bool mkdir (const char *dir)
 {
-
+  struct dir* parent_dir = mkdir_parse_dir(dir);
+  
 }
 
 bool readdir (int fd, char *name)
