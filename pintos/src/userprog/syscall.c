@@ -315,7 +315,7 @@ struct dir* chdir_parse_dir(char* dir)
   return current_dir;
 }
 
-struct dir* mkdir_parse_dir(char* dir)
+void* mkdir_parse_dir(char* dir, int option)
 {
   if(!is_dir(dir))
     PANIC("Not a directory");
@@ -347,9 +347,17 @@ struct dir* mkdir_parse_dir(char* dir)
     }
     ret_ptr = strtok_r(NULL, "/", &next_ptr);
   }
-  if(dir_lookup(current_dir, ret_ptr, &inode))
+  if(dir_lookup(current_dir, next_ptr, &inode))
     return NULL;
-  return current_dir;
+  if(option==1)
+  {
+    return (void *)current_dir;
+  }
+  else
+  {
+    return (void *)next_ptr;
+  }
+  
 }
 
 bool chdir (const char *dir)
@@ -363,8 +371,9 @@ bool chdir (const char *dir)
 
 bool mkdir (const char *dir)
 {
-  struct dir* parent_dir = mkdir_parse_dir(dir);
-  
+  struct dir* parent_dir = (struct dir*) mkdir_parse_dir(dir, 1);
+  char *dir_name = (char *) mkdir_parse_dir(dir, 2);
+  filesys_create(dir_name,0 ,true, parent_dir);
 }
 
 bool readdir (int fd, char *name)
