@@ -5,6 +5,8 @@
 #include <list.h>
 #include <stdint.h>
 #include "synch.h"
+#include "filesys/disk.h"
+#include "filesys/file.h"
 
 /* States in a thread's life cycle. */
 enum thread_status
@@ -81,6 +83,14 @@ typedef int tid_t;
    only because they are mutually exclusive: only a thread in the
    ready state is on the run queue, whereas only a thread in the
    blocked state is on a semaphore wait list. */
+struct sup_fd_entry
+{
+  bool isdir;
+  bool allocated;
+  struct dir* dir;
+  struct file* file;
+};
+
 struct thread
   {
     /* Owned by thread.c. */
@@ -106,7 +116,9 @@ struct thread
 
     /* Structures for userprog. */
     int exit_status;
-    struct file* fd[128];
+    //struct file* fd[128];
+    struct sup_fd_entry* sfde[128];
+    struct dir* dir;
 #endif
 
     /* Owned by thread.c. */

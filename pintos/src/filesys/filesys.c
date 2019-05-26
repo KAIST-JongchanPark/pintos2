@@ -32,6 +32,7 @@ filesys_init (bool format)
     do_format ();
 
   free_map_open ();
+  thread_current()->dir = dir_open_root();
   lock_init(&filesys_lock);
 }
 
@@ -62,6 +63,8 @@ filesys_create (const char *name, off_t initial_size, bool is_dir)
   lock_acquire(&filesys_lock);
   disk_sector_t inode_sector = 0;
   struct dir *dir = get_parent_dir(name);
+  if(dir==NULL)
+    return false;
   char *file_name = get_name(name);
   bool success = (dir != NULL
                   && free_map_allocate (1, &inode_sector)
@@ -139,7 +142,9 @@ struct file *
 filesys_open (const char *name)
 {
   lock_acquire(&filesys_lock);
-  struct dir *dir = get_parent_dir(name);/*dir_open_root ()*/ open_parent_dir(name);
+  struct dir *dir = get_parent_dir(name);/*dir_open_root ()*/ 
+  if(dir==NULL)
+    return false;
   char *file_name = get_name(name);//parsing
   struct inode *inode = NULL;
 
@@ -155,11 +160,23 @@ filesys_open (const char *name)
    Fails if no file named NAME exists,
    or if an internal memory allocation fails. */
 bool
-filesys_remove (const char *name) 
+filesys_remove (const char *name, bool is_dir) 
 {
   lock_acquire(&filesys_lock);
-  struct dir *dir =  get_parent_dir(name);/*dir_open_root ()*/ open_parent_dir(name); // need to implement, open that path and return parent dir
+  struct dir *dir =  get_parent_dir(name);/*dir_open_root ()*/  // need to implement, open that path and return parent dir
+  if(dir==NULL)
+    return false;
   char *file_name = get_name(name);//parsing
+  if(is_dir)
+  {
+    struct inode* inode;
+    dir_lookup(dir, file_name, &inode);
+    struct dir* target_dir = dir_open(inode);
+    if(!dir_isempty(target_dir))//만들어야함. 
+    {
+      return false;
+    }
+  }
   bool success = dir != NULL && dir_remove (dir, name);
   dir_close (dir); 
   lock_release(&filesys_lock);

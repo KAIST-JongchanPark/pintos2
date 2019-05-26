@@ -146,6 +146,8 @@ dir_lookup (const struct dir *dir, const char *name,
   else
     *inode = NULL;
 
+  
+
   return *inode != NULL;
 }
 
@@ -252,8 +254,8 @@ dir_readdir (struct dir *dir, char name[NAME_MAX + 1])
   return false;
 }
 
-struct dir*
-open_parent_dir(struct dir* dir)
+bool
+dir_isempty(struct dir* dir)
 {
-  
+
 }

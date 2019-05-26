@@ -22,6 +22,12 @@ int write (int, const void *, unsigned );
 void seek (int, unsigned );
 unsigned tell (int);
 void close (int);
+
+bool is_file(char*);
+bool is_dir(char *);
+struct dir* chdir_parse_dir(char* );
+void* mkdir_parse_dir(char* , int);
+
 bool chdir (const char *);
 bool mkdir (const char *);
 bool readdir (int , char *);
