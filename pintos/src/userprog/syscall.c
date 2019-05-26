@@ -283,7 +283,7 @@ void seek (int fd, unsigned position)
 
 unsigned tell (int fd)
 {
-  struct file* file = thread_current()->fd[fd];
+  struct file* file = thread_current()->sfde[fd]; // fd를 다 sfde로 바꾸는거 맞지?
   return file_tell(file);
 }
 
