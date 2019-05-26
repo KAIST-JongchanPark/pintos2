@@ -5,7 +5,7 @@
 #include <list.h>
 #include <stdint.h>
 #include "synch.h"
-#include "filesys/disk.h"
+#include "devices/disk.h"
 #include "filesys/file.h"
 
 /* States in a thread's life cycle. */
