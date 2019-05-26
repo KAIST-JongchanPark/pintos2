@@ -305,7 +305,7 @@ void close(int fd)
   else
   {
     struct dir* dir = sfde->dir;
-    dir_close(dir)
+    dir_close(dir);
     sfde->allocated = false;
     sfde->dir = NULL;
   }
@@ -358,7 +358,7 @@ struct dir* chdir_parse_dir(char* dir)
   char* next_ptr;
   struct inode* inode;
 
-  if(dir[0]=='/')
+  if(dir_copy[0]=='/')
   {
     current_dir = dir_open_root();
   }
@@ -368,7 +368,7 @@ struct dir* chdir_parse_dir(char* dir)
     
   }
 
-  ret_ptr = strtok_r(ptr, "/", &next_ptr);
+  ret_ptr = strtok_r(dir_copy, "/", &next_ptr);
   while(ret_ptr!=NULL)
   {
     if(!dir_lookup(current_dir, ret_ptr, &inode))
