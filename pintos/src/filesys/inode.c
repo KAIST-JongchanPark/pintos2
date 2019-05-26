@@ -357,3 +357,9 @@ inode_length (const struct inode *inode)
 {
   return inode->data.length;
 }
+
+bool
+inode_add_parent ()
+{
+  
+}

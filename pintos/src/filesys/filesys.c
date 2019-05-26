@@ -108,7 +108,7 @@ struct dir* get_parent_dir(char* dir)
     }
     ret_ptr = strtok_r(NULL, "/", &next_ptr);
   }
-  
+  return current_dir;
 }
 
 char* get_name(char* dir)
@@ -139,8 +139,8 @@ struct file *
 filesys_open (const char *name)
 {
   lock_acquire(&filesys_lock);
-  struct dir *dir = /*dir_open_root ()*/ open_parent_dir(name);
-  char *file_name = //parsing
+  struct dir *dir = get_parent_dir(name);/*dir_open_root ()*/ open_parent_dir(name);
+  char *file_name = get_name(name);//parsing
   struct inode *inode = NULL;
 
   if (dir != NULL)
@@ -158,8 +158,8 @@ bool
 filesys_remove (const char *name) 
 {
   lock_acquire(&filesys_lock);
-  struct dir *dir =  /*dir_open_root ()*/ open_parent_dir(name); // need to implement, open that path and return parent dir
-  char *file_name = //parsing
+  struct dir *dir =  get_parent_dir(name);/*dir_open_root ()*/ open_parent_dir(name); // need to implement, open that path and return parent dir
+  char *file_name = get_name(name);//parsing
   bool success = dir != NULL && dir_remove (dir, name);
   dir_close (dir); 
   lock_release(&filesys_lock);
