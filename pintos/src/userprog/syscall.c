@@ -62,7 +62,7 @@ exit_with_status(int status)
       //thread_current()->fd[i] = NULL;
       thread_current()->sfde[i] = NULL;
     }
-    free(sfde);
+    free(thread_current()->sfde);
       
   }
 	thread_exit ();
@@ -74,12 +74,12 @@ syscall_init (void)
 {
   intr_register_int (0x30, 3, INTR_ON, syscall_handler, "syscall");
   int i;
-  struct sup_fd_entry *sfde
+  struct sup_fd_entry *sfde;
   for(i=0;i<128;i++)
   {
     sfde = malloc(sizeof(struct sup_fd_entry));
     sfde->allocated = false;
-    sfed->isdir = false;
+    sfde->isdir = false;
     sfde->dir = NULL;
     sfde->file = NULL;
     thread_current()->sfde[i] = sfde;
