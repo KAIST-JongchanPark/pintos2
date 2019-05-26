@@ -465,7 +465,7 @@ bool isdir (int fd)
 
 int inumber (int fd)
 {
-  struct sup_fd_entry*  sfde = sfde[fd];
+  struct sup_fd_entry*  sfde = thread_current()->sfde[fd];
   struct dir* dir = sfde->dir;
   return (int) inode_get_inumber(dir_get_inode(dir));
 }
