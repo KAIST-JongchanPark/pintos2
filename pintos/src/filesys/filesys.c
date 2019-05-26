@@ -8,6 +8,7 @@
 #include "filesys/directory.h"
 #include "devices/disk.h"
 #include "threads/synch.h"
+#include "threads/thread.h"
 
 struct lock filesys_lock;
 
