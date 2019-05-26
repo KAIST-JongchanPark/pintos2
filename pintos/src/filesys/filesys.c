@@ -38,7 +38,7 @@ filesys_init (bool format)
   thread_current()->dir = dir_open_root();
   lock_init(&filesys_lock);
 }
-
+/*
 struct dir *
 open_parent_dir(char *name)
 {
@@ -46,7 +46,7 @@ open_parent_dir(char *name)
   dir_lookup(thread_current()->dir, parsingname, &inode);
   dir_open(inode);
 }
-
+*/
 /* Shuts down the file system module, writing any unwritten data
    to disk. */
 void
