@@ -15,6 +15,9 @@ struct lock filesys_lock;
 struct disk *filesys_disk;
 
 static void do_format (void);
+struct dir* get_parent_dir(char* dir);
+char* get_name(char* dir);
+
 
 /* Initializes the file system module.
    If FORMAT is true, reformats the file system. */
@@ -103,11 +106,17 @@ struct dir* get_parent_dir(char* dir)
       break;
     }
     if(!dir_lookup(current_dir, ret_ptr, &inode))
-      return NULL;
-    current_dir = dir_open(inode);
-    if(current_dir==NULL)
     {
       return NULL;
+    }
+    if(inode_is_dir(inode))
+    {
+      dir_close(current_dir);
+      current_dir = dir_open(inode);
+    }
+    else
+    {
+      inode_close(inode);
     }
     ret_ptr = strtok_r(NULL, "/", &next_ptr);
   }

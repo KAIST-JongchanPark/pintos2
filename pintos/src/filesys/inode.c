@@ -18,7 +18,8 @@ struct inode_disk
     disk_sector_t start;                /* First data sector. */
     off_t length;                       /* File size in bytes. */
     unsigned magic;                     /* Magic number. */
-    uint32_t unused[125];               /* Not used. */
+    bool is_dir;
+    uint32_t unused[124];               /* Not used. */
   };
 
 /* Returns the number of sectors to allocate for an inode SIZE
@@ -143,6 +144,7 @@ inode_open (disk_sector_t sector)
   inode->removed = false;
   //inode->is_dir = 
   cache_read (filesys_disk, inode->sector, &inode->data, 0, 512);
+  inode->is_dir = (&inode->data)->is_dir;
   return inode;
 }
 
@@ -359,7 +361,7 @@ inode_length (const struct inode *inode)
 }
 
 bool
-inode_add_parent ()
+inode_is_dir (struct inode *inode)
 {
-  
+  return inode->is_dir;
 }
