@@ -178,7 +178,7 @@ int open (const char *ptr)
         struct sup_fd_entry* sfde;
         sfde->isdir = true;
         sfde->file = NULL;
-        sfde->dir = dir;
+        sfde->dir = target_dir; // target_dir이 맞나?
         sfde->allocated = true;
         thread_current()->sfde[i] = sfde;
         //lock_release(&syscall_lock);
