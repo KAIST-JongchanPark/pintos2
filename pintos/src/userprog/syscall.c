@@ -119,7 +119,7 @@ bool create (const char *ptr, unsigned size)
 bool remove (const char *ptr)
 {
 
-  return filesys_remove(ptr, is_dir(ptr));
+  return filesys_remove(ptr);//, is_dir(ptr));
 }
 
 int open (const char *ptr)
