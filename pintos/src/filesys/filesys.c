@@ -170,13 +170,14 @@ filesys_open (const char *name)
    Fails if no file named NAME exists,
    or if an internal memory allocation fails. */
 bool
-filesys_remove (const char *name, bool is_dir) 
+filesys_remove (const char *name) 
 {
   lock_acquire(&filesys_lock);
   struct dir *dir =  get_parent_dir(name);/*dir_open_root ()*/  // need to implement, open that path and return parent dir
   if(dir==NULL)
     return false;
   char *file_name = get_name(name);//parsing
+  /*
   if(is_dir)
   {
     struct inode* inode;
@@ -187,6 +188,7 @@ filesys_remove (const char *name, bool is_dir)
       return false;
     }
   }
+  */
   bool success = dir != NULL && dir_remove (dir, name);
   dir_close (dir); 
   lock_release(&filesys_lock);
