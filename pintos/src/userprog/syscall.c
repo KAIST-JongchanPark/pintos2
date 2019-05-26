@@ -451,7 +451,7 @@ bool readdir (int fd, char *name)
     return false;
   if(!sfde->isdir)
     return false;
-  return dir_readdir(sfde->dir, name)
+  return dir_readdir(sfde->dir, name);
 }
 
 //
@@ -465,7 +465,7 @@ bool isdir (int fd)
 
 int inumber (int fd)
 {
-  struct sup_fd_entry*  sfde = sup_fd_list[fd];
+  struct sup_fd_entry*  sfde = sfde[fd];
   struct dir* dir = sfde->dir;
   return (int) inode_get_inumber(dir_get_inode(dir));
 }
