@@ -174,10 +174,13 @@ filesys_open (const char *name)
     return NULL;
   }
   char *file_name = get_name(name);//parsing
+  printf("file name in fsys open: %s\n", file_name);
   struct inode *inode = NULL;
 
   if (dir != NULL)
+  {
     dir_lookup (dir, file_name, &inode);
+  }
   dir_close (dir);
   lock_release(&filesys_lock);
   return file_open (inode);
