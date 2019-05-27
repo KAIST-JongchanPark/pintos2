@@ -63,7 +63,6 @@ exit_with_status(int status)
       thread_current()->sfde[i] = NULL;
     }
     free(thread_current()->sfde);
-    printf("exit with status\n");
   }
 	thread_exit ();
 	//exit with given status => further used in process.c(when printing results)
@@ -99,6 +98,7 @@ void exit (int status)
 
 pid_t exec (const char *file)
 {
+  printf("exec start\n");
   return process_execute(file);
 }
 
