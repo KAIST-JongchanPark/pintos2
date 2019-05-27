@@ -113,7 +113,7 @@ struct dir* get_parent_dir(char* dir)
   }
   while(ret_ptr!=NULL)
   {
-    if(next_ptr==NULL)
+    if(strlen(next_ptr)==0)
     {
       break;
     }
