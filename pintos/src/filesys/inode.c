@@ -249,7 +249,7 @@ inode_read_at (struct inode *inode, void *buffer_, off_t size, off_t offset)
           cache_read_ofs(filesys_disk, sector_idx, buffer+bytes_read, sector_ofs, chunk_size);
         }
     */  
-	  cache_read (filesys_disk, sector_idx, buffer + bytes_read, sector_ofs, chunk_size); 
+	  cache_read (filesys_disk, sector_idx, buffer + bytes_read, sector_ofs, chunk_size); //여기가 문제인가?
       /* Advance. */
       size -= chunk_size;
       offset += chunk_size;
