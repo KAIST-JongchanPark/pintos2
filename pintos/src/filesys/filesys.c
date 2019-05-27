@@ -68,6 +68,7 @@ filesys_create (const char *name, off_t initial_size, bool is_dir)
   disk_sector_t inode_sector = 0;
   struct dir *dir = get_parent_dir(name);
   if(dir==NULL)
+    PANIC("open parent dir failed\n");
     return false;
   char *file_name = get_name(name);
   bool success = (dir != NULL
