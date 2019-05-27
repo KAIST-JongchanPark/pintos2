@@ -169,7 +169,8 @@ filesys_open (const char *name)
   lock_acquire(&filesys_lock);
   struct dir *dir = get_parent_dir(name);/*dir_open_root ()*/ 
   if(dir==NULL)
-    return false;
+    printf("parent dir is null in fsys open\n");
+    return NULL;
   char *file_name = get_name(name);//parsing
   struct inode *inode = NULL;
 
