@@ -68,6 +68,7 @@ filesys_create (const char *name, off_t initial_size, bool is_dir)
   disk_sector_t inode_sector = 0;
   struct dir *dir = get_parent_dir(name);
   if(dir==NULL)
+    printf("name: %s\n", name);
     PANIC("open parent dir failed\n");
     return false;
   char *file_name = get_name(name);
@@ -98,6 +99,10 @@ struct dir* get_parent_dir(char* dir)
   else
   {
     current_dir = thread_current()->dir;
+    if(current_dir == NULL)
+    {
+      printf("current dir is NULL\n");
+    }
   }
 
   ret_ptr = strtok_r(dir_copy, "/", &next_ptr);
