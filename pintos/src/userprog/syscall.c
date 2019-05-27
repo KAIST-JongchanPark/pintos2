@@ -327,7 +327,7 @@ bool is_dir(char *ptr)
   char* copy;
   char* ret_ptr;
   char* next_ptr;
-  strcpy(copy, ptr);
+  strlcpy(copy, ptr, strlen(ptr));
   ret_ptr = strtok_r(ptr, "/", &next_ptr);
   if(ret_ptr==NULL)
   {
@@ -352,7 +352,7 @@ struct dir* chdir_parse_dir(char* dir)
   if(!is_dir(dir))
     PANIC("Not a directory");
   char* dir_copy;
-  strcpy(dir_copy, dir);
+  strlcpy(dir_copy, dir, strlen(dir));
   struct dir* current_dir;
   char* ret_ptr;
   char* next_ptr;
@@ -389,7 +389,7 @@ void* mkdir_parse_dir(char* dir, int option)
   if(!is_dir(dir))
     PANIC("Not a directory");
   char* dir_copy;
-  strcpy(dir_copy, dir);
+  strlcpy(dir_copy, dir, strlen(dir));
   struct dir* current_dir;
   char* ret_ptr;
   char* next_ptr;

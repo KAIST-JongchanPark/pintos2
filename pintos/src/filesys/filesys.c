@@ -84,7 +84,7 @@ filesys_create (const char *name, off_t initial_size, bool is_dir)
 struct dir* get_parent_dir(char* dir)
 {
   char* dir_copy;
-  strcpy(dir_copy, dir);
+  strlcpy(dir_copy, dir, strlen(dir));
   struct dir* current_dir;
   char* ret_ptr;
   char* next_ptr;
@@ -127,7 +127,7 @@ struct dir* get_parent_dir(char* dir)
 char* get_name(char* dir)
 {
   char* dir_copy;
-  strcpy(dir_copy, dir);
+  strlcpy(dir_copy, dir, strlen(dir));
   char* ret_ptr;
   char* next_ptr;
 
