@@ -141,6 +141,7 @@ char* get_name(char* dir)
   char* next_ptr;
 
   ret_ptr = strtok_r(dir_copy, "/", &next_ptr);
+  printf("origin name: %s\n", dir);
   printf("ret_ptr: %s\n", ret_ptr);
   if(strlen(next_ptr)==0)
   {
