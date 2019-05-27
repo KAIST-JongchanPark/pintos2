@@ -175,7 +175,7 @@ filesys_open (const char *name)
   }
   char *file_name = get_name(name);//parsing
   printf("file name in fsys open: %s\n", file_name);
-  struct inode *inode = NULL;
+  struct inode *inode;
 
   if (dir != NULL)
   {
