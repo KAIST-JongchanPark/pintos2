@@ -136,7 +136,7 @@ struct dir* get_parent_dir(char* dir)
 char* get_name(char* dir)
 {
   char* dir_copy = malloc(strlen(dir)+3);;
-  strlcpy(dir_copy, dir, strlen(dir));
+  strlcpy(dir_copy, dir, strlen(dir)+1);
   char* ret_ptr;
   char* next_ptr;
 
