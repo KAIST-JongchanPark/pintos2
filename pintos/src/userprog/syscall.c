@@ -62,7 +62,7 @@ exit_with_status(int status)
       //thread_current()->fd[i] = NULL;
       thread_current()->sfde[i] = NULL;
     }
-    free(thread_current()->sfde);
+    //free(thread_current()->sfde);
   }
 	thread_exit ();
 	//exit with given status => further used in process.c(when printing results)
