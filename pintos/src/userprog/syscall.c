@@ -62,7 +62,7 @@ exit_with_status(int status)
       //thread_current()->fd[i] = NULL;
       thread_current()->sfde[i] = NULL;
     }
-    //free(thread_current()->sfde);
+    free(thread_current()->sfde);
     printf("exit with status\n");
   }
 	thread_exit ();
