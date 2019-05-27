@@ -107,7 +107,7 @@ struct dir* get_parent_dir(char* dir)
 
   ret_ptr = strtok_r(dir_copy, "/", &next_ptr);
   printf("ret_ptr: %s\n", ret_ptr);
-  if(next_ptr==NULL)
+  if(strlen(next_ptr)==0)
   {
     printf("next_ptr: %s\n", next_ptr);
   }
