@@ -36,7 +36,8 @@ filesys_init (bool format)
     do_format ();
 
   free_map_open ();
-  //thread_current()->dir = dir_open_root();
+  thread_current()->dir = dir_open_root();
+  dir_close(thread_current()->dir);
   lock_init(&filesys_lock);
 }
 /*
@@ -66,7 +67,7 @@ filesys_create (const char *name, off_t initial_size, bool is_dir)
 {
   lock_acquire(&filesys_lock);
   disk_sector_t inode_sector = 0;
-  struct dir *dir = dir_open_root();
+  struct dir *dir = get_parent_dir(name);
   if(dir==NULL)
   {
     printf("name: %s\n", name);
@@ -101,7 +102,7 @@ struct dir* get_parent_dir(char* dir)
   }
   else
   {
-    current_dir = thread_current()->dir;
+    current_dir = dir_reopen(thread_current()->dir);
     if(current_dir == NULL)
     {
       printf("current dir is NULL\n");
@@ -167,7 +168,7 @@ struct file *
 filesys_open (const char *name)
 {
   lock_acquire(&filesys_lock);
-  struct dir *dir = dir_open_root();/*dir_open_root ()*/ 
+  struct dir *dir = get_parent_dir(name);/*dir_open_root ()*/ 
   if(dir==NULL)
   {
     printf("parent dir is null in fsys open\n");
