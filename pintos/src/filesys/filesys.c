@@ -183,7 +183,10 @@ filesys_open (const char *name)
   }
   dir_close (dir);
   lock_release(&filesys_lock);
-  return file_open (inode);
+  printf("end of filesys open\n");
+  struct file* file = file_open (inode);
+  printf("filesys open ends\n");
+  return file;
 }
 
 /* Deletes the file named NAME.
