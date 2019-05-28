@@ -546,14 +546,14 @@ syscall_handler (struct intr_frame *f)
     	break;     
     case SYS_CHDIR:
       is_valid_ptr((void *)(f->esp+4));
-      f->eax = chdir((char *)(f->esp+4));
+      f->eax = chdir((const char *)*(int *)(f->esp+4));
     case SYS_MKDIR:
       is_valid_ptr((void *)(f->esp+4));
-      f->eax = mkdir((char *)(f->esp+4));
+      f->eax = mkdir((const char *)*(int *)(f->esp+4));
     case SYS_READDIR:
       is_valid_ptr((void *)(f->esp+4));
       is_valid_ptr((void *)(f->esp+8));
-      f->eax = readdir(*(int *)(f->esp+4), (char *)(f->esp+8));
+      f->eax = readdir(*(int *)(f->esp+4), (const char *)*(int *)(f->esp+8));
     case SYS_ISDIR:
       is_valid_ptr((void *)(f->esp+4));
       f->eax = isdir(*(int *)(f->esp+4));
