@@ -111,7 +111,7 @@ int wait(tid_t tid)
 
 bool create (const char *ptr, unsigned size)
 {
-  if(ptr==NULL)
+  if(ptr==NULL||strlen(ptr)==0)
   {
     exit_with_status(-1);
   }
