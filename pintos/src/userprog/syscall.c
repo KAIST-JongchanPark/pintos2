@@ -547,18 +547,23 @@ syscall_handler (struct intr_frame *f)
     case SYS_CHDIR:
       is_valid_ptr((void *)(f->esp+4));
       f->eax = chdir((const char *)*(int *)(f->esp+4));
+      break;
     case SYS_MKDIR:
       is_valid_ptr((void *)(f->esp+4));
       f->eax = mkdir((const char *)*(int *)(f->esp+4));
+      break;
     case SYS_READDIR:
       is_valid_ptr((void *)(f->esp+4));
       is_valid_ptr((void *)(f->esp+8));
       f->eax = readdir(*(int *)(f->esp+4), (const char *)*(int *)(f->esp+8));
+      break;
     case SYS_ISDIR:
       is_valid_ptr((void *)(f->esp+4));
       f->eax = isdir(*(int *)(f->esp+4));
+      break;
     case SYS_INUMBER:
       is_valid_ptr((void *)(f->esp+4));
       f->eax = inumber(*(int *)(f->esp+4));
+      break;
   }
  }
