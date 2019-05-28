@@ -226,30 +226,30 @@ inode_read_at (struct inode *inode, void *buffer_, off_t size, off_t offset)
       int chunk_size = size < min_left ? size : min_left;
       if (chunk_size <= 0)
         break;
-	/*
+      /*
       if (sector_ofs == 0 && chunk_size == DISK_SECTOR_SIZE) 
-        {
-          /* Read full sector directly into caller's buffer. 
-          cache_read (filesys_disk, sector_idx, buffer + bytes_read); 
-        }
+      {
+        /* Read full sector directly into caller's buffer. 
+        cache_read (filesys_disk, sector_idx, buffer + bytes_read); 
+      }
       else 
-        {
-          /* Read sector into bounce buffer, then partially copy
-             into caller's buffer. 
-          /*
-          if (bounce == NULL) 
-            {
-              bounce = malloc (DISK_SECTOR_SIZE);
-              if (bounce == NULL)
-                break;
-            }
-          disk_read (filesys_disk, sector_idx, bounce);
-          memcpy (buffer + bytes_read, bounce + sector_ofs, chunk_size);
-          
-          cache_read_ofs(filesys_disk, sector_idx, buffer+bytes_read, sector_ofs, chunk_size);
-        }
-    */  
-	  cache_read (filesys_disk, sector_idx, buffer + bytes_read, sector_ofs, chunk_size); //여기가 문제인가?
+      {
+        /* Read sector into bounce buffer, then partially copy
+           into caller's buffer. 
+        /*
+        if (bounce == NULL) 
+          {
+            bounce = malloc (DISK_SECTOR_SIZE);
+            if (bounce == NULL)
+              break;
+          }
+        disk_read (filesys_disk, sector_idx, bounce);
+        memcpy (buffer + bytes_read, bounce + sector_ofs, chunk_size);
+        
+        cache_read_ofs(filesys_disk, sector_idx, buffer+bytes_read, sector_ofs, chunk_size);
+      }
+      */  
+	    cache_read (filesys_disk, sector_idx, buffer + bytes_read, sector_ofs, chunk_size); //여기가 문제인가?
       /* Advance. */
       size -= chunk_size;
       offset += chunk_size;
