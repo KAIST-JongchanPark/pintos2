@@ -67,7 +67,7 @@ filesys_create (const char *name, off_t initial_size, bool is_dir)
 {
   lock_acquire(&filesys_lock);
   disk_sector_t inode_sector = 0;
-  struct dir *dir = dir_open_root();//get_parent_dir(name);
+  struct dir *dir = get_parent_dir(name);//get_parent_dir(name);
   if(dir==NULL)
   {
     //printf("name: %s\n", name);
@@ -79,7 +79,7 @@ filesys_create (const char *name, off_t initial_size, bool is_dir)
   bool success = (dir != NULL
                   && free_map_allocate (1, &inode_sector)
                   && inode_create (inode_sector, initial_size, is_dir)
-                  && dir_add (dir, name, inode_sector));
+                  && dir_add (dir, file_name, inode_sector));
   if (!success && inode_sector != 0) 
     free_map_release (inode_sector, 1);
   dir_close (dir);
@@ -168,7 +168,7 @@ struct file *
 filesys_open (const char *name)
 {
   lock_acquire(&filesys_lock);
-  struct dir *dir = dir_open_root();//get_parent_dir(name);/*dir_open_root ()*/ 
+  struct dir *dir = get_parent_dir(name);//get_parent_dir(name);/*dir_open_root ()*/ 
   if(dir==NULL)
   {
     //printf("parent dir is null in fsys open\n");
@@ -181,7 +181,7 @@ filesys_open (const char *name)
   if (dir != NULL)
   {
     //printf("dir not NULL\n");
-    dir_lookup (dir, name, &inode);
+    dir_lookup (dir, file_name, &inode);
   }
   //printf("reached\n");
   dir_close (dir);
@@ -208,7 +208,7 @@ bool
 filesys_remove (const char *name) 
 {
   lock_acquire(&filesys_lock);
-  struct dir *dir =  dir_open_root();/*dir_open_root ()*/  // need to implement, open that path and return parent dir
+  struct dir *dir = get_parent_dir(name);/*dir_open_root ()*/  // need to implement, open that path and return parent dir
   if(dir==NULL)
     return false;
   char *file_name = get_name(name);//parsing
@@ -224,7 +224,7 @@ filesys_remove (const char *name)
     }
   }
   */
-  bool success = dir != NULL && dir_remove (dir, name);
+  bool success = dir != NULL && dir_remove (dir, file_name);
   dir_close (dir); 
   lock_release(&filesys_lock);
   return success;
