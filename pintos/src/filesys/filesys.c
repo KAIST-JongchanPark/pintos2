@@ -74,6 +74,7 @@ filesys_create (const char *name, off_t initial_size, bool is_dir)
   if(dir==NULL||strlen(name)==0)
   {
     //printf("name: %s\n", name);
+    printf("test2\n");
     return false;
   }
   printf("strlen: %d\n", strlen(name));
