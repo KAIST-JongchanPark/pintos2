@@ -66,7 +66,7 @@ filesys_create (const char *name, off_t initial_size, bool is_dir)
 {
   lock_acquire(&filesys_lock);
   disk_sector_t inode_sector = 0;
-  struct dir *dir = get_parent_dir(name);
+  struct dir *dir = dir_open_root();
   if(dir==NULL)
   {
     printf("name: %s\n", name);
@@ -167,7 +167,7 @@ struct file *
 filesys_open (const char *name)
 {
   lock_acquire(&filesys_lock);
-  struct dir *dir = get_parent_dir(name);/*dir_open_root ()*/ 
+  struct dir *dir = dir_open_root();/*dir_open_root ()*/ 
   if(dir==NULL)
   {
     printf("parent dir is null in fsys open\n");
@@ -198,7 +198,7 @@ bool
 filesys_remove (const char *name) 
 {
   lock_acquire(&filesys_lock);
-  struct dir *dir =  get_parent_dir(name);/*dir_open_root ()*/  // need to implement, open that path and return parent dir
+  struct dir *dir =  dir_open_root();/*dir_open_root ()*/  // need to implement, open that path and return parent dir
   if(dir==NULL)
     return false;
   char *file_name = get_name(name);//parsing
