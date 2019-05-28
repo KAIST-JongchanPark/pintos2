@@ -100,7 +100,7 @@ void exit (int status)
 
 pid_t exec (const char *file)
 {
-  printf("exec start\n");
+  //printf("exec start\n");
   return process_execute(file);
 }
 
