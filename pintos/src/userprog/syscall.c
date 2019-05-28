@@ -126,13 +126,11 @@ bool remove (const char *ptr)
 
 int open (const char *ptr)
 {
-  if(ptr==NULL)
+  if(ptr==NULL||strlen(ptr)==0)
     return -1;
   //lock_acquire(&syscall_lock);
   //if(!is_dir(ptr))
   //{
-    if(ptr==NULL)
-      return -1;
     //lock_acquire(&syscall_lock);
     struct file* file = filesys_open(ptr);
     if(file==NULL)
