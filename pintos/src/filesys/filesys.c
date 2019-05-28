@@ -179,6 +179,7 @@ filesys_open (const char *name)
 
   if (dir != NULL)
   {
+    printf("dir not NULL\n");
     dir_lookup (dir, name, &inode);
   }
   printf("reached\n");
@@ -186,6 +187,10 @@ filesys_open (const char *name)
   lock_release(&filesys_lock);
   printf("end of filesys open\n");
   struct file* file = file_open (inode);
+  if(file==NULL)
+  {
+    printf("file is NULL\n");
+  }
   printf("filesys open ends\n");
   return file;
 }
