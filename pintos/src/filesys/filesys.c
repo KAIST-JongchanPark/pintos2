@@ -36,8 +36,8 @@ filesys_init (bool format)
     do_format ();
 
   free_map_open ();
-  //thread_current()->dir = dir_open_root();
-  //dir_close(thread_current()->dir);
+  thread_current()->dir = dir_open_root();
+  dir_close(thread_current()->dir);
   lock_init(&filesys_lock);
 }
 /*
@@ -102,10 +102,10 @@ struct dir* get_parent_dir(char* dir)
   }
   else
   {
-    current_dir = thread_current()->dir;
+    current_dir = dir_reopen(thread_current()->dir);
     if(current_dir == NULL)
     {
-      //printf("current dir is NULL\n");
+      printf("current dir is NULL\n");
     }
   }
 
