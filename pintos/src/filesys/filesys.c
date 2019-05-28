@@ -69,6 +69,8 @@ filesys_create (const char *name, off_t initial_size, bool is_dir)
   disk_sector_t inode_sector = 0;
   struct dir *dir = get_parent_dir(name);//get_parent_dir(name);
   printf("test\n");
+  printf("name: %s\n", name);
+  printf("strlen: %d\n", strlen(name));
   if(dir==NULL||strlen(name)==0)
   {
     //printf("name: %s\n", name);
