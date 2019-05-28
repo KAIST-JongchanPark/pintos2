@@ -454,8 +454,8 @@ init_thread (struct thread *t, const char *name, int priority)
   int i;
   for(i=0;i<128;i++)
   {
-    //t->fd[i] = NULL;
-    t->sfde[i] = NULL;
+    t->fd[i] = NULL;
+    //t->sfde[i] = NULL;
   }
   sema_init(&t->waiting, 0);
   sema_init(&t->keep_alive, 0);

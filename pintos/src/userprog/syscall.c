@@ -51,18 +51,12 @@ exit_with_status(int status)
   thread_current()->exit_status = status;
   for(i=3;i<128;i++)
   {
-    if(thread_current()->sfde[i]->allocated==true)
+    if(thread_current()->fd[i]!=NULL)
     {
-      if(thread_current()->sfde[i]->isdir){
-        dir_close(thread_current()->sfde[i]->dir);
-      }
-      else{
-        file_close(thread_current()->sfde[i]->file);
-      }
-      //thread_current()->fd[i] = NULL;
-      thread_current()->sfde[i] = NULL;
+      file_close(thread_current()->fd[i]);
+      thread_current()->fd[i] = NULL;
     }
-    //free(thread_current()->sfde);
+      
   }
 	thread_exit ();
 	//exit with given status => further used in process.c(when printing results)
@@ -72,17 +66,6 @@ void
 syscall_init (void) 
 {
   intr_register_int (0x30, 3, INTR_ON, syscall_handler, "syscall");
-  int i;
-  struct sup_fd_entry *sfde;
-  for(i=0;i<128;i++)
-  {
-    sfde = malloc(sizeof(struct sup_fd_entry));
-    sfde->allocated = false;
-    sfde->isdir = false;
-    sfde->dir = NULL;
-    sfde->file = NULL;
-    thread_current()->sfde[i] = sfde;
-  }
   //lock_init(&syscall_lock);
 }
 
@@ -127,8 +110,11 @@ int open (const char *ptr)
   if(ptr==NULL)
     return -1;
   //lock_acquire(&syscall_lock);
-  if(!is_dir(ptr))
-  {
+  //if(!is_dir(ptr))
+  //{
+    if(ptr==NULL)
+      return -1;
+    //lock_acquire(&syscall_lock);
     struct file* file = filesys_open(ptr);
     if(file==NULL)
     {
@@ -139,25 +125,21 @@ int open (const char *ptr)
     int i;
     for(i=3;i<128;i++)
     {
-      if(thread_current()->sfde[i]->allocated == false)
+      if(thread_current()->fd[i]==NULL)
       {
       if (strcmp(thread_current()->name, ptr) == 0)
       {
       file_deny_write(file);  
       }
-        struct sup_fd_entry* sfde;
-        sfde->isdir = false;
-        sfde->file = file;
-        sfde->dir = NULL;
-        sfde->allocated = true;
-        thread_current()->sfde[i] = sfde;
+        thread_current()->fd[i] = file;
         //lock_release(&syscall_lock);
         return i;
       }
     }
     //lock_release(&syscall_lock);
     return -1;
-  }
+  //}
+  /*
   else
   {
     struct dir* parent_dir = get_parent_dir(ptr);
@@ -191,13 +173,14 @@ int open (const char *ptr)
 
 
   }
+  */
 }
 
 int filesize (int fd)
 {
   if(fd<0||fd>=128)
     return -1;
-  struct file* file = thread_current ()->sfde[fd]->file;
+  struct file* file = thread_current ()->fd[fd];
   if(file==NULL)
     return -1;
   return file_length(file);
@@ -222,7 +205,7 @@ int read (int fd, void *buffer, unsigned size)
   else if(fd>2)
   {
 
-    struct file* file = thread_current ()->sfde[fd]->file;
+    struct file* file = thread_current ()->fd[fd];
     if(file==NULL)
     {
       //lock_release(&syscall_lock);
@@ -253,7 +236,7 @@ int write (int fd, const void *buffer, unsigned size)
   }
   else if (fd>2)
   {
-    struct file* file = thread_current()->sfde[fd]->file;
+    struct file* file = thread_current()->fd[fd];
     if (file==NULL)
     {
       //lock_release(&syscall_lock);
@@ -275,7 +258,7 @@ int write (int fd, const void *buffer, unsigned size)
 
 void seek (int fd, unsigned position)
 {
-  struct file* file = thread_current()->sfde[fd]->file;
+  struct file* file = thread_current()->fd[fd];
   if(file==NULL)
     return;
   file_seek(file, (off_t)position);
@@ -283,7 +266,7 @@ void seek (int fd, unsigned position)
 
 unsigned tell (int fd)
 {
-  struct file* file = thread_current()->sfde[fd]; // fd를 다 sfde로 바꾸는거 맞지?
+  struct file* file = thread_current()->fd[fd]; // fd를 다 sfde로 바꾸는거 맞지?
   return file_tell(file);
 }
 
@@ -291,24 +274,11 @@ void close(int fd)
 {
   if (fd<0||fd>=128)
     return;
-  struct sup_fd_entry* sfde = thread_current()->sfde[fd];
-  if(sfde->allocated == false)
+  struct file* file = thread_current()->fd[fd];
+  if (file==NULL)
     return;
-
-  if(!sfde->isdir)
-  {
-    struct file* file = sfde->file;
-    file_close(file);
-    sfde->allocated = false;
-    sfde->file = NULL;
-  }
-  else
-  {
-    struct dir* dir = sfde->dir;
-    dir_close(dir);
-    sfde->allocated = false;
-    sfde->dir = NULL;
-  }
+  file_close(thread_current()->fd[fd]);
+  thread_current()->fd[fd] = NULL;
 }
 
 bool is_file(char* ptr)
@@ -446,28 +416,28 @@ bool mkdir (const char *dir)
 
 bool readdir (int fd, char *name)
 {
-  struct sup_fd_entry* sfde = thread_current()->sfde[fd];
-  if(sfde->allocated == false)
+  struct file* file = thread_current()->fd[fd];
+  if(file==NULL)
     return false;
-  if(!sfde->isdir)
+  if(!file->inode->is_dir)
     return false;
-  return dir_readdir(sfde->dir, name);
+  return dir_readdir(dir_open(file->inode), name);
 }
 
 //
 bool isdir (int fd)
 {
-  struct sup_fd_entry* sfde = thread_current()->sfde[fd];
-  if(sfde->allocated == false)
+  struct file* file = thread_current()->fd[fd];
+  if(file==NULL)
     return false;
-  return sfde->isdir;
+  return file->inode->is_dir;
 }
 
 int inumber (int fd)
 {
-  struct sup_fd_entry*  sfde = thread_current()->sfde[fd];
-  struct dir* dir = sfde->dir;
-  return (int) inode_get_inumber(dir_get_inode(dir));
+  struct file* file = thread_current()->fd[fd];
+  //struct dir* dir = dir_open(file->inode);
+  return (int) inode_get_inumber(file->inode);
 }
 
 static void
