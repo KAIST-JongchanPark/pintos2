@@ -36,7 +36,7 @@ filesys_init (bool format)
     do_format ();
 
   free_map_open ();
-  thread_current()->dir = dir_open_root();
+  //thread_current()->dir = dir_open_root();
   lock_init(&filesys_lock);
 }
 /*
