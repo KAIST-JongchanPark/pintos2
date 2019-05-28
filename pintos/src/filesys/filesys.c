@@ -70,12 +70,12 @@ filesys_create (const char *name, off_t initial_size, bool is_dir)
   struct dir *dir = dir_open_root();//get_parent_dir(name);
   if(dir==NULL)
   {
-    printf("name: %s\n", name);
+    //printf("name: %s\n", name);
     PANIC("open parent dir failed\n");
     return false;
   }
   char *file_name = get_name(name);
-  printf("file_name: %s\n", file_name);
+  //printf("file_name: %s\n", file_name);
   bool success = (dir != NULL
                   && free_map_allocate (1, &inode_sector)
                   && inode_create (inode_sector, initial_size, is_dir)
@@ -105,7 +105,7 @@ struct dir* get_parent_dir(char* dir)
     current_dir = thread_current()->dir;
     if(current_dir == NULL)
     {
-      printf("current dir is NULL\n");
+      //printf("current dir is NULL\n");
     }
   }
 
@@ -142,11 +142,11 @@ char* get_name(char* dir)
   char* next_ptr;
 
   ret_ptr = strtok_r(dir_copy, "/", &next_ptr);
-  printf("origin name: %s\n", dir);
-  printf("ret_ptr: %s\n", ret_ptr);
+  //printf("origin name: %s\n", dir);
+  //printf("ret_ptr: %s\n", ret_ptr);
   if(strlen(next_ptr)==0)
   {
-    printf("next_ptr: %s\n", next_ptr);
+    //printf("next_ptr: %s\n", next_ptr);
   }
   while(ret_ptr!=NULL)
   {
@@ -171,32 +171,32 @@ filesys_open (const char *name)
   struct dir *dir = dir_open_root();//get_parent_dir(name);/*dir_open_root ()*/ 
   if(dir==NULL)
   {
-    printf("parent dir is null in fsys open\n");
+    //printf("parent dir is null in fsys open\n");
     return NULL;
   }
   char *file_name = get_name(name);//parsing
-  printf("file name in fsys open: %s\n", file_name);
+  //printf("file name in fsys open: %s\n", file_name);
   struct inode *inode = NULL;
 
   if (dir != NULL)
   {
-    printf("dir not NULL\n");
+    //printf("dir not NULL\n");
     dir_lookup (dir, name, &inode);
   }
-  printf("reached\n");
+  //printf("reached\n");
   dir_close (dir);
   lock_release(&filesys_lock);
-  printf("end of filesys open\n");
+  //printf("end of filesys open\n");
   if(inode==NULL)
   {
-    printf("inode is NULL\n");
+    //printf("inode is NULL\n");
   }
   struct file* file = file_open (inode);
   if(file==NULL)
   {
-    printf("file is NULL\n");
+    //printf("file is NULL\n");
   }
-  printf("filesys open ends\n");
+  //printf("filesys open ends\n");
   return file;
 }
 
