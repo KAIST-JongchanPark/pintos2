@@ -116,8 +116,8 @@ struct thread
 
     /* Structures for userprog. */
     int exit_status;
-    //struct file* fd[128];
-    struct sup_fd_entry* sfde[128];
+    struct file* fd[128];
+    //struct sup_fd_entry* sfde[128];
     struct dir* dir;
 #endif
 
