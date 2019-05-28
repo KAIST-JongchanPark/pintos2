@@ -419,18 +419,25 @@ void* mkdir_parse_dir(char* dir, int option)
 
 bool chdir (const char *dir)
 {
-  struct dir* target_dir = chdir_parse_dir(dir);
+  struct dir* target_dir = get_parent_dir(dir);
+  char *dir_name = get_name(dir);
   if(target_dir==NULL)
     return false;
-  thread_current()->dir = target_dir;
+  struct inode *inode;
+  if(!dir_lookup(target_dir, dir_name, &inode)||!inode->is_dir)
+  {
+    return false;
+  }
+  dir_close(target_dir);
+  thread_current()->dir = dir_open(inode);
   return true;
 }
 
 bool mkdir (const char *dir)
 {
-  struct dir* parent_dir = (struct dir*) mkdir_parse_dir(dir, 1);
-  char *dir_name = (char *) mkdir_parse_dir(dir, 2);
-  return filesys_create(dir_name,0 ,true);
+  //struct dir* parent_dir = (struct dir*) mkdir_parse_dir(dir, 1);
+  //char *dir_name = (char *) get_name(dir);
+  return filesys_create(dir, 0, true);
 }
 
 bool readdir (int fd, char *name)
@@ -456,6 +463,10 @@ int inumber (int fd)
 {
   struct file* file = thread_current()->fd[fd];
   //struct dir* dir = dir_open(file->inode);
+  if(file==NULL)
+    return -1;
+  if(!file->inode->is_dir)
+    return -1;
   return (int) inode_get_inumber(file->inode);
 }
 
