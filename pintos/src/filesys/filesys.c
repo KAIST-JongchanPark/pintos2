@@ -181,6 +181,7 @@ filesys_open (const char *name)
   {
     dir_lookup (dir, file_name, &inode);
   }
+  printf("reached\n");
   dir_close (dir);
   lock_release(&filesys_lock);
   printf("end of filesys open\n");
