@@ -457,6 +457,7 @@ init_thread (struct thread *t, const char *name, int priority)
     t->fd[i] = NULL;
     //t->sfde[i] = NULL;
   }
+  t->dir = NULL;
   sema_init(&t->waiting, 0);
   sema_init(&t->keep_alive, 0);
   sema_init(&t->load_wait, 0);
