@@ -108,10 +108,12 @@ struct dir* get_parent_dir(char* dir)
   {
     current_dir = dir_open_root();
     ret_ptr = strtok_r(dir_copy, "/", &next_ptr);
-    ret_ptr = strtok_r(NULL, "/", &next_ptr);
-    
     printf("first / cut of ret: %s\n", ret_ptr);
     printf("first / cut of next: %s\n", next_ptr);
+    ret_ptr = strtok_r(NULL, "/", &next_ptr);
+    
+    printf("second / cut of ret: %s\n", ret_ptr);
+    printf("second / cut of next: %s\n", next_ptr);
   }
   else
   {
