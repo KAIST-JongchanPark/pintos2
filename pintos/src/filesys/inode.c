@@ -293,7 +293,7 @@ inode_write_at (struct inode *inode, const void *buffer_, off_t size,
       int chunk_size = size < min_left ? size : min_left;
       if (chunk_size <= 0)
       {
-                printf("1\n");
+                //printf("1\n");
 
         break;
       }
@@ -335,7 +335,7 @@ inode_write_at (struct inode *inode, const void *buffer_, off_t size,
       bytes_written += chunk_size;
     }
   //free (bounce);
-  printf("inode write size: %d\n", bytes_written);
+  //printf("inode write size: %d\n", bytes_written);
   return bytes_written;
 }
 
