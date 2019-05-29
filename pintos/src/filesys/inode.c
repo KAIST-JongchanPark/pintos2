@@ -392,7 +392,7 @@ inode_add_parent_sector (disk_sector_t child, disk_sector_t parent)
   {
     return false;
   }
-  inode->parent_sector = parent;
+  child_inode->parent_sector = parent;
   inode_close(child_inode);
   return true;
 }
