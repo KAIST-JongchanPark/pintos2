@@ -23,7 +23,7 @@ struct file
     bool deny_write;            /* Has file_deny_write() been called? */
   };
 
-  struct dir_entry 
+struct dir_entry 
   {
     disk_sector_t inode_sector;         /* Sector number of header. */
     char name[NAME_MAX + 1];            /* Null terminated file name. */
