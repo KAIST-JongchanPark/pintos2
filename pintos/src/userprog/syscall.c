@@ -263,7 +263,7 @@ int write (int fd, const void *buffer, unsigned size)
   else if (fd>2)
   {
     struct file* file = thread_current()->fd[fd];
-    if (file==NULL)
+    if (file==NULL||file->inode->is_dir)
     {
       //lock_release(&syscall_lock);
       return -1;
