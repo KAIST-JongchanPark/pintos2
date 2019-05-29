@@ -197,7 +197,7 @@ filesys_open (const char *name)
     return NULL;
   }
   char *file_name = get_name(name);//parsing
-  if(file_name == NULL&&inode_get_inumber(dir->inode)==ROOT_DIR_SECTOR)
+  if(file_name == NULL&&inode_get_inumber(dir_get_inode(dir))==ROOT_DIR_SECTOR)
   {
     return (struct file *)dir;
   }
