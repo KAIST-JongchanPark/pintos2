@@ -173,11 +173,17 @@ dir_add (struct dir *dir, const char *name, disk_sector_t inode_sector)
 
   /* Check NAME for validity. */
   if (*name == '\0' || strlen (name) > NAME_MAX)
+  {
+    printf("test1\n");
     return false;
+  }
 
   /* Check that NAME is not in use. */
   if (lookup (dir, name, NULL, NULL))
+  {
+    printf("test2\n");
     goto done;
+  }
 
   /* Set OFS to offset of free slot.
      If there are no free slots, then it will be set to the
