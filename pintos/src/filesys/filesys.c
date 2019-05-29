@@ -260,6 +260,7 @@ filesys_remove (const char *name)
   bool success = dir != NULL;
   if(file_name==NULL)
   {
+    lock_release(&filesys_lock);
     return false;
   }
   dir_lookup(dir, file_name, &inode);
