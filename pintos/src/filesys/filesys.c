@@ -98,7 +98,7 @@ struct dir* get_parent_dir(char* dir)
 {
   char* dir_copy = malloc(strlen(dir)+1);
   strlcpy(dir_copy, dir, strlen(dir)+1);
-  ///printf("parsing input: %s\n", dir_copy);
+  //printf("parsing input: %s\n", dir_copy);
   struct dir* current_dir;
   char* ret_ptr;
   char* next_ptr;
@@ -108,8 +108,8 @@ struct dir* get_parent_dir(char* dir)
   {
     current_dir = dir_open_root();
     ret_ptr = strtok_r(dir_copy, "/", &next_ptr);
-    ///printf("first / cut of ret: %s\n", ret_ptr);
-    ///printf("first / cut of next: %s\n", next_ptr);
+    //printf("first / cut of ret: %s\n", ret_ptr);
+    //printf("first / cut of next: %s\n", next_ptr);
   }
   else
   {
@@ -124,7 +124,7 @@ struct dir* get_parent_dir(char* dir)
     
     if(current_dir == NULL)
     {
-      ///printf("current dir is NULL\n");
+      //printf("current dir is NULL\n");
     }
     ret_ptr = strtok_r(dir_copy, "/", &next_ptr);
   }
@@ -197,6 +197,10 @@ filesys_open (const char *name)
     return NULL;
   }
   char *file_name = get_name(name);//parsing
+  if(file_name == NULL&&inode_get_inumber(dir->inode))
+  {
+    return (struct file *)dir;
+  }
   //printf("file name in fsys open: %s\n", file_name);
   struct inode *inode = NULL;
 
