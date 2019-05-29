@@ -371,3 +371,9 @@ inode_is_dir (struct inode *inode)
 {
   return inode->is_dir;
 }
+
+bool
+inode_is_removed (struct inode *inode)
+{
+  return inode->removed;
+}

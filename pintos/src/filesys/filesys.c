@@ -71,10 +71,11 @@ filesys_create (const char *name, off_t initial_size, bool is_dir)
   //printf("test\n");
   //printf("name: %s\n", name);
   //printf("strlen: %d\n", strlen(name));
-  if(dir==NULL||strlen(name)==0)
+  if(dir==NULL||strlen(name)==0||inode_is_removed(dir_get_inode(dir)))
   {
     //printf("name: %s\n", name);
     //printf("test2\n");
+    lock_release(&filesys_lock);
     return false;
   }
   //printf("strlen: %d\n", strlen(name));
@@ -191,9 +192,10 @@ filesys_open (const char *name)
 {
   lock_acquire(&filesys_lock);
   struct dir *dir = get_parent_dir(name);//get_parent_dir(name);/*dir_open_root ()*/ 
-  if(dir==NULL||strlen(name)==0)
+  if(dir==NULL||strlen(name)==0||inode_is_removed(dir_get_inode(dir)))
   {
     //printf("parent dir is null in fsys open\n");
+    lock_release(&filesys_lock);
     return NULL;
   }
   char *file_name = get_name(name);//parsing
@@ -236,8 +238,11 @@ filesys_remove (const char *name)
 {
   lock_acquire(&filesys_lock);
   struct dir *dir = get_parent_dir(name);/*dir_open_root ()*/  // need to implement, open that path and return parent dir
-  if(dir==NULL||strlen(name)==0)
+  if(dir==NULL||strlen(name)==0||inode_is_removed(dir_get_inode(dir)))
+  {
+    lock_release(&filesys_lock);
     return false;
+  }
   char *file_name = get_name(name);//parsing
   /*
   if(is_dir)
