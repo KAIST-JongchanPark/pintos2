@@ -388,11 +388,18 @@ bool
 inode_add_parent_sector (disk_sector_t child, disk_sector_t parent)
 {
   struct inode *child_inode = inode_open(child);
-  if(!child)
+  if(!child_inode)
   {
     return false;
   }
-  child_inode->parent_sector = parent;
+  if(child == 1)
+  {
+    child_inode->parent_sector = child;
+  }
+  else
+  {
+    child_inode->parent_sector = parent;
+  }
   inode_close(child_inode);
   return true;
 }

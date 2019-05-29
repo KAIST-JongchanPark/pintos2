@@ -196,7 +196,6 @@ dir_add (struct dir *dir, const char *name, disk_sector_t inode_sector)
     //printf("test2\n");
     goto done;
   }
-
   if(!inode_add_parent_sector(inode_sector, inode_get_inumber(dir->inode)))
   {
     return false;
