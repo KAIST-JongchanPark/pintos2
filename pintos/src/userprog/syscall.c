@@ -11,6 +11,7 @@
 #include "filesys/file.h"
 #include "threads/synch.h"
 #include "filesys/inode.h"
+#include "filesys/directory.h"
 
 typedef int pid_t;
 struct lock syscall_lock;
