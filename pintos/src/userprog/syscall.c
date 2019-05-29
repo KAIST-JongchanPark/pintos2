@@ -31,6 +31,14 @@ struct inode_disk
     uint32_t unused[124];               /* Not used. */
   };
 
+  struct dir_entry 
+  {
+    disk_sector_t inode_sector;         /* Sector number of header. */
+    char name[NAME_MAX + 1];            /* Null terminated file name. */
+    bool in_use;                        /* In use or free? */
+    bool is_dir;
+  };
+
 struct inode 
   {
     struct list_elem elem;              /* Element in inode list. */
