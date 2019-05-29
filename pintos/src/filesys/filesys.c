@@ -199,6 +199,7 @@ filesys_open (const char *name)
   char *file_name = get_name(name);//parsing
   if(file_name == NULL&&inode_get_inumber(dir_get_inode(dir))==ROOT_DIR_SECTOR)
   {
+    lock_release(&filesys_lock);
     return (struct file *)dir;
   }
   //printf("file name ROOT_DIR_SECTORin fsys open: %s\n", file_name);
