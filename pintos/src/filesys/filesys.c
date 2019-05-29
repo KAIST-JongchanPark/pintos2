@@ -258,6 +258,10 @@ filesys_remove (const char *name)
   */
   struct inode *inode = NULL;
   bool success = dir != NULL;
+  if(file_name==NULL)
+  {
+    return false;
+  }
   dir_lookup(dir, file_name, &inode);
   if(!inode==NULL)
   {
