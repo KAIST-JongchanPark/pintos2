@@ -74,18 +74,18 @@ filesys_create (const char *name, off_t initial_size, bool is_dir)
   if(dir==NULL||strlen(name)==0)
   {
     //printf("name: %s\n", name);
-    printf("test2\n");
+    //printf("test2\n");
     return false;
   }
   //printf("strlen: %d\n", strlen(name));
   //printf("name: %s\n", name);
   char *file_name = get_name(name);
-  printf("file_name: %s\n", file_name);
+  //printf("file_name: %s\n", file_name);
   bool success = dir != NULL
                   && free_map_allocate (1, &inode_sector);
-  printf("success value %d\n", success);
+  //printf("success value %d\n", success);
                   success = success&& inode_create (inode_sector, initial_size, is_dir);
-                  printf("success value %d\n", success);
+                  //printf("success value %d\n", success);
                   success = success&& dir_add (dir, file_name, inode_sector);
   if (!success && inode_sector != 0) 
     free_map_release (inode_sector, 1);
@@ -98,7 +98,7 @@ struct dir* get_parent_dir(char* dir)
 {
   char* dir_copy = malloc(strlen(dir)+1);
   strlcpy(dir_copy, dir, strlen(dir)+1);
-  printf("parsing input: %s\n", dir_copy);
+  ///printf("parsing input: %s\n", dir_copy);
   struct dir* current_dir;
   char* ret_ptr;
   char* next_ptr;
@@ -108,8 +108,8 @@ struct dir* get_parent_dir(char* dir)
   {
     current_dir = dir_open_root();
     ret_ptr = strtok_r(dir_copy, "/", &next_ptr);
-    printf("first / cut of ret: %s\n", ret_ptr);
-    printf("first / cut of next: %s\n", next_ptr);
+    ///printf("first / cut of ret: %s\n", ret_ptr);
+    ///printf("first / cut of next: %s\n", next_ptr);
   }
   else
   {
@@ -124,17 +124,17 @@ struct dir* get_parent_dir(char* dir)
     
     if(current_dir == NULL)
     {
-      printf("current dir is NULL\n");
+      ///printf("current dir is NULL\n");
     }
     ret_ptr = strtok_r(dir_copy, "/", &next_ptr);
   }
 
   while(ret_ptr!=NULL)
   {
-    printf("string loop: %s\n", ret_ptr);
+    //printf("string loop: %s\n", ret_ptr);
     if(strlen(next_ptr)==0)
     {
-      printf("ret_ptr when finished: %s\n", ret_ptr);
+      //printf("ret_ptr when finished: %s\n", ret_ptr);
       break;
     }
     if(!dir_lookup(current_dir, ret_ptr, &inode))
@@ -143,7 +143,7 @@ struct dir* get_parent_dir(char* dir)
     }
     if(inode_is_dir(inode))
     {
-      printf("ret_ptr in parent dir: %s\n", ret_ptr);
+      //printf("ret_ptr in parent dir: %s\n", ret_ptr);
       dir_close(current_dir);
       current_dir = dir_open(inode);
     }

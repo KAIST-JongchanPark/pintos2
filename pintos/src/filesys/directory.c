@@ -174,14 +174,14 @@ dir_add (struct dir *dir, const char *name, disk_sector_t inode_sector)
   /* Check NAME for validity. */
   if (*name == '\0' || strlen (name) > NAME_MAX)
   {
-    printf("test1\n");
+    //printf("test1\n");
     return false;
   }
 
   /* Check that NAME is not in use. */
   if (lookup (dir, name, NULL, NULL))
   {
-    printf("test2\n");
+    //printf("test2\n");
     goto done;
   }
 
@@ -202,7 +202,7 @@ dir_add (struct dir *dir, const char *name, disk_sector_t inode_sector)
   strlcpy (e.name, name, sizeof e.name);
   e.inode_sector = inode_sector;
   success = inode_write_at (dir->inode, &e, sizeof e, ofs) == sizeof e;
-  printf("success: %d\n", success);
+  //printf("success: %d\n", success);
  done:
   return success;
 }

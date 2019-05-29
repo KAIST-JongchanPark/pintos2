@@ -17,7 +17,7 @@ int evict_counter;
 void cache_init(void)
 {
 	//init the list
-	printf("cache_init started\n");
+	//printf("cache_init started\n");
 	list_init(&cache_list);
 	lock_init(&cache_lock);
 	int i;
@@ -45,7 +45,7 @@ void cache_init(void)
 		list_push_back(&cache_list, &celem->elem);
 	}
 	//tid_t tid = thread_create("periodic", PRI_DEFAULT, cache_write_behind, NULL);
-	printf("cache_init finished\n");
+	//printf("cache_init finished\n");
 
 }
 
