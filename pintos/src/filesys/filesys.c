@@ -107,6 +107,8 @@ struct dir* get_parent_dir(char* dir)
   {
     current_dir = dir_open_root();
     ret_ptr = strtok_r(dir_copy, "/", &next_ptr);
+    ret_ptr = strtok_r(NULL, "/", &next_ptr);
+    
     printf("fisrt / cut: %s", ret_ptr);
   }
   else
@@ -124,9 +126,9 @@ struct dir* get_parent_dir(char* dir)
     {
       printf("current dir is NULL\n");
     }
+    ret_ptr = strtok_r(dir_copy, "/", &next_ptr);
   }
 
-  ret_ptr = strtok_r(dir_copy, "/", &next_ptr);
   while(ret_ptr!=NULL)
   {
     printf("string loop: %s", ret_ptr);
