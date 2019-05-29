@@ -286,3 +286,25 @@ dir_readdir (struct dir *dir, char name[NAME_MAX + 1])
     }
   return false;
 }
+
+bool
+dir_is_empty (const struct dir *dir) 
+{
+  struct dir_entry e;
+  size_t ofs;
+  
+  ASSERT (dir != NULL);
+  ASSERT (name != NULL);
+
+  for (ofs = 0; inode_read_at (dir->inode, &e, sizeof e, ofs) == sizeof e;
+       ofs += sizeof e) 
+  {
+      //printf("reached\n");
+
+    if (e.in_use) 
+      {
+        return false;
+      }
+  }
+  return true;
+}

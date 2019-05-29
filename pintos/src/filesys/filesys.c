@@ -256,7 +256,27 @@ filesys_remove (const char *name)
     }
   }
   */
-  bool success = dir != NULL && dir_remove (dir, file_name);
+  struct inode *inode = NULL;
+  bool success = dir != NULL 
+  dir_lookup(dir, file_name, &inode);
+  if(!inode)
+  {
+    if(inode_is_dir(inode))
+    {
+      if(dir_is_empty(dir_open(inode)))
+      {
+        success = success && dir_remove (dir, file_name);
+      }
+      else
+      {
+        success = false;
+      }
+    }
+    else
+    {
+      success = success && dir_remove (dir, file_name);
+    }
+  }
   dir_close (dir); 
   lock_release(&filesys_lock);
   return success;
