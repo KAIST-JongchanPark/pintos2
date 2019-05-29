@@ -377,3 +377,22 @@ inode_is_removed (struct inode *inode)
 {
   return inode->removed;
 }
+
+disk_sector_t
+inode_get_parent_sector (struct inode *inode)
+{
+  return inode->parent_sector;
+}
+
+bool
+inode_add_parent_sector (disk_sector_t child, disk_sector_t parent)
+{
+  struct inode *child_inode = inode_open(child);
+  if(!child)
+  {
+    return false;
+  }
+  inode->parent_sector = parent;
+  inode_close(child_inode);
+  return true;
+}

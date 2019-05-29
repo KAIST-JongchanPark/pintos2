@@ -22,15 +22,6 @@ struct file
     off_t pos;                  /* Current position. */
     bool deny_write;            /* Has file_deny_write() been called? */
   };
-  
-struct inode_disk
-  {
-    disk_sector_t start;                /* First data sector. */
-    off_t length;                       /* File size in bytes. */
-    unsigned magic;                     /* Magic number. */
-    bool is_dir;
-    uint32_t unused[124];               /* Not used. */
-  };
 
   struct dir_entry 
   {
@@ -38,18 +29,6 @@ struct inode_disk
     char name[NAME_MAX + 1];            /* Null terminated file name. */
     bool in_use;                        /* In use or free? */
     bool is_dir;
-  };
-
-struct inode 
-  {
-    struct list_elem elem;              /* Element in inode list. */
-    disk_sector_t sector;               /* Sector number of disk location. */
-    int open_cnt;                       /* Number of openers. */
-    bool removed;                       /* True if deleted, false otherwise. */
-    int deny_write_cnt;                 /* 0: writes ok, >0: deny writes. */
-    struct inode_disk data;             /* Inode content. */
-    bool is_dir;
-    disk_sector_t parent_sector;
   };
 
 static void syscall_handler (struct intr_frame *);
@@ -263,7 +242,7 @@ int write (int fd, const void *buffer, unsigned size)
   else if (fd>2)
   {
     struct file* file = thread_current()->fd[fd];
-    if (file==NULL||file->inode->is_dir)
+    if (file==NULL||inode_is_dir(file->inode))
     {
       //lock_release(&syscall_lock);
       return -1;
@@ -431,7 +410,7 @@ bool chdir (const char *dir)
   if(target_dir==NULL)
     return false;
   struct inode *inode;
-  if(!dir_lookup(target_dir, dir_name, &inode)||!inode->is_dir)
+  if(!dir_lookup(target_dir, dir_name, &inode)||!inode_is_dir(inode))
   {
     return false;
   }
@@ -452,7 +431,7 @@ bool readdir (int fd, char *name)
   struct file* file = thread_current()->fd[fd];
   if(file==NULL)
     return false;
-  if(!file->inode->is_dir)
+  if(!inode_is_dir(file->inode))
     return false;
   return dir_readdir(dir_open(file->inode), name);
 }
@@ -463,7 +442,7 @@ bool isdir (int fd)
   struct file* file = thread_current()->fd[fd];
   if(file==NULL)
     return false;
-  return file->inode->is_dir;
+  return inode_is_dir(file->inode);
 }
 
 int inumber (int fd)
@@ -472,7 +451,7 @@ int inumber (int fd)
   //struct dir* dir = dir_open(file->inode);
   if(file==NULL)
     return -1;
-  if(!file->inode->is_dir)
+  if(!inode_is_dir(file->inode))
     return -1;
   return (int) inode_get_inumber(file->inode);
 }

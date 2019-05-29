@@ -145,10 +145,22 @@ dir_lookup (const struct dir *dir, const char *name,
   ASSERT (dir != NULL);
   ASSERT (name != NULL);
 
-  if (lookup (dir, name, &e, NULL))
+  if(strcmp(".", name))
+  {
+    *inode = dir->inode;
+  }
+  else if(strcmp("..", name))
+  {
+    *inode = inode_open(inode_get_parent_sector(dir->inode));
+  }
+  else if (lookup (dir, name, &e, NULL))
+  {
     *inode = inode_open (e.inode_sector);
+  }
   else
+  {
     *inode = NULL;
+  }
 
   
 
@@ -183,6 +195,11 @@ dir_add (struct dir *dir, const char *name, disk_sector_t inode_sector)
   {
     //printf("test2\n");
     goto done;
+  }
+
+  if(!inode_add_parent_sector(inode_sector, inode_get_inumber(dir->inode)))
+  {
+    return false;
   }
 
   /* Set OFS to offset of free slot.
@@ -262,10 +279,4 @@ dir_readdir (struct dir *dir, char name[NAME_MAX + 1])
         } 
     }
   return false;
-}
-
-bool
-dir_isempty(struct dir* dir)
-{
-
 }
