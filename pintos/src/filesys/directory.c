@@ -202,7 +202,7 @@ dir_add (struct dir *dir, const char *name, disk_sector_t inode_sector)
   {
     if(!inode_add_parent_sector(inode_sector, inode_get_inumber(dir->inode)))
     {
-      printf("add parent failed.\n");
+      //printf("add parent failed.\n");
       return false;
     }
   }
