@@ -98,6 +98,7 @@ struct dir* get_parent_dir(char* dir)
 {
   char* dir_copy = malloc(strlen(dir)+1);
   strlcpy(dir_copy, dir, strlen(dir)+1);
+  printf("parsing input: %s\n", dir_copy);
   struct dir* current_dir;
   char* ret_ptr;
   char* next_ptr;
