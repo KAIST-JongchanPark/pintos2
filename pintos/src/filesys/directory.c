@@ -144,17 +144,16 @@ dir_lookup (const struct dir *dir, const char *name,
 
   ASSERT (dir != NULL);
   ASSERT (name != NULL);
-  /*
-  if(strcmp(".", name))
+  
+  if(!strcmp(".", name))
   {
     *inode = dir->inode;
   }
-  else if(strcmp("..", name))
+  else if(!strcmp("..", name))
   {
     *inode = inode_open(inode_get_parent_sector(dir->inode));
   }
-  else */
-  if (lookup (dir, name, &e, NULL))
+  else if (lookup (dir, name, &e, NULL))
   {
     *inode = inode_open (e.inode_sector);
   }
@@ -198,15 +197,16 @@ dir_add (struct dir *dir, const char *name, disk_sector_t inode_sector)
     goto done;
   }
   
-  /*
+  
   if(inode_is_dir(inode_open(inode_sector)))
   {
     if(!inode_add_parent_sector(inode_sector, inode_get_inumber(dir->inode)))
     {
+      printf("add parent failed.\n");
       return false;
     }
   }
-  */
+  
   
   /* Set OFS to offset of free slot.
      If there are no free slots, then it will be set to the
