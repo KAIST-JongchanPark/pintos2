@@ -224,7 +224,7 @@ bool inode_deallocate (struct inode *inode)
   count = sector_num < indirect_sectors_per_inode*indirect_sectors_per_inode ? sector_num : indirect_sectors_per_inode*indirect_sectors_per_inode;
   if(count >0)
   {
-    inode_allocate_indirect(&inode->data.doubly_indirect_sector, count, 2);
+    inode_deallocate_indirect(&inode->data.doubly_indirect_sector, count, 2);
     sector_num -= count;
   }
   return true;
