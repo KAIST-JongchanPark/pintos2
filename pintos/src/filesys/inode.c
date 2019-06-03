@@ -66,7 +66,7 @@ byte_to_sector (const struct inode *inode, off_t pos)
   ASSERT (inode != NULL);
   if (0 <= pos && pos < inode->data.length)
   {
-    off_t index = pos / 512;
+    off_t index = pos / DISK_SECTOR_SIZE;
     struct inode_disk *i_disk = &inode->data;
     disk_sector_t return_value;
     if (index < direct_sectors_per_inode)
@@ -122,14 +122,14 @@ inode_allocate (struct inode_disk *inode)
   count = sector_num < direct_sectors_per_inode ? sector_num : direct_sectors_per_inode;
   for(i=0; i < count; i++)
   {
-    if(inode->direct_sector[i]==0)
-    {
+    //if(inode->direct_sector[i]==0)
+    //{
       if(! free_map_allocate (1, &inode->direct_sector[i]))
       {
         return false;
       }
       cache_write (filesys_disk, inode->direct_sector[i], empty_sector);
-    }
+    //}
     sector_num--;
   }
   if(sector_num == 0)
