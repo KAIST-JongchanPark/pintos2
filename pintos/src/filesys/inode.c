@@ -106,61 +106,6 @@ byte_to_sector (const struct inode *inode, off_t pos)
 }
 
 static bool
-inode_allocate (struct inode_disk *inode, off_t length)
-{
-  char empty_sector[DISK_SECTOR_SIZE];
-  
-  if(length < 0)
-  {
-    return false;
-  }
-  size_t sector_num = bytes_to_sectors(length);
-  
-  size_t count;
-  int i;
-  count = sector_num < direct_sectors_per_inode ? sector_num : direct_sectors_per_inode;
-  for(i=0; i < count; i++)
-  {
-    if(inode->direct_sector[i]==0)
-    {
-      if(! free_map_allocate (1, &inode->direct_sector[i]))
-      {
-        return false;
-      }
-      cache_write (filesys_disk, inode->direct_sector[i], empty_sector);
-    }
-    sector_num--;
-  }
-  if(sector_num == 0)
-  {
-    return true;
-  }
-  
-  count = sector_num < indirect_sectors_per_inode ? sector_num : indirect_sectors_per_inode;
-  if(!inode_allocate_indirect(&inode->indirect_sector, count, 1))
-  {
-    return false;
-  }
-  sector_num -= count;
-  if(sector_num == 0)
-  {
-    return true;
-  }
-  
-  count = sector_num < indirect_sectors_per_inode*indirect_sectors_per_inode ? sector_num : indirect_sectors_per_inode*indirect_sectors_per_inode;
-  if(!inode_allocate_indirect(&inode->doubly_indirect_sector, count, 2))
-  {
-    return false;
-  }
-  sector_num -= count;
-  if(sector_num == 0)
-  {
-    return true;
-  }
-  return false;
-}
-
-static bool
 inode_allocate_indirect(disk_sector_t *sector, size_t sector_num, int degree)
 {
   char empty_sector[DISK_SECTOR_SIZE];
@@ -213,6 +158,61 @@ inode_allocate_indirect(disk_sector_t *sector, size_t sector_num, int degree)
   }
   cache_write(filesys_disk, *sector, &indirect_sector);
   return true;
+}
+
+static bool
+inode_allocate (struct inode_disk *inode, off_t length)
+{
+  char empty_sector[DISK_SECTOR_SIZE];
+  
+  if(length < 0)
+  {
+    return false;
+  }
+  size_t sector_num = bytes_to_sectors(length);
+  
+  size_t count;
+  int i;
+  count = sector_num < direct_sectors_per_inode ? sector_num : direct_sectors_per_inode;
+  for(i=0; i < count; i++)
+  {
+    if(inode->direct_sector[i]==0)
+    {
+      if(! free_map_allocate (1, &inode->direct_sector[i]))
+      {
+        return false;
+      }
+      cache_write (filesys_disk, inode->direct_sector[i], empty_sector);
+    }
+    sector_num--;
+  }
+  if(sector_num == 0)
+  {
+    return true;
+  }
+  
+  count = sector_num < indirect_sectors_per_inode ? sector_num : indirect_sectors_per_inode;
+  if(!inode_allocate_indirect(&inode->indirect_sector, count, 1))
+  {
+    return false;
+  }
+  sector_num -= count;
+  if(sector_num == 0)
+  {
+    return true;
+  }
+  
+  count = sector_num < indirect_sectors_per_inode*indirect_sectors_per_inode ? sector_num : indirect_sectors_per_inode*indirect_sectors_per_inode;
+  if(!inode_allocate_indirect(&inode->doubly_indirect_sector, count, 2))
+  {
+    return false;
+  }
+  sector_num -= count;
+  if(sector_num == 0)
+  {
+    return true;
+  }
+  return false;
 }
 
 static bool
