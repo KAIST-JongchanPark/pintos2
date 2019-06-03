@@ -68,7 +68,7 @@ byte_to_sector (const struct inode *inode, off_t pos)
   if (0 <= pos && pos < inode->data.length)
   {
     off_t index = pos / 512;
-    struct inode_disk *i_disk = inode->data;
+    struct inode_disk *i_disk = &inode->data;
     disk_sector_t return_value;
     if (index < direct_sectors_per_inode)
     {
@@ -79,7 +79,7 @@ byte_to_sector (const struct inode *inode, off_t pos)
     {
       struct indirect_sector_list *sector_list = malloc(sizeof(struct indirect_sector_list));
       cache_read(filesys_disk, i_disk->indirect_sector, sector_list, 0, DISK_SECTOR_SIZE);
-      return_value = sector_list->sector_list[pos-direct_sectors_per_page];
+      return_value = sector_list->sector_list[pos-direct_sectors_per_inode];
       //free(sector_list);
       return return_value;
     }
@@ -154,7 +154,7 @@ inode_allocate_indirect(disk_sector_t *sector, size_t sector_num, int degree)
 {
   char empty_sector[DISK_SECTOR_SIZE];
   
-  if (level == 0)
+  if (degree == 0)
   {
     free_map_allocate (1, sector);
     cache_write(filesys_disk, *sector, empty_sector);
@@ -187,7 +187,7 @@ inode_allocate_indirect(disk_sector_t *sector, size_t sector_num, int degree)
       sector_num -= tempsize;
     }
   }
-  cache_write(*sector, &indirect_sector);
+  cache_write(filesys_dist, *sector, &indirect_sector);
 }
 
 bool inode_deallocate (struct inode *inode)
@@ -227,7 +227,7 @@ bool inode_deallocate (struct inode *inode)
 void
 inode_deallocate_indirect (disk_sector_t sector, size_t sector_num, int degree)
 {
-  if (level == 0)
+  if (degree == 0)
   {
     free_map_release (sector, 1);
     return;
@@ -236,6 +236,7 @@ inode_deallocate_indirect (disk_sector_t sector, size_t sector_num, int degree)
   struct indirect_sector_list indirect_sector;
   cache_read(filesys_disk, sector, &indirect_sector, 0, DISK_SECTOR_SIZE);
   
+  int i;
   if(degree == 1)
   {
     for (i=0; i<sector_num; i++)
