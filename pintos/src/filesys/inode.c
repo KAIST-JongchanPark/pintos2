@@ -121,8 +121,11 @@ inode_allocate (struct inode_disk *inode)
   count = sector_num < direct_sectors_per_inode ? sector_num : direct_sectors_per_inode;
   for(i=0; i < count; i++)
   {
-    free_map_allocate (1, &inode->direct_sector[i]);
-    cache_write (filesys_disk, inode->direct_sector[i], empty_sector);
+    if(inode->direct_sector[i]==0)
+    {
+      free_map_allocate (1, &inode->direct_sector[i]);
+      cache_write (filesys_disk, inode->direct_sector[i], empty_sector);
+    }
     sector_num--;
   }
   if(sector_num == 0)
@@ -155,8 +158,11 @@ inode_allocate_indirect(disk_sector_t *sector, size_t sector_num, int degree)
   
   if (degree == 0)
   {
-    free_map_allocate (1, sector);
-    cache_write(filesys_disk, *sector, empty_sector);
+    if(*sector == 0)
+    {
+      free_map_allocate (1, sector);
+      cache_write(filesys_disk, *sector, empty_sector);
+    }
     return;
   }
   
@@ -481,9 +487,17 @@ inode_write_at (struct inode *inode, const void *buffer_, off_t size,
 
   if (inode->deny_write_cnt)
     return 0;
-  if(byte_to_sector(inode, offset+size-1) == -1)
+  if(byte_to_sector(inode, offset+size-1) == -1u)
   {
-    PANIC("File growth is not implemented.");
+    bool success
+    success = inode_allocate (&inode->data, offset+size);
+    if(!success)
+    {
+      return 0;
+    }
+    
+    inode->data.length = offset+size;
+    cache_write(filesys_disk, inode->sector, &inode->data);
   }
   while (size > 0) 
     {
