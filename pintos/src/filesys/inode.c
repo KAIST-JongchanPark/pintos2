@@ -108,7 +108,7 @@ byte_to_sector (const struct inode *inode, off_t pos)
 static bool
 inode_allocate_indirect(disk_sector_t *sector, size_t sector_num, int degree)
 {
-  char empty_sector[DISK_SECTOR_SIZE];
+  static char empty_sector[DISK_SECTOR_SIZE];
   //printf("degree indirect: %d\n", degree);
   if (degree == 0)
   {
@@ -163,7 +163,7 @@ inode_allocate_indirect(disk_sector_t *sector, size_t sector_num, int degree)
 static bool
 inode_allocate (struct inode_disk *inode, off_t length)
 {
-  char empty_sector[DISK_SECTOR_SIZE];
+  static char empty_sector[DISK_SECTOR_SIZE];
   
   if(length < 0)
   {
