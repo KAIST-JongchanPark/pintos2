@@ -115,7 +115,7 @@ inode_allocate (struct inode_disk *inode)
   {
     return false;
   }
-  size_t sector_num = byte_to_sectors(length);
+  size_t sector_num = bytes_to_sectors(length);
   
   size_t count;
   int i;
@@ -197,7 +197,7 @@ bool inode_deallocate (struct inode *inode)
   {
     return false;
   }
-  size_t sector_num = byte_to_sectors(length);
+  size_t sector_num = bytes_to_sectors(length);
   
   size_t count;
   int i;
