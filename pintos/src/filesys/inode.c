@@ -68,7 +68,7 @@ byte_to_sector (const struct inode *inode, off_t pos)
   if (0 <= pos && pos < inode->data.length)
   {
     off_t index = pos / 512;
-    struct inode_disk i_disk = inode->data;
+    struct inode_disk *i_disk = inode->data;
     disk_sector_t return_value;
     if (index < direct_sectors_per_inode)
     {
