@@ -168,14 +168,14 @@ inode_allocate_indirect(disk_sector_t *sector, size_t sector_num, int degree)
   printf("degree indirect: %d\n", degree);
   if (degree == 0)
   {
-    if(*sector == 0)
-    {
+    //if(*sector == 0)
+    //{
       if(!free_map_allocate (1, sector))
       {
         return false;
       }
       cache_write(filesys_disk, *sector, empty_sector);
-    }
+    //}
     return true;
   }
   
