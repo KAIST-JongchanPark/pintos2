@@ -106,11 +106,10 @@ byte_to_sector (const struct inode *inode, off_t pos)
 }
 
 bool
-inode_allocate (struct inode_disk *inode)
+inode_allocate (struct inode_disk *inode, off_t length)
 {
   char empty_sector[DISK_SECTOR_SIZE];
   
-  off_t length = inode->length;
   if(length < 0)
   {
     return false;
@@ -122,14 +121,14 @@ inode_allocate (struct inode_disk *inode)
   count = sector_num < direct_sectors_per_inode ? sector_num : direct_sectors_per_inode;
   for(i=0; i < count; i++)
   {
-    //if(inode->direct_sector[i]==0)
-    //{
+    if(inode->direct_sector[i]==0)
+    {
       if(! free_map_allocate (1, &inode->direct_sector[i]))
       {
         return false;
       }
       cache_write (filesys_disk, inode->direct_sector[i], empty_sector);
-    //}
+    }
     sector_num--;
   }
   if(sector_num == 0)
@@ -165,24 +164,24 @@ bool
 inode_allocate_indirect(disk_sector_t *sector, size_t sector_num, int degree)
 {
   char empty_sector[DISK_SECTOR_SIZE];
-  printf("degree indirect: %d\n", degree);
+  //printf("degree indirect: %d\n", degree);
   if (degree == 0)
   {
-    //if(*sector == 0)
-    //{
+    if(*sector == 0)
+    {
       if(!free_map_allocate (1, sector))
       {
         return false;
       }
       cache_write(filesys_disk, *sector, empty_sector);
-    //}
+    }
     return true;
   }
   
   struct indirect_sector_list indirect_sector;
   if(*sector == 0)
   {
-    printf("indirect test, degree: %d\n", degree);
+    //printf("indirect test, degree: %d\n", degree);
     free_map_allocate (1, sector);
     cache_write(filesys_disk, *sector, empty_sector);
   }
@@ -319,7 +318,7 @@ inode_create (disk_sector_t sector, off_t length, bool is_dir)
       disk_inode->length = length;
       disk_inode->magic = INODE_MAGIC;
       disk_inode->is_dir = is_dir;
-      if (inode_allocate(disk_inode))
+      if (inode_allocate(disk_inode, disk_inode->length))
         {
           cache_write (filesys_disk, sector, disk_inode);
           /*
@@ -511,7 +510,7 @@ inode_write_at (struct inode *inode, const void *buffer_, off_t size,
   if(byte_to_sector(inode, offset+size-1) == -1u)
   {
     bool success;
-    success = inode_allocate (&inode->data);
+    success = inode_allocate (&inode->data, offset_size);
     if(!success)
     {
       return 0;
