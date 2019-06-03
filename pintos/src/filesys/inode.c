@@ -169,6 +169,7 @@ inode_allocate_indirect(disk_sector_t *sector, size_t sector_num, int degree)
   struct indirect_sector_list indirect_sector;
   if(*sector == 0)
   {
+    printf("indirect test\n");
     free_map_allocate (1, sector);
     cache_write(filesys_disk, *sector, empty_sector);
   }
