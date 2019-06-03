@@ -4,6 +4,7 @@
 #include <stdbool.h>
 #include "filesys/off_t.h"
 #include "devices/disk.h"
+#include <string.h>
 
 struct bitmap;
 
