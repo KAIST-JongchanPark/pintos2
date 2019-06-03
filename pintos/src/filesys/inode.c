@@ -215,6 +215,40 @@ inode_allocate (struct inode_disk *inode, off_t length)
   return false;
 }
 
+static void
+inode_deallocate_indirect (disk_sector_t sector, size_t sector_num, int degree)
+{
+  if (degree == 0)
+  {
+    free_map_release (sector, 1);
+    return;
+  }
+  
+  struct indirect_sector_list indirect_sector;
+  cache_read(filesys_disk, sector, &indirect_sector, 0, DISK_SECTOR_SIZE);
+  
+  int i;
+  if(degree == 1)
+  {
+    for (i=0; i<sector_num; i++)
+    {
+      inode_deallocate_indirect (indirect_sector.sector_list[i], 1, 0);
+      sector_num--;
+    }
+  }
+  else
+  {
+    size_t count = DIV_ROUND_UP(sector_num, indirect_sectors_per_inode);
+    for(i=0; i<count; i++)
+    {
+      size_t tempsize = sector_num < indirect_sectors_per_inode ? sector_num : indirect_sectors_per_inode;
+      inode_deallocate_indirect (indirect_sector.sector_list[i], tempsize, 1);
+      sector_num -= tempsize;
+    }
+  }
+  free_map_release(sector, 1);
+}
+
 static bool
 inode_deallocate (struct inode *inode)
 {
@@ -248,40 +282,6 @@ inode_deallocate (struct inode *inode)
     sector_num -= count;
   }
   return true;
-}
-
-static void
-inode_deallocate_indirect (disk_sector_t sector, size_t sector_num, int degree)
-{
-  if (degree == 0)
-  {
-    free_map_release (sector, 1);
-    return;
-  }
-  
-  struct indirect_sector_list indirect_sector;
-  cache_read(filesys_disk, sector, &indirect_sector, 0, DISK_SECTOR_SIZE);
-  
-  int i;
-  if(degree == 1)
-  {
-    for (i=0; i<sector_num; i++)
-    {
-      inode_deallocate_indirect (indirect_sector.sector_list[i], 1, 0);
-      sector_num--;
-    }
-  }
-  else
-  {
-    size_t count = DIV_ROUND_UP(sector_num, indirect_sectors_per_inode);
-    for(i=0; i<count; i++)
-    {
-      size_t tempsize = sector_num < indirect_sectors_per_inode ? sector_num : indirect_sectors_per_inode;
-      inode_deallocate_indirect (indirect_sector.sector_list[i], tempsize, 1);
-      sector_num -= tempsize;
-    }
-  }
-  free_map_release(sector, 1);
 }
 
 /* List of open inodes, so that opening a single inode twice
