@@ -123,7 +123,10 @@ inode_allocate (struct inode_disk *inode)
   {
     if(inode->direct_sector[i]==0)
     {
-      free_map_allocate (1, &inode->direct_sector[i]);
+      if(! free_map_allocate (1, &inode->direct_sector[i]))
+      {
+        return false;
+      }
       cache_write (filesys_disk, inode->direct_sector[i], empty_sector);
     }
     sector_num--;
@@ -134,7 +137,10 @@ inode_allocate (struct inode_disk *inode)
   }
   
   count = sector_num < indirect_sectors_per_inode ? sector_num : indirect_sectors_per_inode;
-  inode_allocate_indirect(&inode->indirect_sector, count, 1);
+  if(!inode_allocate_indirect(&inode->indirect_sector, count, 1))
+  {
+    return false;
+  }
   sector_num -= count;
   if(sector_num == 0)
   {
@@ -142,7 +148,10 @@ inode_allocate (struct inode_disk *inode)
   }
   
   count = sector_num < indirect_sectors_per_inode*indirect_sectors_per_inode ? sector_num : indirect_sectors_per_inode*indirect_sectors_per_inode;
-  inode_allocate_indirect(&inode->doubly_indirect_sector, count, 2);
+  if(!inode_allocate_indirect(&inode->doubly_indirect_sector, count, 2))
+  {
+    return false;
+  }
   sector_num -= count;
   if(sector_num == 0)
   {
@@ -151,7 +160,7 @@ inode_allocate (struct inode_disk *inode)
   return false;
 }
 
-void
+bool
 inode_allocate_indirect(disk_sector_t *sector, size_t sector_num, int degree)
 {
   char empty_sector[DISK_SECTOR_SIZE];
@@ -160,10 +169,13 @@ inode_allocate_indirect(disk_sector_t *sector, size_t sector_num, int degree)
   {
     if(*sector == 0)
     {
-      free_map_allocate (1, sector);
+      if(!free_map_allocate (1, sector))
+      {
+        return false;
+      }
       cache_write(filesys_disk, *sector, empty_sector);
     }
-    return;
+    return true;
   }
   
   struct indirect_sector_list indirect_sector;
@@ -179,7 +191,10 @@ inode_allocate_indirect(disk_sector_t *sector, size_t sector_num, int degree)
   {
     for (i=0; i<sector_num; i++)
     {
-      inode_allocate_indirect (&indirect_sector.sector_list[i], 1, 0);
+      if(!inode_allocate_indirect (&indirect_sector.sector_list[i], 1, 0))
+      {
+        return false;
+      }
       sector_num--;
     }
   }
@@ -189,11 +204,15 @@ inode_allocate_indirect(disk_sector_t *sector, size_t sector_num, int degree)
     for(i=0; i<count; i++)
     {
       size_t tempsize = sector_num < indirect_sectors_per_inode ? sector_num : indirect_sectors_per_inode;
-      inode_allocate_indirect (&indirect_sector.sector_list[i], tempsize, 1);
+      if(!inode_allocate_indirect (&indirect_sector.sector_list[i], tempsize, 1))
+      {
+        return false;
+      }
       sector_num -= tempsize;
     }
   }
   cache_write(filesys_disk, *sector, &indirect_sector);
+  return true;
 }
 
 bool inode_deallocate (struct inode *inode)
