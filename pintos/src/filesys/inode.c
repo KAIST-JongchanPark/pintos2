@@ -164,7 +164,7 @@ bool
 inode_allocate_indirect(disk_sector_t *sector, size_t sector_num, int degree)
 {
   char empty_sector[DISK_SECTOR_SIZE];
-  
+  printf("degree indirect: %d\n", degree);
   if (degree == 0)
   {
     if(*sector == 0)
