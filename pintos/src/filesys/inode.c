@@ -10,7 +10,7 @@
 
 /* Identifies an inode. */
 #define INODE_MAGIC 0x494e4f44
-#define direct_sectors_per_inode 123
+#define direct_sectors_per_inode 100
 #define indirect_sectors_per_inode 128
 
 
@@ -32,7 +32,7 @@ struct inode_disk
     off_t length;                       /* File size in bytes. */
     unsigned magic;                     /* Magic number. */
     bool is_dir;
-    //uint32_t unused[124];               /* Not used. */
+    uint32_t unused[23];               /* Not used. */
   };
 
 
