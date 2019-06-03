@@ -74,12 +74,12 @@ byte_to_sector (const struct inode *inode, off_t pos)
       return i_disk -> direct_sector[index];
     }
     
-    else if(index < direct_sectors_per_inode+indirect_sectors_per_inode)
+    else if(index < (direct_sectors_per_inode+indirect_sectors_per_inode))
     {
       struct indirect_sector_list *sector_list = malloc(sizeof(struct indirect_sector_list));
       cache_read(filesys_disk, i_disk->indirect_sector, sector_list, 0, DISK_SECTOR_SIZE);
       return_value = sector_list->sector_list[index-direct_sectors_per_inode];
-      //free(sector_list);
+      free(sector_list);
       return return_value;
     }
     else if(index < direct_sectors_per_inode+indirect_sectors_per_inode+indirect_sectors_per_inode*indirect_sectors_per_inode)
@@ -91,6 +91,7 @@ byte_to_sector (const struct inode *inode, off_t pos)
       cache_read(filesys_disk, i_disk->doubly_indirect_sector, sector_list, 0, DISK_SECTOR_SIZE);
       cache_read(filesys_disk, sector_list->sector_list[first_index], sector_list, 0, DISK_SECTOR_SIZE);
       return_value = sector_list -> sector_list[second_index];
+      free(sector_list);
       return return_value;
     }
     else
