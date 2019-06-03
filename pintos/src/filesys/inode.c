@@ -187,7 +187,7 @@ inode_allocate_indirect(disk_sector_t *sector, size_t sector_num, int degree)
       sector_num -= tempsize;
     }
   }
-  cache_write(filesys_dist, *sector, &indirect_sector);
+  cache_write(filesys_disk, *sector, &indirect_sector);
 }
 
 bool inode_deallocate (struct inode *inode)
@@ -218,7 +218,7 @@ bool inode_deallocate (struct inode *inode)
   count = sector_num < indirect_sectors_per_inode*indirect_sectors_per_inode ? sector_num : indirect_sectors_per_inode*indirect_sectors_per_inode;
   if(count >0)
   {
-    inode_allocate_indirect(&inode->doubly_indirect_sector, count, 2);
+    inode_allocate_indirect(&inode->data.doubly_indirect_sector, count, 2);
     sector_num -= count;
   }
   return true;
