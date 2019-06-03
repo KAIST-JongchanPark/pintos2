@@ -423,7 +423,8 @@ bool mkdir (const char *dir)
 {
   //struct dir* parent_dir = (struct dir*) mkdir_parse_dir(dir, 1);
   //char *dir_name = (char *) get_name(dir);
-  return filesys_create(dir, 16 * sizeof (struct dir_entry), true);
+  //return filesys_create(dir, 16 * sizeof (struct dir_entry), true);
+  return filesys_create(dir, 0, true);
 }
 
 bool readdir (int fd, char *name)
