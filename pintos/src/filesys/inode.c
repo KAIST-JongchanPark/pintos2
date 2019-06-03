@@ -105,7 +105,7 @@ byte_to_sector (const struct inode *inode, off_t pos)
   }
 }
 
-bool
+static bool
 inode_allocate (struct inode_disk *inode, off_t length)
 {
   char empty_sector[DISK_SECTOR_SIZE];
@@ -160,7 +160,7 @@ inode_allocate (struct inode_disk *inode, off_t length)
   return false;
 }
 
-bool
+static bool
 inode_allocate_indirect(disk_sector_t *sector, size_t sector_num, int degree)
 {
   char empty_sector[DISK_SECTOR_SIZE];
@@ -215,7 +215,8 @@ inode_allocate_indirect(disk_sector_t *sector, size_t sector_num, int degree)
   return true;
 }
 
-bool inode_deallocate (struct inode *inode)
+static bool
+inode_deallocate (struct inode *inode)
 {
   off_t length = inode->data.length;
   if(length < 0)
@@ -249,7 +250,7 @@ bool inode_deallocate (struct inode *inode)
   return true;
 }
 
-void
+static void
 inode_deallocate_indirect (disk_sector_t sector, size_t sector_num, int degree)
 {
   if (degree == 0)
