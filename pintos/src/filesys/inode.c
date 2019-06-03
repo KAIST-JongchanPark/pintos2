@@ -490,7 +490,7 @@ inode_write_at (struct inode *inode, const void *buffer_, off_t size,
   if(byte_to_sector(inode, offset+size-1) == -1u)
   {
     bool success;
-    success = inode_allocate (&inode->data, offset+size);
+    success = inode_allocate (&inode->data);
     if(!success)
     {
       return 0;
