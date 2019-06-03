@@ -78,7 +78,7 @@ byte_to_sector (const struct inode *inode, off_t pos)
     {
       struct indirect_sector_list *sector_list = malloc(sizeof(struct indirect_sector_list));
       cache_read(filesys_disk, i_disk->indirect_sector, sector_list, 0, DISK_SECTOR_SIZE);
-      return_value = sector_list->sector_list[pos-direct_sectors_per_inode];
+      return_value = sector_list->sector_list[index-direct_sectors_per_inode];
       //free(sector_list);
       return return_value;
     }
