@@ -528,6 +528,7 @@ inode_write_at (struct inode *inode, const void *buffer_, off_t size,
   }
   while (size > 0) 
     {
+      printf("offset size in write_at: %d\n", offset);
       /* Sector to write, starting byte offset within sector. */
       disk_sector_t sector_idx = byte_to_sector (inode, offset);
       printf("sector_idx value: %d\n", sector_idx);
