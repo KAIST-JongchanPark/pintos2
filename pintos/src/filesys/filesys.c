@@ -66,7 +66,7 @@ bool
 filesys_create (const char *name, off_t initial_size, bool is_dir) 
 {
   lock_acquire(&filesys_lock);
-  printf("create start\n");
+  //printf("create start\n");
   disk_sector_t inode_sector = 0;
   struct dir *dir = get_parent_dir(name);//get_parent_dir(name);
   //printf("test\n");
@@ -86,16 +86,16 @@ filesys_create (const char *name, off_t initial_size, bool is_dir)
   bool success = dir != NULL
                   && free_map_allocate (1, &inode_sector);
   //printf("success value %d\n", success);
-                  printf("inode create start\n");
+                  //printf("inode create start\n");
                   success = success&& inode_create (inode_sector, initial_size, is_dir);
-                  printf("inode create end\n");
+                  //printf("inode create end\n");
                   //printf("success value %d\n", success);
                   success = success&& dir_add (dir, file_name, inode_sector);
   if (!success && inode_sector != 0) 
     free_map_release (inode_sector, 1);
   dir_close (dir);
   lock_release(&filesys_lock);
-  printf("create end\n");
+  //printf("create end\n");
   return success;
 }
 
