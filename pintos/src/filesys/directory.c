@@ -313,3 +313,9 @@ dir_set_pos(struct dir *dir, off_t pos)
 {
   dir->pos = pos;
 }
+
+off_t
+dir_get_pos(struct dir *dir)
+{
+  return dir->pos;
+}

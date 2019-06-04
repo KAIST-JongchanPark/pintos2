@@ -440,7 +440,7 @@ bool readdir (int fd, char *name)
   bool success = dir_readdir(dir, name);
   if(success)
   {
-    file->inode->pos = dir->pos; 
+    inode_set_pos(file->inode, dir_get_pos(dir));
   }
   dir_close(dir);
   return success;

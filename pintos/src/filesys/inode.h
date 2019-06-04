@@ -24,6 +24,7 @@ bool inode_is_dir (struct inode *inode);
 bool inode_is_removed (struct inode *inode);
 bool inode_add_parent_sector (disk_sector_t child, disk_sector_t parent);
 off_t inode_get_pos(struct inode *inode);
+void inode_set_pos(struct inode *inode, off_t pos);
 //bool inode_allocate_indirect(disk_sector_t *sector, size_t sector_num, int degree);
 
 #endif /* filesys/inode.h */

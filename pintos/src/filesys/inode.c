@@ -668,3 +668,9 @@ inode_get_pos(struct inode *inode)
 {
   return inode->pos;
 }
+
+void
+inode_set_pos(struct inode *inode, off_t pos)
+{
+  inode->pos = pos;
+}
