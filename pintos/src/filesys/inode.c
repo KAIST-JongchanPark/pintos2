@@ -175,7 +175,7 @@ inode_allocate (struct inode_disk *inode, off_t length)
     return false;
   }
   size_t sector_num = bytes_to_sectors(length);
-  
+  printf("allocate sector_num: %d\n", sector_num);
   size_t count;
   int i;
   count = sector_num < direct_sectors_per_inode ? sector_num : direct_sectors_per_inode;
