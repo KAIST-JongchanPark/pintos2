@@ -409,10 +409,14 @@ bool chdir (const char *dir)
   struct dir* target_dir = get_parent_dir(dir);
   char *dir_name = get_name(dir);
   if(target_dir==NULL)
+  {
+    printf("false1");
     return false;
+  }
   struct inode *inode;
   if(!dir_lookup(target_dir, dir_name, &inode)||!inode_is_dir(inode))
   {
+    printf("false2");
     return false;
   }
   dir_close(target_dir);
