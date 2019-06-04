@@ -563,7 +563,7 @@ inode_write_at (struct inode *inode, const void *buffer_, off_t size,
           /* If the sector contains data before or after the chunk
              we're writing, then we need to read in the sector
              first.  Otherwise we start with a sector of all zeros. */
-          printf("test at write\n");
+          printf("test at write. chunk size: %d\n", chunk_size);
           cache_write_ofs(filesys_disk, sector_idx, buffer+bytes_written, sector_ofs, chunk_size);
 
           /*
