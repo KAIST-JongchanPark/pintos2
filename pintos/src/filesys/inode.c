@@ -187,6 +187,7 @@ inode_allocate (struct inode_disk *inode, off_t length)
       {
         return false;
       }
+      printf("free-map allocated sector: %d\n", inode->direct_sector[i]);
       cache_write (filesys_disk, inode->direct_sector[i], empty_sector);
     }
     //sector_num--;
