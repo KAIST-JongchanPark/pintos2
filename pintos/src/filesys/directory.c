@@ -307,3 +307,9 @@ dir_is_empty (const struct dir *dir)
   }
   return true;
 }
+
+void
+dir_set_pos(struct dir *dir, off_t pos)
+{
+  dir->pos = pos;
+}

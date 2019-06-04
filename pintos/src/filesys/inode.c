@@ -662,3 +662,9 @@ inode_add_parent_sector (disk_sector_t child, disk_sector_t parent)
   inode_close(child_inode);
   return true;
 }
+
+off_t
+inode_get_pos(struct inode *inode)
+{
+  return inode->pos;
+}
