@@ -76,7 +76,7 @@ byte_to_sector (const struct inode *inode, off_t pos)
     
     else if(index < (direct_sectors_per_inode+indirect_sectors_per_inode))
     {
-      struct indirect_sector_list *sector_list = malloc(sizeof(struct indirect_sector_list));
+      struct indirect_sector_list *sector_list = calloc(1, sizeof(struct indirect_sector_list));
       cache_read(filesys_disk, i_disk->indirect_sector, sector_list, 0, DISK_SECTOR_SIZE);
       return_value = sector_list->sector_list[index-direct_sectors_per_inode];
       free(sector_list);
@@ -87,7 +87,7 @@ byte_to_sector (const struct inode *inode, off_t pos)
       off_t first_index = (index - (direct_sectors_per_inode+indirect_sectors_per_inode))/indirect_sectors_per_inode;
       off_t second_index = (index - (direct_sectors_per_inode+indirect_sectors_per_inode))%indirect_sectors_per_inode;
       
-      struct indirect_sector_list *sector_list = malloc(sizeof(struct indirect_sector_list));
+      struct indirect_sector_list *sector_list = calloc(1, sizeof(struct indirect_sector_list));
       cache_read(filesys_disk, i_disk->doubly_indirect_sector, sector_list, 0, DISK_SECTOR_SIZE);
       cache_read(filesys_disk, sector_list->sector_list[first_index], sector_list, 0, DISK_SECTOR_SIZE);
       return_value = sector_list -> sector_list[second_index];
@@ -109,7 +109,7 @@ static bool
 inode_allocate_indirect(disk_sector_t *sector, size_t sector_num, int degree)
 {
   static char empty_sector[DISK_SECTOR_SIZE];
-  //printf("degree indirect: %d\n", degree);
+  printf("degree indirect: %d\n", degree);
   if (degree == 0)
   {
     if(*sector == 0)
@@ -126,7 +126,7 @@ inode_allocate_indirect(disk_sector_t *sector, size_t sector_num, int degree)
   struct indirect_sector_list indirect_sector;
   if(*sector == 0)
   {
-    //printf("indirect test, degree: %d\n", degree);
+    printf("indirect test, degree: %d\n", degree);
     free_map_allocate (1, sector);
     cache_write(filesys_disk, *sector, empty_sector);
   }
