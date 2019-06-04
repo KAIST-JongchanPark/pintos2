@@ -66,11 +66,13 @@ byte_to_sector (const struct inode *inode, off_t pos)
   ASSERT (inode != NULL);
   if (0 <= pos && pos < inode->data.length)
   {
+
     off_t index = pos / DISK_SECTOR_SIZE;
     struct inode_disk *i_disk = &inode->data;
     disk_sector_t return_value;
     if (index < direct_sectors_per_inode)
     {
+      printf("direct index value: %d\n", index);
       return i_disk -> direct_sector[index];
     }
     
