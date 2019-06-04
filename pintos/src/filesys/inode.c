@@ -113,6 +113,7 @@ static bool
 inode_allocate_indirect(disk_sector_t *sector, size_t sector_num, int degree)
 {
   static char empty_sector[DISK_SECTOR_SIZE];
+  memset (empty_sector, 0, DISK_SECTOR_SIZE);
   printf("degree indirect: %d\n", degree);
   if (degree == 0)
   {
@@ -168,7 +169,7 @@ static bool
 inode_allocate (struct inode_disk *inode, off_t length)
 {
   static char empty_sector[DISK_SECTOR_SIZE];
-  
+  memset (empty_sector, 0, DISK_SECTOR_SIZE);
   if(length < 0)
   {
     return false;
