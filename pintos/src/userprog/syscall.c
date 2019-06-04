@@ -435,7 +435,15 @@ bool readdir (int fd, char *name)
     return false;
   if(!inode_is_dir(file->inode))
     return false;
-  return dir_readdir(dir_open(file->inode), name);
+  struct dir *dir = dir_open(file->inode);
+  dir->pos = file->inode->pos;
+  bool success = dir_readdir(dir, name);
+  if(success)
+  {
+    file->inode->pos = dir->pos; 
+  }
+  dir_close(dir);
+  return success;
 }
 
 //

@@ -53,6 +53,7 @@ struct inode
     int deny_write_cnt;                 /* 0: writes ok, >0: deny writes. */
     struct inode_disk data;             /* Inode content. */
     bool is_dir;
+    off_t pos;
     disk_sector_t parent_sector;
   };
 
@@ -382,6 +383,7 @@ inode_open (disk_sector_t sector)
   //inode->is_dir = 
   cache_read (filesys_disk, inode->sector, &inode->data, 0, 512);
   inode->is_dir = (&inode->data)->is_dir;
+  inode->pos = 0;
   return inode;
 }
 
