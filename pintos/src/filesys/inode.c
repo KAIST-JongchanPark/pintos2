@@ -188,8 +188,9 @@ inode_allocate (struct inode_disk *inode, off_t length)
       }
       cache_write (filesys_disk, inode->direct_sector[i], empty_sector);
     }
-    sector_num--;
+    //sector_num--;
   }
+  sector_num -= count;
   if(sector_num == 0)
   {
     return true;
