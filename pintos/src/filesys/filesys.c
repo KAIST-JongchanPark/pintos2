@@ -66,6 +66,7 @@ bool
 filesys_create (const char *name, off_t initial_size, bool is_dir) 
 {
   lock_acquire(&filesys_lock);
+  printf("create start\n");
   disk_sector_t inode_sector = 0;
   struct dir *dir = get_parent_dir(name);//get_parent_dir(name);
   //printf("test\n");
@@ -92,6 +93,7 @@ filesys_create (const char *name, off_t initial_size, bool is_dir)
     free_map_release (inode_sector, 1);
   dir_close (dir);
   lock_release(&filesys_lock);
+  printf("create end\n");
   return success;
 }
 
