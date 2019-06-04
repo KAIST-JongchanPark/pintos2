@@ -139,7 +139,8 @@ inode_allocate_indirect(disk_sector_t *sector, size_t sector_num, int degree)
   int i;
   if(degree == 1)
   {
-    for (i=0; i<sector_num; i++)
+    size_t sector_num_copy = sector_num;
+    for (i=0; i<sector_num_copy; i++)
     {
       if(!inode_allocate_indirect (&indirect_sector.sector_list[i], 1, 0))
       {
