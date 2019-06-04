@@ -247,12 +247,13 @@ int write (int fd, const void *buffer, unsigned size)
       //lock_release(&syscall_lock);
       return -1;
     }
-	if(file->deny_write)
-	{
-	  //file_deny_write(file);
-	  //lock_release(&syscall_lock);
-	  return 0;
-	}
+    if(file->deny_write)
+    {
+      //file_deny_write(file);
+      //lock_release(&syscall_lock);
+      return 0;
+    }
+    printf("syscall write size: %u\n", size);
     return_value = file_write(file, buffer,(off_t)size);
     //lock_release(&syscall_lock);
     return return_value;
