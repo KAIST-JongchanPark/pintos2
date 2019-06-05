@@ -8,6 +8,8 @@
 #include "devices/disk.h"
 #include "filesys/file.h"
 
+struct list sleep_list;
+
 /* States in a thread's life cycle. */
 enum thread_status
   {
@@ -101,6 +103,7 @@ struct thread
     int priority;                       /* Priority. */
 
     /* Shared between thread.c and synch.c. */
+    int64_t ticks;
     struct list_elem elem;              /* List element. */
 
 #ifdef USERPROG
@@ -156,5 +159,10 @@ int thread_get_nice (void);
 void thread_set_nice (int);
 int thread_get_recent_cpu (void);
 int thread_get_load_avg (void);
+
+bool cmp_ticks (const struct list_elem *a,
+		const struct list_elem *b,
+		void *aux UNUSED);
+
 
 #endif /* threads/thread.h */

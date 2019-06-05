@@ -464,6 +464,7 @@ init_thread (struct thread *t, const char *name, int priority)
   t->parent = running_thread();
   list_init(&t->child_list);
   list_push_back(&running_thread()->child_list, &t->child_elem);
+  list_init (&sleep_list);
 #endif
 
 }
@@ -581,3 +582,16 @@ allocate_tid (void)
 /* Offset of `stack' member within `struct thread'.
    Used by switch.S, which can't figure it out on its own. */
 uint32_t thread_stack_ofs = offsetof (struct thread, stack);
+
+bool cmp_ticks (const struct list_elem *a,
+		const struct list_elem *b,
+		void *aux UNUSED)
+{
+  struct thread *ta = list_entry(a, struct thread, elem);
+  struct thread *tb = list_entry(b, struct thread, elem);
+  if (ta->ticks < tb->ticks)
+    {
+      return true;
+    }
+  return false;
+}

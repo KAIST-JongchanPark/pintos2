@@ -54,7 +54,8 @@ open_parent_dir(char *name)
 void
 filesys_done (void) 
 {
-  cache_write_behind();
+  //cache_write_behind();
+  filesys_cache_write_to_disk(true);
   free_map_close ();
 }
 

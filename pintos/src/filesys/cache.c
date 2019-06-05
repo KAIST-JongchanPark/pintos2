@@ -46,7 +46,7 @@ void cache_init(void)
 	}
 	//tid_t tid = thread_create("periodic", PRI_DEFAULT, cache_write_behind, NULL);
 	//printf("cache_init finished\n");
-
+  thread_create("filesys_cache_writeback", 0, thread_func_write_back, NULL);
 }
 
 //동기화 하기 위해서 cache_r/w에 lock 걸어놓고, 나머지 함수는 그 안에서만 부르면 될듯?
@@ -214,3 +214,11 @@ void cache_write_behind(void)
 
 //eviction 알고리즘도 만들어야 함. 
 
+void thread_func_write_back (void *aux UNUSED)
+{
+  while (true)
+    {
+      timer_sleep(WRITE_BACK_INTERVAL);
+      filesys_cache_write_to_disk(false);
+    }
+}
