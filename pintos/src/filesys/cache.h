@@ -3,7 +3,7 @@
 #include "devices/disk.h"
 #include "devices/timer.h"
 
-#define WRITE_BACK_INTERVAL 5*TIMER_FREQ
+#define WRITE_BACK_INTERVAL TIMER_FREQ
 #define MAX_FILESYS_CACHE_SIZE 64
 
 struct cache_elem

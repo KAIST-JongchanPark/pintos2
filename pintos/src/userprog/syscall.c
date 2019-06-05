@@ -416,7 +416,7 @@ bool chdir (const char *dir)
   struct inode *inode;
   if(!dir_lookup(target_dir, dir_name, &inode)||!inode_is_dir(inode))
   {
-    printf("false2");
+    //printf("false2");
     return false;
   }
   dir_close(target_dir);
