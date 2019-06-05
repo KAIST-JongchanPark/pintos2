@@ -55,7 +55,7 @@ void
 filesys_done (void) 
 {
   //cache_write_behind();
-  filesys_cache_write_to_disk(true);
+  cache_write_behind();
   free_map_close ();
 }
 

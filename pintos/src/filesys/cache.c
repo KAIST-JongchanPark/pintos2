@@ -219,6 +219,8 @@ void thread_func_write_back (void *aux UNUSED)
   while (true)
     {
       timer_sleep(WRITE_BACK_INTERVAL);
-      filesys_cache_write_to_disk(false);
+      cache_write_behind();
     }
+}
+  lock_release(cache_lock);
 }
