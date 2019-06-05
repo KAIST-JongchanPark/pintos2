@@ -222,5 +222,3 @@ void thread_func_write_back (void *aux UNUSED)
       cache_write_behind();
     }
 }
-  lock_release(cache_lock);
-}
