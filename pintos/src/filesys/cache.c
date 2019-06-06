@@ -197,11 +197,9 @@ void cache_write_behind(void)
 		if(celem->dirty)
 		{
 			celem->dirty = false; //이것도 해야될듯?
-      celem->allocated = false;
       printf("cache write behind\n");
 			disk_write(filesys_disk, celem->sector, celem->addr); // sec_no가 아니라 celem->sector?
 		}
-		memset(celem->addr, 0, 512);
 	}
 	evict_counter = 0;
 	//thread_yield();
